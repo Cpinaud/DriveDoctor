@@ -1,35 +1,7 @@
-Proyecto base Taller Web I (Maven and Thymeleaf)
+Proyecto DriveDoctor - TallerWebI - UNLaM (Maven and Thymeleaf)
 ===============================
 
-## 1. Como iniciar el proyecto
-```shell
-$ mvn clean jetty:run
-# http://localhost:8080/spring
-```
-## 2. Thymeleaf
-* [Documentacion](https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html)
-
-## 3. GitHub Actions
-* [Documentacion](https://docs.github.com/es/actions/quickstart)
-
-## 4. Playwright
-* [Documentacion](https://playwright.dev/java/docs/intro)
-
-## 5. Jetty
-* [Documentacion](https://eclipse.dev/jetty/documentation/jetty-9/index.html#maven-and-jetty)
-
-## 6. Como correr las pruebas de punta a punta
-
-### Iniciar el servidor
-```shell
-$ mvn clean jetty:run
-```
-### Correr las pruebas en otra terminal
-```shell
-$ mvn test -Dtest="VistaLoginE2E"
-```
-
-## 6. Tecnologías:
+# Tecnologías:
 * Java 11
 * Spring 5.2.22.RELEASE
 * Thymeleaf 3.0.15.RELEASE
@@ -46,3 +18,9 @@ $ mvn test -Dtest="VistaLoginE2E"
 * Playwright 1.36.0
 
 *_Proyecto modificado en base a: [Spring MVC hello world example (Maven and Thymeleaf)](https://mkyong.com/spring-mvc/spring-mvc-hello-world-example/) _*
+
+Cintia_Pinaud
+Camila_Giselle_Siquila
+Ignacio_Franco
+Oriana_Lombardi
+Diego_Ramos
