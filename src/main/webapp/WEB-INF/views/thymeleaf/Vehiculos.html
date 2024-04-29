@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DriveDoctor</title>
+    <!--<link rel="stylesheet" href="styles.css"> | Enlaza tu archivo de estilos CSS -->
+</head>
+<body>
+
+<!-- Aquí va el contenido de tu página -->
+
+<header>
+    <h1>Vehiculos</h1>
+
+    <ul  th:each="vehiculo : ${vehiculos}" >
+        <li th:text="${vehiculo.marca}"></li>
+        <li th:text="${vehiculo.modelo}"></li>
+    </ul>
+</header>
+
+<main>
+    <!--<section>
+        <h2>Sección 1</h2>
+        <p>Contenido de la sección 1</p>
+    </section>
+
+    <section>
+        <h2>Sección 2</h2>
+        <p>Contenido de la sección 2</p>
+    </section>-->
+</main>
+
+<footer>
+
+</footer>
+
+<!-- Scripts JavaScript -->
+</body>
+</html>
