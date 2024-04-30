@@ -1,23 +1,29 @@
 package com.drivedoctor.presentacion;
 
+import com.drivedoctor.dominio.ServicioVehiculo;
+import com.drivedoctor.dominio.ServicioVehiculoImpl;
+import com.drivedoctor.dominio.Vehiculo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
 
 
-import java.util.ArrayList;
 import java.util.List;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 
+
 public class ControladorVehiculoTest {
 
     private ControladorVehiculo controladorVehiculo;
+    private ServicioVehiculo servicioVehiculo;
 
     @BeforeEach
     public void init(){
-        this.controladorVehiculo = new ControladorVehiculo(this.crearLista());
+        //this.servicioVehiculo = mock(ServicioVehiculo.class);
+        this.servicioVehiculo = new ServicioVehiculoImpl();
+        this.controladorVehiculo = new ControladorVehiculo(this.servicioVehiculo);
     }
 
     @Test
@@ -25,7 +31,7 @@ public class ControladorVehiculoTest {
         //preparacion
 
         //ejecucion
-        ModelAndView mav = controladorVehiculo.verVehiculos();
+        ModelAndView mav = this.controladorVehiculo.verVehiculos();
         //verificacion
         assertThat(mav.getViewName(),equalToIgnoringCase("Vehiculos"));
     }
@@ -36,7 +42,7 @@ public class ControladorVehiculoTest {
 
 
         //ejecucion
-        ModelAndView mav = controladorVehiculo.verVehiculos();
+        ModelAndView mav = this.controladorVehiculo.verVehiculos();
 
         //verificacion
         List<Vehiculo> vehiculos = (List<Vehiculo>) mav.getModel().get("vehiculos");
@@ -54,7 +60,7 @@ public class ControladorVehiculoTest {
         String marca = "Renault";
 
         //ejecucion
-        ModelAndView mav = controladorVehiculo.verVehiculosPorMarca(marca);
+        ModelAndView mav = this.controladorVehiculo.verVehiculosPorMarca(marca);
         List<Vehiculo> vehiculosPorMarca = (List<Vehiculo>) mav.getModel().get("vehiculos");
 
         //verificacion
@@ -74,7 +80,7 @@ public class ControladorVehiculoTest {
         String modelo = "Clio";
 
         //ejecucion
-        ModelAndView mav = controladorVehiculo.verVehiculoPorMarcaYModelo(marca,modelo);
+        ModelAndView mav = this.controladorVehiculo.verVehiculoPorMarcaYModelo(marca,modelo);
         List<Vehiculo> vehiculoPorMarcaYModelo = (List<Vehiculo>) mav.getModel().get("vehiculos");
 
         //verificacion
@@ -84,11 +90,5 @@ public class ControladorVehiculoTest {
     }
 
 
-    private List<Vehiculo> crearLista(){
-        List<Vehiculo> vehiculos = new ArrayList<>();
-        vehiculos.add(new Vehiculo("Renault", "Clio"));
-        vehiculos.add(new Vehiculo("Ford", "Fiesta"));
-        vehiculos.add(new Vehiculo("Renault", "Sandero"));
-        return vehiculos;
-    }
+
 }

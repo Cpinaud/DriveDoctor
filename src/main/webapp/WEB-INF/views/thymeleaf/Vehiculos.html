@@ -13,22 +13,13 @@
 <header>
     <h1>Vehiculos</h1>
 
+</header>
+
+<main>
     <ul  th:each="vehiculo : ${vehiculos}" >
         <li th:text="${vehiculo.marca}"></li>
         <li th:text="${vehiculo.modelo}"></li>
     </ul>
-</header>
-
-<main>
-    <!--<section>
-        <h2>Sección 1</h2>
-        <p>Contenido de la sección 1</p>
-    </section>
-
-    <section>
-        <h2>Sección 2</h2>
-        <p>Contenido de la sección 2</p>
-    </section>-->
 </main>
 
 <footer>

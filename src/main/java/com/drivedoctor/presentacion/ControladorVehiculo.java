@@ -1,29 +1,29 @@
 package com.drivedoctor.presentacion;
 
+import com.drivedoctor.dominio.ServicioVehiculo;
+import com.drivedoctor.dominio.Vehiculo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class ControladorVehiculo {
 
-    private  List<Vehiculo> vehiculos;
+    private ServicioVehiculo servicioVehiculo;
 
-    public ControladorVehiculo(List<Vehiculo> vehiculos) {
-
-        this.vehiculos = vehiculos;
+    public ControladorVehiculo(ServicioVehiculo servicioVehiculo) {
+        this.servicioVehiculo = servicioVehiculo;
     }
 
     @RequestMapping(path = "/verVehiculos",method = RequestMethod.GET)
     public ModelAndView verVehiculos() {
         String viewName = "Vehiculos";
         ModelMap model = new ModelMap();
-        model.put("vehiculos",this.vehiculos);
+        model.put("vehiculos",this.servicioVehiculo.verVehiculos());
         return new ModelAndView(viewName, model);
     }
 
@@ -31,12 +31,7 @@ public class ControladorVehiculo {
     public ModelAndView verVehiculosPorMarca(String marca) {
         String viewName = "Vehiculos";
         ModelMap model = new ModelMap();
-        List<Vehiculo> vehiculos = new ArrayList<>();
-        for (Vehiculo vehiculo : this.vehiculos) {
-            if(vehiculo.getMarca().equalsIgnoreCase(marca)){
-                vehiculos.add(vehiculo);
-            }
-        }
+        List<Vehiculo> vehiculos = this.servicioVehiculo.verVehiculosPorMarca(marca);
         model.put("vehiculos",vehiculos);
         return new ModelAndView(viewName, model);
     }
@@ -45,12 +40,7 @@ public class ControladorVehiculo {
     public ModelAndView verVehiculoPorMarcaYModelo(String marca, String modelo) {
         String viewName = "Vehiculos";
         ModelMap model = new ModelMap();
-        List<Vehiculo> vehiculos = new ArrayList<>();
-        for (Vehiculo vehiculo : this.vehiculos) {
-            if(vehiculo.getMarca().equalsIgnoreCase(marca) && vehiculo.getModelo().equalsIgnoreCase(modelo)){
-                vehiculos.add(vehiculo);
-            }
-        }
+        List<Vehiculo> vehiculos = this.servicioVehiculo.verVehiculoPorMarcaYModelo(marca,modelo);
         model.put("vehiculos",vehiculos);
         return new ModelAndView(viewName, model);
     }

@@ -1,4 +1,4 @@
-package com.drivedoctor.presentacion;
+package com.drivedoctor.dominio;
 
 public class Vehiculo {
 
