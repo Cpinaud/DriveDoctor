@@ -1,5 +1,6 @@
 package com.drivedoctor.infraestructura;
 
+import com.drivedoctor.dominio.ItemTablero;
 import com.drivedoctor.dominio.RepositorioSintoma;
 import com.drivedoctor.dominio.Sintoma;
 import com.drivedoctor.infraestructura.config.HibernateTestInfraestructuraConfig;
@@ -38,9 +39,10 @@ public class RepositorioSintomaTest {
     @Transactional
     @Rollback
     public void queSePuedaGuardarUnSintoma(){
-        Sintoma sintoma = this.crearSintoma("Perdida de nafta");
 
-        this.repositorioSintoma.guaradar(sintoma);
+        Sintoma sintoma = this.crearSintoma(ItemTablero.AIRBAG);
+
+        this.repositorioSintoma.guardar(sintoma);
 
         Sintoma sintomaObtenido = (Sintoma) this.sessionFactory.getCurrentSession()
                 .createQuery("FROM Sintoma where idSintoma = 1")
@@ -53,28 +55,33 @@ public class RepositorioSintomaTest {
     @Test
     @Transactional
     @Rollback
-    public void queSePuedaBuscarUnSintoma(){
+    public void queSePuedaBuscarUnSintomaPorUnTipoDeItemEnElTablero(){
     sintomasExistentes();
 
-    Sintoma sintomaObtenidos = this.repositorioSintoma.buscar("desbalanceado");
+    List<Sintoma> sintomasObtenidos = this.repositorioSintoma.obtenerPorItemTablero(ItemTablero.EMBRAGUE);
 
-    Integer cantidadaObtenida = 1;
-    assertThat(cantidadaObtenida, equalTo(sintomasObtenidos));
+    Integer cantidadObtenida = 1;
+    assertThat(cantidadObtenida, equalTo(sintomasObtenidos.size()));
 
 
     }
 
 
 
-    private Sintoma crearSintoma(String nombre) {
-        Sintoma sintoma = new Sintoma(nombre);
+    private Sintoma crearSintoma(ItemTablero itemTablero) {
+        Sintoma sintoma = new Sintoma(itemTablero);
         this.sessionFactory.getCurrentSession().save(sintoma);
         return sintoma;
     }
 
     private void sintomasExistentes() {
-        Sintoma sintoma = new Sintoma("perdida de nafta");
-        Sintoma sintoma2 = new Sintoma("perdidad de aceite");
-        Sintoma sintoma3 = new Sintoma("Desbalanceado");
+        Sintoma sintoma = new Sintoma(ItemTablero.EPC);
+        Sintoma sintoma2 = new Sintoma(ItemTablero.DIRECCION);
+        Sintoma sintoma3 = new Sintoma(ItemTablero.EMBRAGUE);
+
+        this.sessionFactory.getCurrentSession().save(sintoma);
+        this.sessionFactory.getCurrentSession().save(sintoma2);
+        this.sessionFactory.getCurrentSession().save(sintoma3);
+
     }
 }

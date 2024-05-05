@@ -11,7 +11,7 @@ public class RepositorioParteDelAutoImpl implements RepositorioParteDelAuto {
 
     private SessionFactory sessionFactory;
 
-    public RepositorioParteDelAutoImpl(SessionFactory sessionFactory){this.sessionFactory = sessionFactory}
+    public RepositorioParteDelAutoImpl(SessionFactory sessionFactory){this.sessionFactory = sessionFactory;};
 
     @Override
     public void guardar(ParteDelAuto parteDelAuto) {

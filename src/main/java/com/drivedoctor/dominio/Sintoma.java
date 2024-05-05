@@ -12,16 +12,18 @@ public class Sintoma {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idSintoma;
-    private String nombre;
-    private String detalle;
+    private String descripcion;
+    private ItemTablero itemTablero;
 
     public Sintoma() {
     }
 
-    public Sintoma(String nombre) {
+    public Sintoma(ItemTablero itemTablero) {
+        this.itemTablero = itemTablero;
 
-        this.nombre = nombre;
     }
+
+
 
     public Integer getIdSintoma() {
         return idSintoma;
@@ -31,20 +33,20 @@ public class Sintoma {
         this.idSintoma = idSintoma;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
-    public String getDetalle() {
-        return detalle;
+    public ItemTablero getItemTablero() {
+        return itemTablero;
     }
 
-    public void setDetalle(String detalle) {
-        this.detalle = detalle;
+    public void setItemTablero(ItemTablero itemTablero) {
+        this.itemTablero = itemTablero;
     }
 }
 
