@@ -15,6 +15,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.transaction.Transactional;
 
+import java.util.List;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
@@ -48,6 +50,19 @@ public class RepositorioSintomaTest {
 
 
     }
+    @Test
+    @Transactional
+    @Rollback
+    public void queSePuedaBuscarUnSintoma(){
+    sintomasExistentes();
+
+    Sintoma sintomaObtenidos = this.repositorioSintoma.buscar("desbalanceado");
+
+    Integer cantidadaObtenida = 1;
+    assertThat(cantidadaObtenida, equalTo(sintomasObtenidos));
+
+
+    }
 
 
 
@@ -57,5 +72,9 @@ public class RepositorioSintomaTest {
         return sintoma;
     }
 
-
+    private void sintomasExistentes() {
+        Sintoma sintoma = new Sintoma("perdida de nafta");
+        Sintoma sintoma2 = new Sintoma("perdidad de aceite");
+        Sintoma sintoma3 = new Sintoma("Desbalanceado");
+    }
 }
