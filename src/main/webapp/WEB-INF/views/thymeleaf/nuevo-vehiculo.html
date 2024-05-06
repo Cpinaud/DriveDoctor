@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Taller Web I</title>
+    <title>Drive Doctor</title>
 
     <!-- Boostrap core css -->
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
@@ -24,21 +24,20 @@
 
     <div class = "container">
         <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-            <form action="#" th:action="@{/validar-login}" method="POST" th:object="${datosLogin}">
-                <h3 class="form-signin-heading">LogIn</h3>
+            <form action="#" th:action="@{/agregarVehiculo}" method="POST" th:object="${vehiculo}">
+                <h3 class="form-signin-heading">Nuevo Vehiculo</h3>
                 <hr class="colorgraph"><br>
 
-                <input th:field="*{email}" id="email" type="email" class="form-control" required/>
-                <input th:field="*{password}" type="password" id="password" class="form-control" required/>
+                <input th:field="*{marca}" id="marca" class="form-control" required/>
+                <input th:field="*{modelo}"  id="modelo" class="form-control" required/>
 
-                <button id="btn-login" class="btn btn-lg btn-primary btn-block" Type="Submit">Login</button>
-
-                <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}">
+                <button id="btn-registrarme" class="btn btn-lg btn-primary btn-block" Type="Submit">Agregar Vehiculo</button>
                 </p>
             </form>
-            <a id="ir-a-registrarme" href="nuevo-usuario">Registrarme</a>
+
         </div>
     </div>
+
 </main>
 <!-- /.container -->
 

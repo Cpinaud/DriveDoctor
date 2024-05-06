@@ -1,16 +1,20 @@
-package com.drivedoctor.dominio;
+package com.drivedoctor.infraestructura;
+import com.drivedoctor.dominio.ServicioUsuario;
+import com.drivedoctor.dominio.Usuario;
+import com.drivedoctor.dominio.Vehiculo;
+import com.drivedoctor.dominio.excepcion.UsuarioExistente;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ServicioVehiculoImpl implements ServicioVehiculo{
+public class ServicioUsuarioImpl implements ServicioUsuario {
 
 
     private List<Vehiculo> vehiculos;
 
-    public ServicioVehiculoImpl(){
+    public ServicioUsuarioImpl(){
         List<Vehiculo> vehiculos = new ArrayList<>();
         vehiculos.add(new Vehiculo("Renault", "Clio"));
         vehiculos.add(new Vehiculo("Ford", "Fiesta"));
@@ -18,8 +22,14 @@ public class ServicioVehiculoImpl implements ServicioVehiculo{
         this.vehiculos = vehiculos;
     }
     @Override
-    public List<Vehiculo> verVehiculos() {
+    public List<Vehiculo> verMisVehiculos() {
         return this.vehiculos;
+    }
+
+    @Override
+    public void agregarVehiculo(Vehiculo vehiculo) {
+
+        this.vehiculos.add(vehiculo);
     }
 
     @Override
