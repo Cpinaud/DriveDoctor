@@ -26,5 +26,7 @@ public class ServicioSintomaImpl implements ServicioSintoma{
     public void guardarSintoma(Sintoma sintoma) {
         repositorioSintoma.guardar(sintoma);
     }
+
+
 }
 

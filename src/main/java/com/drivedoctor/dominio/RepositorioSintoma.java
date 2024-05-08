@@ -7,4 +7,5 @@ public interface RepositorioSintoma {
     Sintoma buscar(ItemTablero itemTablero);
     void guardar(Sintoma sintoma);
     List<Sintoma> obtenerPorItemTablero(ItemTablero itemTablero);
+    List<Sintoma> getAll();
 }

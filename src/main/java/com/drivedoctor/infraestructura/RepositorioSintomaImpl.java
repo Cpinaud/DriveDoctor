@@ -9,13 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository("repositorioSintoma")
 public class RepositorioSintomaImpl implements RepositorioSintoma {
 
         private SessionFactory sessionFactory;
-
+    private List<Sintoma> sintomas;
 
         public RepositorioSintomaImpl(SessionFactory sessionFactory){this.sessionFactory = sessionFactory; }
 
@@ -36,5 +37,10 @@ public class RepositorioSintomaImpl implements RepositorioSintoma {
         query.setParameter("itemTablero", itemTablero);
 
             return query.getResultList();
+    }
+
+    @Override
+    public List<Sintoma> getAll() {
+        return this.sintomas;
     }
 }
