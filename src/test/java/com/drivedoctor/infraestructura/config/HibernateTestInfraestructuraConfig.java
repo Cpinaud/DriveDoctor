@@ -1,4 +1,4 @@
-package com.drivedoctor.integracion.config;
+package com.drivedoctor.infraestructura.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,15 +12,15 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-public class HibernateTestConfig {
+public class HibernateTestInfraestructuraConfig {
 
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.hsqldb.jdbcDriver");
-        dataSource.setUrl("jdbc:hsqldb:mem:db_");
-        dataSource.setUsername("sa");
-        dataSource.setPassword("");
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/drivedoctor");
+        dataSource.setUsername("root");
+        dataSource.setPassword("nachito26");
         return dataSource;
     }
 
@@ -40,10 +40,11 @@ public class HibernateTestConfig {
 
     private Properties hibernateProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
         properties.setProperty("hibernate.show_sql", "true");
         properties.setProperty("hibernate.format_sql", "true");
         properties.setProperty("hibernate.hbm2ddl.auto", "update");
         return properties;
     }
 }
+

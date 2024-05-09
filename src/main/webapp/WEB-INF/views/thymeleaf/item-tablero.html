@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleccionar Item del Tablero</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h1 class="mb-4">Seleccionar Item del Tablero</h1>
+            <form th:action="@{/mostrarSintomaDependiendoItem}" method="post">
+                <div class="form-group">
+                    <label for="itemTablero">Seleccione un item del tablero:</label>
+                    <select class="form-control" id="itemTablero" name="itemTablero">
+                        <option value="MOTOR">Motor</option>
+                        <option value="FRENOS">Frenos</option>
+                        <option value="FILTRO_GASOLINA">Filtro de Gasolina</option>
+                        <option value="SUSPENSION">Suspensión</option>
+                        <option value="AIRBAG">Airbag</option>
+                        <option value="EMBRAGUE">Embrague</option>
+                        <option value="DIRECCION">Dirección</option>
+                        <option value="ESTABILIDAD">Estabilidad</option>
+                        <option value="SERVICE">Service</option>
+                        <option value="EPC">EPC</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Mostrar Síntomas</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS (opcional, si necesitas funcionalidad de Bootstrap) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
