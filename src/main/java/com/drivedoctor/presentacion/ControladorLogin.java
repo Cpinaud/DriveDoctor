@@ -2,6 +2,7 @@ package com.drivedoctor.presentacion;
 
 import com.drivedoctor.dominio.ServicioLogin;
 import com.drivedoctor.dominio.Usuario;
+import com.drivedoctor.dominio.Vehiculo;
 import com.drivedoctor.dominio.excepcion.UsuarioExistente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,6 +46,9 @@ public class ControladorLogin {
         }
         return new ModelAndView("login", model);
     }
+
+
+
 
     @RequestMapping(path = "/registrarme", method = RequestMethod.POST)
     public ModelAndView registrarme(@ModelAttribute("usuario") Usuario usuario) {

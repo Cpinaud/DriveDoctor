@@ -1,58 +1,38 @@
 package com.drivedoctor.infraestructura;
+import com.drivedoctor.dominio.RepositorioUsuario;
 import com.drivedoctor.dominio.ServicioUsuario;
 import com.drivedoctor.dominio.Usuario;
 import com.drivedoctor.dominio.Vehiculo;
-import com.drivedoctor.dominio.excepcion.UsuarioExistente;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class ServicioUsuarioImpl implements ServicioUsuario {
 
 
-    private List<Vehiculo> vehiculos;
+    private RepositorioUsuario repositorioUsuario;
 
-    public ServicioUsuarioImpl(){
-        List<Vehiculo> vehiculos = new ArrayList<>();
-        vehiculos.add(new Vehiculo("Renault", "Clio"));
-        vehiculos.add(new Vehiculo("Ford", "Fiesta"));
-        vehiculos.add(new Vehiculo("Renault", "Sandero"));
-        this.vehiculos = vehiculos;
+    public ServicioUsuarioImpl(RepositorioUsuario repositorioUsuario) {
+        this.repositorioUsuario = repositorioUsuario;
     }
-    @Override
-    public List<Vehiculo> verMisVehiculos() {
-        return this.vehiculos;
+
+    /*@Override
+    public List<Vehiculo> verMisVehiculos(Usuario usuario) {
+        return this.repositorioUsuario.verMisVehiculos(usuario);
+        //this.vehiculos;
     }
 
     @Override
-    public void agregarVehiculo(Vehiculo vehiculo) {
+    public void agregarVehiculo(Usuario usuario, Vehiculo vehiculo) {
+        usuario.getVehiculos().add(vehiculo);
+        repositorioUsuario.guardar(usuario);
+        repositorioUsuario.guardarV(vehiculo);
 
-        this.vehiculos.add(vehiculo);
-    }
-
-    @Override
-    public List<Vehiculo> verVehiculosPorMarca(String marca) {
-        List<Vehiculo> vehiculos = new ArrayList<>();
-        for (Vehiculo vehiculo : this.vehiculos) {
-            if(vehiculo.getMarca().equalsIgnoreCase(marca)){
-                vehiculos.add(vehiculo);
-            }
-        }
-        return vehiculos;
-    }
-
-    @Override
-    public List<Vehiculo> verVehiculoPorMarcaYModelo(String marca, String modelo) {
-        List<Vehiculo> vehiculos = new ArrayList<>();
-        for (Vehiculo vehiculo : this.vehiculos) {
-            if(vehiculo.getMarca().equalsIgnoreCase(marca) && vehiculo.getModelo().equalsIgnoreCase(modelo)){
-                vehiculos.add(vehiculo);
-            }
-        }
-        return vehiculos;
-    }
+    }*/
 
 
 }

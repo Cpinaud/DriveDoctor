@@ -2,11 +2,16 @@ package com.drivedoctor.infraestructura;
 
 import com.drivedoctor.dominio.RepositorioUsuario;
 import com.drivedoctor.dominio.Usuario;
+import com.drivedoctor.dominio.Vehiculo;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import javax.persistence.Query;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository("repositorioUsuario")
 public class RepositorioUsuarioImpl implements RepositorioUsuario {
@@ -33,6 +38,8 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
         sessionFactory.getCurrentSession().save(usuario);
     }
 
+
+
     @Override
     public Usuario buscar(String email) {
         return (Usuario) sessionFactory.getCurrentSession().createCriteria(Usuario.class)
@@ -45,6 +52,21 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
         sessionFactory.getCurrentSession().update(usuario);
     }
 
+    /*@Override
+    public List<Vehiculo> verMisVehiculos(Usuario usuario) {
+        return usuario.getVehiculos();
+
+    }
+
+    @Override
+    public void agregarVehiculo(Usuario usuario, Vehiculo vehiculo) {
+        // Asociar el vehículo al usuario
+        usuario.agregarVehiculo(vehiculo);
+
+        // Guardar los cambios en la base de datos
+        sessionFactory.getCurrentSession().save(usuario);
+        sessionFactory.getCurrentSession().save(vehiculo);
+    }*/
 
 
 }

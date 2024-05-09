@@ -1,38 +1,50 @@
 package com.drivedoctor.dominio;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+@Entity
 public class Vehiculo {
 
-    private  String marca;
-    private  String modelo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private Marca marca;
+    private Modelo modelo;
+    @ManyToOne
+    private Usuario usuario;
 
     public Vehiculo() {
 
     }
 
-    public Vehiculo(String marca, String modelo) {
+    public Vehiculo(Marca marca, Modelo modelo) {
         this.marca=marca;
         this.modelo = modelo;
     }
 
 
-    public String getMarca() {
+    public Marca getMarca() {
         return marca;
     }
 
-    public void setMarca(String marca) {
+    public void setMarca(Marca marca) {
         this.marca = marca;
     }
 
 
-    public String getModelo() {
+    public Modelo getModelo() {
         return modelo;
     }
 
-    public void setModelo(String modelo) {
+    public void setModelo(Modelo modelo) {
         this.modelo = modelo;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

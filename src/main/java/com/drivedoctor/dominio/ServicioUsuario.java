@@ -1,13 +1,14 @@
 package com.drivedoctor.dominio;
 
-import com.drivedoctor.dominio.excepcion.UsuarioExistente;
-
 import java.util.List;
 
 public interface ServicioUsuario {
-    List<Vehiculo> verMisVehiculos();
+
+
+   /* void agregarVehiculo(Usuario usuario, Vehiculo vehiculo);
     List<Vehiculo> verVehiculosPorMarca(String marca);
     List<Vehiculo> verVehiculoPorMarcaYModelo(String marca,String modelo);
+     List<Vehiculo> verMisVehiculos(Usuario usuario);
 
-    void agregarVehiculo(Vehiculo vehiculo);
+    void agregarVehiculo(Vehiculo vehiculo);*/
 }
