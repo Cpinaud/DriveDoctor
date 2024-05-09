@@ -1,4 +1,5 @@
-<html lang="en">
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -6,10 +7,18 @@
 </head>
 <body>
 <h1>Síntomas Relacionados</h1>
-<ul>
-    <th:block th:each="sintoma : ${sintomas}">
-        <li th:text="${sintoma.nombre}"></li>
-    </th:block>
-</ul>
+
+<div th:if="${sintomas.size() > 0}">
+    <ul>
+        <th:block th:each="sintoma : ${sintomas}">
+            <li th:text="${sintoma.nombre}"></li>
+        </th:block>
+    </ul>
+</div>
+
+<div th:if="${sintomas.size() == 0}">
+    <p th:text="${mensaje}"></p>
+</div>
+
 </body>
 </html>

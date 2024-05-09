@@ -63,12 +63,23 @@ public class ControladorSintoma {
         ModelMap modelo = new ModelMap();
        List<Sintoma> sintomas  = servicioSintoma.problemaEnTablero(itemTablero);
        modelo.addAttribute("sintomas", sintomas);
-       return new ModelAndView("mostrar-sintoma", modelo);
+       obtenerSintomas(sintomas, modelo);
+
+
+        return new ModelAndView("mostrar-sintoma", modelo);
 
 
     }
 
-
+    private static void obtenerSintomas(List<Sintoma> sintomas, ModelMap modelo) {
+        try {
+            if(sintomas == null|| sintomas.isEmpty()){
+                modelo.addAttribute("mensaje", "No se encontraron sintomas para el item seleccionado");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
 }
