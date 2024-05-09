@@ -72,4 +72,6 @@ public class ControladorLoginTest {
 		assertThat(modelAndView.getModel().get("datosLogin").toString(),  containsString("com.drivedoctor.presentacion.DatosLogin"));
 
 	}
+
+
 }

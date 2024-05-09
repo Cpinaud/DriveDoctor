@@ -12,6 +12,7 @@ public class Sintoma {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idSintoma;
+    private String nombre;
     private String descripcion;
     private ItemTablero itemTablero;
 
@@ -24,6 +25,13 @@ public class Sintoma {
     }
 
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
     public Integer getIdSintoma() {
         return idSintoma;

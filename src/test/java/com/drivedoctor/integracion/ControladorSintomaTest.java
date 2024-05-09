@@ -50,6 +50,14 @@ public class ControladorSintomaTest {
                 .andExpect(model().attributeExists("sintoma"));
     }
 
+    @Test
+    public void queSePuedaNavegarALaVistaParaSaberUnSintomaTeniendoUnItemEnElTablero() throws Exception {
+        this.mockMvc.perform(get("/mostrarSintomaPorItem"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("item-tablero"))
+                .andExpect(model().attributeExists("sintoma"));
+    }
+
 
 
 }

@@ -1,13 +1,16 @@
 package com.drivedoctor.presentacion;
 
+import com.drivedoctor.dominio.ItemTablero;
 import com.drivedoctor.dominio.ServicioSintoma;
 import com.drivedoctor.dominio.Sintoma;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 
@@ -20,7 +23,9 @@ public class ControladorSintoma {
         this.servicioSintoma = servicioSintoma;
     }
 
-    
+
+
+
     @RequestMapping("/sintoma")
     public ModelAndView irASintoma(){
         ModelMap modelo = new ModelMap();
@@ -37,11 +42,30 @@ public class ControladorSintoma {
     }
 
     
-    @RequestMapping("/crearSintoma")
-    public ModelAndView crearSitnoma(){
+    @RequestMapping(value = "/crearSintoma", method = RequestMethod.POST)
+    public ModelAndView crearSintoma(Sintoma sintomaMock){
         ModelMap modelo = new ModelMap();
+        servicioSintoma.guardarSintoma(sintomaMock);
 
-        return null;
+
+        return new ModelAndView("redirect:/sintoma");
+    }
+
+    @RequestMapping("/mostrarSintomaPorItem")
+    public ModelAndView mostrarSintoma(){
+        ModelMap modelo = new ModelMap();
+        modelo.put("sintoma", new Sintoma());
+        return new ModelAndView("item-tablero", modelo);
+    }
+
+    @RequestMapping(value = "/mostrarSintomaDependiendoItem", method = RequestMethod.POST )
+    public ModelAndView mostrarSintomaDependiendoItem(ItemTablero itemTablero){
+        ModelMap modelo = new ModelMap();
+       List<Sintoma> sintomas  = servicioSintoma.problemaEnTablero(itemTablero);
+       modelo.addAttribute("sintomas", sintomas);
+       return new ModelAndView("mostrar-sintoma", modelo);
+
+
     }
 
 

@@ -1,0 +1,15 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Síntomas Relacionados</title>
+</head>
+<body>
+<h1>Síntomas Relacionados</h1>
+<ul>
+    <th:block th:each="sintoma : ${sintomas}">
+        <li th:text="${sintoma.nombre}"></li>
+    </th:block>
+</ul>
+</body>
+</html>
