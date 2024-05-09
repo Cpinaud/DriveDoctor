@@ -11,11 +11,11 @@ import java.util.List;
 public class ServicioSintomaImpl implements ServicioSintoma{
 
     private RepositorioSintoma repositorioSintoma;
-
     @Autowired
     public ServicioSintomaImpl(RepositorioSintoma repositorioSintoma){
         this.repositorioSintoma = repositorioSintoma;
     }
+
 
     @Override
     public List<Sintoma> problemaEnTablero(ItemTablero itemTablero) {
