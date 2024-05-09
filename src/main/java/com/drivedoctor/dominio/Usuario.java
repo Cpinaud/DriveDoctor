@@ -20,15 +20,6 @@ public class Usuario {
     private String rol;
     private Boolean activo = false;
 
-        @OneToMany(mappedBy = "usuario")
-    private List<Vehiculo> vehiculos = new ArrayList<>();
-
-    public List<Vehiculo> getVehiculos() {
-        return vehiculos;
-    }
-
-
-
     public Long getId() {
         return id;
     }
@@ -76,8 +67,4 @@ public class Usuario {
         this.nombre = nombre;
     }
 
-
-    public void agregarVehiculo(Vehiculo vehiculo) {
-        this.getVehiculos().add(vehiculo);
-    }
 }

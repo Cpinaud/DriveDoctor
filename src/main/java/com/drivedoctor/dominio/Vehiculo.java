@@ -10,9 +10,6 @@ public class Vehiculo {
     private Long id;
     private Marca marca;
     private Modelo modelo;
-    @ManyToOne
-    private Usuario usuario;
-
     public Vehiculo() {
 
     }
