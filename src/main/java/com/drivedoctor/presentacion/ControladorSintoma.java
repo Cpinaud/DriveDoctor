@@ -5,12 +5,15 @@ import com.drivedoctor.dominio.ServicioSintoma;
 import com.drivedoctor.dominio.Sintoma;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 
@@ -35,11 +38,16 @@ public class ControladorSintoma {
     }
 
     @RequestMapping("/nuevoSintoma")
-    public ModelAndView nuevoSintoma(){
-        ModelMap modelo = new ModelMap();
-        modelo.put("sintoma", new Sintoma());
-        return new ModelAndView("nuevo-sintoma", modelo);
+    public ModelAndView nuevoSintoma() {
+        ModelAndView modelAndView = new ModelAndView("nuevo-sintoma");
+        List<String> opcionesItemTablero = Arrays.stream(ItemTablero.values())
+                .map(Enum::name)
+                .collect(Collectors.toList());
+        modelAndView.addObject("opcionesItemTablero", opcionesItemTablero);
+        modelAndView.addObject("sintoma", new Sintoma());
+        return modelAndView;
     }
+
 
     
     @RequestMapping(value = "/crearSintoma", method = RequestMethod.POST)
@@ -52,10 +60,14 @@ public class ControladorSintoma {
     }
 
     @RequestMapping("/mostrarSintomaPorItem")
-    public ModelAndView mostrarSintoma(){
-        ModelMap modelo = new ModelMap();
-        modelo.put("sintoma", new Sintoma());
-        return new ModelAndView("item-tablero", modelo);
+    public ModelAndView mostrarSintoma() {
+        ModelAndView modelAndView = new ModelAndView("item-tablero");
+        List<String> opcionesItemTablero = Arrays.stream(ItemTablero.values())
+                .map(ItemTablero::name) // Obtener el nombre de cada elemento del enum
+                .collect(Collectors.toList());
+        modelAndView.addObject("opcionesItemTablero", opcionesItemTablero);
+        modelAndView.addObject("sintoma", new Sintoma());
+        return modelAndView;
     }
 
     @RequestMapping(value = "/mostrarSintomaDependiendoItem", method = RequestMethod.POST )

@@ -16,7 +16,7 @@
 
 <body>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
   <a class="navbar-brand" href="/spring/home"><img src="static/logo.png"></a>
 </nav>
 
@@ -25,17 +25,13 @@
     <h1><span th:text="'Hola, ' + ${userName}" ></span></h1>
   </div>
   <div id="links">
-    <a href="/spring/verVehiculos">Mis Vehiculos</a>
-    <a href="/spring/nuevo-vehiculo">Agregar Vehiculo</a>
-
-    <a href="login.html" >Volver</a>
-    <a th:href="@{/sintoma}" id="irSintoma">Ir a Síntoma</a>
-
+    <a href="/spring/verVehiculos" class="btn btn-outline-dark">Mis Vehiculos</a>
+    <a href="/spring/nuevo-vehiculo" class="btn btn-outline-dark">Agregar Vehiculo</a>
+    <a href="login.html" class="btn btn-outline-dark">Volver</a>
+    <a th:href="@{/sintoma}" id="irSintoma" class="btn btn-outline-dark">Ir a Síntoma</a>
   </div>
 </main>
-<!-- /.container -->
 
-<!-- Boostrap core js -->
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 </body>
 </html>

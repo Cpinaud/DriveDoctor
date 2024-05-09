@@ -16,19 +16,10 @@
                 <div class="form-group">
                     <label for="itemTablero">Seleccione un item del tablero:</label>
                     <select class="form-control" id="itemTablero" name="itemTablero">
-                        <option value="MOTOR">Motor</option>
-                        <option value="FRENOS">Frenos</option>
-                        <option value="FILTRO_GASOLINA">Filtro de Gasolina</option>
-                        <option value="SUSPENSION">Suspensión</option>
-                        <option value="AIRBAG">Airbag</option>
-                        <option value="EMBRAGUE">Embrague</option>
-                        <option value="DIRECCION">Dirección</option>
-                        <option value="ESTABILIDAD">Estabilidad</option>
-                        <option value="SERVICE">Service</option>
-                        <option value="EPC">EPC</option>
+                        <option th:each="opcion : ${opcionesItemTablero}" th:value="${opcion}" th:text="${opcion}"></option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Mostrar Síntomas</button>
+                <button type="submit" class="btn btn-outline-dark">Mostrar Síntomas</button>
             </form>
         </div>
     </div>
