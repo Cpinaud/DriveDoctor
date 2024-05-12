@@ -1,6 +1,6 @@
 package com.drivedoctor.dominio;
 
-import com.drivedoctor.integracion.config.HibernateTestConfig;
+import com.drivedoctor.infraestructura.config.HibernateTestInfraestructuraConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {HibernateTestConfig.class})
+@ContextConfiguration(classes = {HibernateTestInfraestructuraConfig.class})
 public class ServicioSintomaTest {
 
     private ServicioSintoma servicioSintoma;
