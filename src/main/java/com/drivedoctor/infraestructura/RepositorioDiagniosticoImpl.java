@@ -23,14 +23,13 @@ public class RepositorioDiagniosticoImpl implements RepositorioDiagnostico {
 
     @Override
     public void guardar(Diagnostico diagnostico) {
-
+            sessionFactory.getCurrentSession().save(diagnostico);
     }
 
     @Override
-    public Diagnostico findBySintoma(ItemTablero itemTablero) {
-        String hql = "SELECT d FROM Diagnostico d JOIN d.sintoma s WHERE s.itemTablero = :itemTablero";
-        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("itemTablero", itemTablero);
-        return (Diagnostico) query.getSingleResult();
+    public Diagnostico findById(Integer idDiagnostico) {
+        return sessionFactory.getCurrentSession().get(Diagnostico.class, idDiagnostico);
     }
+
+
 }

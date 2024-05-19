@@ -14,6 +14,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.transaction.Transactional;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {HibernateTestConfig.class})
@@ -25,12 +28,26 @@ public class RepositorioDiagnosticoTest {
     private RepositorioDiagnostico repositorioDiagnostico;
 
     @BeforeEach
+    public void init(){this.repositorioDiagnostico = new RepositorioDiagniosticoImpl(this.sessionFactory);}
 
     @Test
     @Transactional
     @Rollback
+    public void queSePuedaObtenerElDiagnostico()
+    {
+        Diagnostico diagnostico = new Diagnostico();
+        diagnostico.setDescripcion("Prueba");
+        repositorioDiagnostico.guardar(diagnostico);
 
+        // Obtener el ID del diagnóstico guardado
+        Integer idDiagnostico = diagnostico.getIdDiagnostico();
 
+        // Buscar el diagnóstico por su ID
+        Diagnostico found = repositorioDiagnostico.findById(idDiagnostico);
+
+        // Asegurarse de que el diagnóstico encontrado coincide con el guardado
+        assertThat(found.getIdDiagnostico(), equalTo(idDiagnostico));
+        assertThat(found.getDescripcion(), equalTo(diagnostico.getDescripcion()));
 
 
     }
