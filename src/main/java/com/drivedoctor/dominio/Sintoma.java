@@ -1,10 +1,7 @@
 package com.drivedoctor.dominio;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Sintoma {
@@ -15,6 +12,9 @@ public class Sintoma {
     private String nombre;
     private String descripcion;
     private ItemTablero itemTablero;
+
+    @OneToOne
+    private Diagnostico diagnostico;
 
     public Sintoma() {
     }
@@ -55,6 +55,14 @@ public class Sintoma {
 
     public void setItemTablero(ItemTablero itemTablero) {
         this.itemTablero = itemTablero;
+    }
+
+    public Diagnostico getDiagnostico() {
+        return diagnostico;
+    }
+
+    public void setDiagnostico(Diagnostico diagnostico) {
+        this.diagnostico = diagnostico;
     }
 }
 

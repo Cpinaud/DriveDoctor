@@ -12,6 +12,7 @@
     <ul>
         <th:block th:each="sintoma : ${sintomas}">
             <li th:text="${sintoma.nombre}"></li>
+            <a th:href="@{/diagnostico/{id}(id=${sintoma.diagnostico.id})}">Ver diagnóstico</a>
         </th:block>
     </ul>
 </div>

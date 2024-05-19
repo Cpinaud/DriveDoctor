@@ -7,5 +7,5 @@ public interface RepositorioDiagnostico {
     Diagnostico buscar(Integer diagnostico);
     void guardar(Diagnostico diagnostico);
 
-    Diagnostico findBySintoma(ItemTablero itemTablero);
+    Diagnostico findById(Integer idDiagnostico);
 }
