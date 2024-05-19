@@ -28,7 +28,7 @@ public class RepositorioDiagnosticoTest {
     private RepositorioDiagnostico repositorioDiagnostico;
 
     @BeforeEach
-    public void init(){this.repositorioDiagnostico = new RepositorioDiagniosticoImpl(this.sessionFactory);}
+    public void init(){this.repositorioDiagnostico = new RepositorioDiagnosticoImpl(this.sessionFactory);}
 
     @Test
     @Transactional
@@ -39,13 +39,13 @@ public class RepositorioDiagnosticoTest {
         diagnostico.setDescripcion("Prueba");
         repositorioDiagnostico.guardar(diagnostico);
 
-        // Obtener el ID del diagnóstico guardado
+
         Integer idDiagnostico = diagnostico.getIdDiagnostico();
 
-        // Buscar el diagnóstico por su ID
+
         Diagnostico found = repositorioDiagnostico.findById(idDiagnostico);
 
-        // Asegurarse de que el diagnóstico encontrado coincide con el guardado
+
         assertThat(found.getIdDiagnostico(), equalTo(idDiagnostico));
         assertThat(found.getDescripcion(), equalTo(diagnostico.getDescripcion()));
 
