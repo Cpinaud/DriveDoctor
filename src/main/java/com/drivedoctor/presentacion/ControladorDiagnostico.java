@@ -27,6 +27,7 @@ public class ControladorDiagnostico {
     {
         Diagnostico diagnostico = servicioDiagnostico.findById(id);
         if(diagnostico != null) {
+
            model.addAttribute("diagnostico", diagnostico);
            return "mostrarDiagnostico";
         }else {

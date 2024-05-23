@@ -44,9 +44,7 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
         if(itemTablero != null && !itemsProcesados.contains(itemTablero)) {
             switch (itemTablero) {
                 case FRENOS:
-
                     riesgoTotal+= 20.0;
-
                     break;
                 case MOTOR:
                     riesgoTotal += 60.0;

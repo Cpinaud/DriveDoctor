@@ -11,6 +11,8 @@ public class Sintoma {
     private Integer idSintoma;
     private String nombre;
     private String descripcion;
+
+    @Enumerated(EnumType.STRING)
     private ItemTablero itemTablero;
 
     @ManyToOne

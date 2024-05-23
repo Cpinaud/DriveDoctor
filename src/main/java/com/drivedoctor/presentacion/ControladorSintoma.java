@@ -64,7 +64,7 @@ public class ControladorSintoma {
     public ModelAndView mostrarSintoma() {
         ModelAndView modelAndView = new ModelAndView("item-tablero");
         List<String> opcionesItemTablero = Arrays.stream(ItemTablero.values())
-                .map(ItemTablero::name) // Obtener el nombre de cada elemento del enum
+                .map(ItemTablero::name)
                 .collect(Collectors.toList());
         modelAndView.addObject("opcionesItemTablero", opcionesItemTablero);
         modelAndView.addObject("sintoma", new Sintoma());
@@ -74,13 +74,13 @@ public class ControladorSintoma {
     @RequestMapping("/mostrarVariosSintomasPorVariosItem")
     public ModelAndView mostrarSintomas() {
         ModelAndView modelAndView = new ModelAndView("items-tablero");
-        // Obtener las opciones de los elementos del tablero
+
         List<String> opcionesItemsTablero = Arrays.stream(ItemTablero.values())
-                .map(ItemTablero::name) // Obtener el nombre de cada elemento del enum
+                .map(ItemTablero::name)
                 .collect(Collectors.toList());
 
-        // Obtener las opciones de sintomas
-        List<Sintoma> sintomas = servicioSintoma.obtenerSintomas();
+
+        List<Sintoma> sintomas = servicioSintoma.findAll();
         List<String> opcionesSintomas = sintomas.stream()
                 .map(Sintoma::getNombre)
                 .collect(Collectors.toList());
@@ -92,11 +92,13 @@ public class ControladorSintoma {
     }
     @RequestMapping(value = "/mostrarSintomaDependiendoItem", method = RequestMethod.POST )
     public ModelAndView mostrarSintomaDependiendoItem(ItemTablero itemTablero){
+
         ModelMap modelo = new ModelMap();
        List<Sintoma> sintomas  = servicioSintoma.problemaEnTablero(itemTablero);
-       modelo.addAttribute("sintomas", sintomas);
-       obtenerSintomas(sintomas, modelo);
 
+       modelo.addAttribute("sintomas", sintomas);
+
+       obtenerSintomas(sintomas, modelo);
 
         return new ModelAndView("mostrar-sintoma", modelo);
 
@@ -106,21 +108,19 @@ public class ControladorSintoma {
     public ModelAndView mostrarSintomasDependiendoItems(@RequestParam("itemsTablero[]") String[] itemsTablero){
         ModelMap modelo = new ModelMap();
 
-        // Convertir los items seleccionados a una lista de ItemTablero
+
         List<ItemTablero> items = Arrays.stream(itemsTablero)
                 .map(ItemTablero::valueOf)
                 .collect(Collectors.toList());
 
-        // Obtener los síntomas basados en los items seleccionados
+
         List<Sintoma> sintomasResultantes = servicioSintoma.problemasEnTableros(items);
 
-        // Agregar los síntomas al modelo
         modelo.addAttribute("sintomas", sintomasResultantes);
 
-        // Realizar cualquier otra lógica necesaria
+
         obtenerSintomas(sintomasResultantes, modelo);
 
-        // Devolver la vista con los datos actualizados
         return new ModelAndView("mostrar-sintoma", modelo);
 
 

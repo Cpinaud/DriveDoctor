@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mostrar Diagnóstico</title>
+</head>
+<body>
+<h1>Diagnóstico</h1>
+
+<div th:if="${sintoma != null}">
+    <p>Nombre del síntoma: <span th:text="${sintoma.nombre}"></span></p>
+    <p>Descripción del síntoma: <span th:text="${sintoma.descripcion}"></span></p>
+</div>
+
+<div th:if="${diagnostico != null}">
+
+
+    <p>Descripción del diagnóstico: <span th:text="${diagnostico.descripcion}"></span></p>
+</div>
+
+<div th:if="${diagnostico == null}">
+    <p>No se encontró ningún diagnóstico asociado a este síntoma.</p>
+</div>
+</body>
+</html>

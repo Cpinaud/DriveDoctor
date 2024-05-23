@@ -32,13 +32,13 @@ public class ServicioSintomaImpl implements ServicioSintoma {
     }
 
     @Override
-    public List<Sintoma> problemasEnTableros(List<ItemTablero> items) {
-        return repositorioSintoma.obtenerPorItemsTablero(items);
+    public List<Sintoma> findAll() {
+        return repositorioSintoma.getAll();
     }
 
     @Override
-    public List<Sintoma> obtenerSintomas() {
-        return repositorioSintoma.getAll();
+    public List<Sintoma> problemasEnTableros(List<ItemTablero> items) {
+        return List.of();
     }
 
 
