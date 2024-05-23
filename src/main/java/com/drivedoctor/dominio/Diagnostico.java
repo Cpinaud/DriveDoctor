@@ -11,11 +11,11 @@ public class Diagnostico {
     private Integer IdDiagnostico;
     private String descripcion;
 
-    @OneToOne(mappedBy = "diagnostico", cascade = CascadeType.ALL)
-    private Sintoma sintoma;
+    @OneToMany(mappedBy = "diagnostico")
+    private List<Sintoma> sintomas;
 
-    public Diagnostico(Sintoma sintoma) {
-        this.sintoma = sintoma;
+    public Diagnostico(List<Sintoma> sintomas) {
+        this.sintomas = sintomas;
     }
 
     public Diagnostico() {
@@ -37,12 +37,12 @@ public class Diagnostico {
         this.descripcion = descripcion;
     }
 
-    public Sintoma getSintoma() {
-        return sintoma;
+    public List<Sintoma> getSintomas() {
+        return sintomas;
     }
 
-    public void setSintoma(Sintoma sintoma) {
-        this.sintoma = sintoma;
+    public void setSintomas(List<Sintoma> sintomas) {
+        this.sintomas = sintomas;
     }
 }
 

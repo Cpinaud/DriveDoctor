@@ -13,7 +13,8 @@ public class Sintoma {
     private String descripcion;
     private ItemTablero itemTablero;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "id_diagnostico")
     private Diagnostico diagnostico;
 
     public Sintoma() {

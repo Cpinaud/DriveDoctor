@@ -13,15 +13,17 @@
     <h1>Opciones</h1>
 
     <div class="container mt-3">
-        <!-- Opción para ir a la página de Nuevo Síntoma -->
+
         <a th:href="@{/nuevoSintoma}" class="btn btn-outline-dark mr-2">Nuevo Síntoma</a>
 
-        <!-- Opción para ir a la página de Mostrar Síntomas por Item del Tablero -->
         <a th:href="@{/mostrarSintomaPorItem}" class="btn btn-outline-dark">Tengo un item en mi tablero...</a>
+
+        <a th:href="@{/mostrarVariosSintomasPorVariosItem}" class="btn btn-outline-dark">Tengo varios items en mi tablero...</a>
+
     </div>
 </div>
 
-<!-- Bootstrap JS (opcional, si necesitas funcionalidad de Bootstrap) -->
+
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
