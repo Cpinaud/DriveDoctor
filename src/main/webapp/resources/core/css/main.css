@@ -1,45 +1,99 @@
+* {
+    box-sizing: border-box;
+}
 body {
-    color:black;
+    color: white;
+    background-color: #1F2128;
+    margin: 0;
+    padding: 0;
+    display: flex;
 }
 .starter-template {
-  padding: 3rem 1.5rem;
-  text-align: center;
+    padding: 3rem 1.5rem;
+    text-align: center;
+}
+.navbar {
+    flex-direction: column; /* agregado */
+    height: 100vh; /* agregado */
+    width: 30vw; /* agregado */
+    position: fixed; /* agregado */
+}
+.navbar-brand {
+    margin-right: 2rem;
 }
 
-.navbar-brand{
-    margin:0 2rem;
+a {
+    text-decoration: none;
+    color: black;
 }
 
-a{
-    text-decoration:none;
-    color:black;
-}
-
-img{
+img {
     width: 30%;
     height: 35%;
 }
 
-#links{
-    display:flex;
+#links {
+    display: flex;
     flex-direction: column;
-    align-content: space-between;
-    text-align: center;
+    align-items: center;
+    gap: 10px;
 }
 
-.misVH{
+.misVH {
     display: flex;
     flex-direction: column;
     align-content: space-between;
-
 }
-.buscador{
+
+.boton-principal {
+    margin-top: 10px;
+    background-color: #A162F7;
+    color: white;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+}
+
+.boton-secundario {
+    background-color: #0d6efd;
+    color: white;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 10px;
+}
+
+.buscador {
     width: 30%;
 }
-form{
-    display:flex;
+
+.colorOscuro-2 {
+    background-color: #242731;
+}
+
+form {
+    display: flex;
     flex-direction: column;
     align-content: space-between;
     align-content: space-around;
 }
 
+.btn-outline-dark {
+    background-color: #FFFFFF;
+    color: #1F2128;
+    border: 2px solid #A162F7;
+}
+
+.btn-outline-dark:hover {
+    background-color: #A162F7;
+    color: white;
+    border-color: #A162F7;
+}
+.mainc {
+    margin-left: 30vw; /* agregado */
+    padding: 2rem; /* agregado */
+    width: calc(100% - 30vw); /* agregado */
+    display: flex; /* agregado */
+    align-items: center; /* agregado */
+    justify-content: center; /* agregado */
+}

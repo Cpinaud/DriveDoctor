@@ -16,17 +16,33 @@
 
 <body>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+<nav class="navbar colorOscuro-2 navbar-expand-md navbar-dark flex-md-column" style="height: 100vh; width: 30vw;">
     <a class="navbar-brand" href="/spring/home"><img src="static/logo.png"></a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="/spring/verMisVehiculos">Mis Vehiculos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/spring/nuevo-vehiculo">Agregar Vehiculo</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="login.html">Volver</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/sintoma}" id="irSintoma">Ir a Síntoma</a>
+            </li>
+        </ul>
+    </div>
 </nav>
 
-<main role="main" class="container">
+<main role="main" class="container mainc">
 
     <div class = "container">
         <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
             <form action="#" th:action="@{/agregarVehiculo}" method="POST" th:object="${vehiculo}">
-                <h3 class="form-signin-heading">Nuevo Vehiculo</h3>
-                <hr class="colorgraph"><br>
+                <h3 class="form-signin-heading">Agregar Vehiculo</h3>
+                <br class="colorgraph"><br>
 
                 <label for="marca">Marca: </label>
                 <select th:field="*{marca}" id="marca" class="form-control" required>
@@ -39,7 +55,7 @@
                     <option th:each="modelo : ${T(com.drivedoctor.dominio.Modelo).values()}"
                             th:value="${modelo}" th:text="${modelo}"></option>
                 </select>
-                <button id="btn-registrarme" class="btn btn-outline-dark" Type="Submit">Agregar Vehiculo</button>
+                <button id="btn-registrarme" class="btn boton-principal" Type="Submit">Agregar Vehiculo</button>
                 </p>
             </form>
 
