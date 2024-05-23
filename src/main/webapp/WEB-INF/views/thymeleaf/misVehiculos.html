@@ -28,6 +28,8 @@
             <li th:text="${vehiculo.modelo}"></li>
         </ul>
     </div>
+    <p th:if="${mensaje != null}" class="alert alert-danger" th:text="${mensaje}">
+    <p th:if="${error != null}" class="alert alert-danger" th:text="${error}">
     <hr>
     <div class="buscador">
 

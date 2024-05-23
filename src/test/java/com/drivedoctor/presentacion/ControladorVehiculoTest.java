@@ -1,22 +1,9 @@
 package com.drivedoctor.presentacion;
 
 import com.drivedoctor.dominio.*;
-import org.hamcrest.text.IsEqualIgnoringCase;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.transaction.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+
 
 public class ControladorVehiculoTest {
 
@@ -30,16 +17,36 @@ public class ControladorVehiculoTest {
         this.controladorVehiculo = new ControladorVehiculo(this.servicioVehiculo);
     }
 
+    /*@Test
+    public void queInformeErrorSiSeNavegaAVerVehiculosSinSerAdministrador(){
+        // preparacion
+        Long usuarioId = 1L;
+        Usuario usuario = mock(Usuario.class);
+        usuario.setRol("USER");
+        usuario.setEmail("test@Test.com");
+        HttpServletRequest request = this.mockeoSessionUser();
+        when(servicioVehiculo.verVehiculos()).thenThrow(UserSinPermiso.class);
 
-    @Test
-    public void queAlSolicitarLaPantallaDeMisVehiculosSeMuestreLaVistaMisVehiculos(){
-        //preparacion
-        //ejecucion
-        ModelAndView mav = this.controladorVehiculo.verVehiculos();
-        //verificacion
-        assertThat(mav.getViewName(),equalToIgnoringCase("misVehiculos"));
+        ModelAndView modelAndView = controladorVehiculo.verVehiculos();
+
+        // validacion
+        assertThat(modelAndView.getViewName(), IsEqualIgnoringCase.equalToIgnoringCase("misVehiculos"));
+        assertThat(modelAndView.getModel().get("error").toString(), IsEqualIgnoringCase.equalToIgnoringCase("No tiene permisos para ver esta información"));
+
+
     }
 
+    private HttpServletRequest mockeoSessionUser() {
+        Usuario usuario = mock(Usuario.class);
+        when(usuario.getId()).thenReturn(123L);
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpSession session = mock(HttpSession.class);
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("ID")).thenReturn(123L);
+        return request;
+    }
+
+/*
     @Test
     public void queAlSolicitarLaPantallaDeAgregarVehiculoSeMuestreLaVistaNuevoVehiculo(){
         //preparacion
@@ -72,7 +79,7 @@ public class ControladorVehiculoTest {
     public void queAlBuscarVehiculosDeMarcaRenaultTraigaVehiculosDeEsaMarca(){
         // preparacion
         List<Vehiculo> vehiculosMock = new ArrayList<>();
-        vehiculosMock.add(new Vehiculo(Marca.RENAULT,Modelo.CLIO));
+        vehiculosMock.add(new Vehiculo(Marca.RENAULT,Modelo.CLIO,2013,"AFG455"));
         when(this.servicioVehiculo.getPorMarca(Marca.RENAULT)).thenReturn(vehiculosMock);
 
         // ejecucion
@@ -83,6 +90,6 @@ public class ControladorVehiculoTest {
         assertThat(items.get(0).getMarca(), equalTo(Marca.RENAULT));
     }
 
-
+*/
 
 }

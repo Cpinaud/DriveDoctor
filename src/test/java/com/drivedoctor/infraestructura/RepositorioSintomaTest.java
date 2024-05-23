@@ -23,7 +23,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {HibernateTestConfig.class})
+@ContextConfiguration(classes = {HibernateTestInfraestructuraConfig.class})
 public class RepositorioSintomaTest {
 
     @Autowired

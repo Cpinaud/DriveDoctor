@@ -7,9 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.servlet.http.HttpServletRequest;
 
 @Entity
-public class Usuario {
+public class Usuario  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +20,9 @@ public class Usuario {
     private String password;
     private String rol;
     private Boolean activo = false;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Vehiculo> vehiculos = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -67,4 +71,11 @@ public class Usuario {
         this.nombre = nombre;
     }
 
+    public List<Vehiculo> getVehiculos() {
+        return vehiculos;
+    }
+
+    public void setVehiculos(List<Vehiculo> vehiculos) {
+        this.vehiculos = vehiculos;
+    }
 }

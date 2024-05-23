@@ -25,6 +25,7 @@ public class RepositorioVehiculoImpl implements RepositorioVehiculo {
     @Override
     public void guardar(Vehiculo vehiculo) {
         sessionFactory.getCurrentSession().save(vehiculo);
+
     }
 
     @Override

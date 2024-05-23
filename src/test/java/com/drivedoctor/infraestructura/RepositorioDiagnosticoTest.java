@@ -2,6 +2,7 @@ package com.drivedoctor.infraestructura;
 
 import com.drivedoctor.dominio.Diagnostico;
 import com.drivedoctor.dominio.RepositorioDiagnostico;
+import com.drivedoctor.infraestructura.config.HibernateTestInfraestructuraConfig;
 import com.drivedoctor.integracion.config.HibernateTestConfig;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +20,7 @@ import static org.hamcrest.Matchers.equalTo;
 
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {HibernateTestConfig.class})
+@ContextConfiguration(classes = {HibernateTestInfraestructuraConfig.class})
 public class RepositorioDiagnosticoTest {
 
     @Autowired

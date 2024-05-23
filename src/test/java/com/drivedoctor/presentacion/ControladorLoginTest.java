@@ -50,7 +50,7 @@ public class ControladorLoginTest {
 	}
 	
 	@Test
-	public void loginConUsuarioYPasswordCorrectosDeberiaLLevarAHome(){
+	public void loginConUsuarioYPasswordCorrectosDeberiaLLevarAHomeYMostrarNombre(){
 		// preparacion
 		Usuario usuarioEncontradoMock = mock(Usuario.class);
 		when(usuarioEncontradoMock.getRol()).thenReturn("ADMIN");
@@ -64,6 +64,7 @@ public class ControladorLoginTest {
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("home"));
 		verify(sessionMock, times(1)).setAttribute("ROL", usuarioEncontradoMock.getRol());
+		verify(sessionMock, times(1)).setAttribute("name", usuarioEncontradoMock.getNombre());
 	}
 
 	@Test

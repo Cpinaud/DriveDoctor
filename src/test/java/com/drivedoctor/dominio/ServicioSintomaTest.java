@@ -1,5 +1,6 @@
 package com.drivedoctor.dominio;
 
+import com.drivedoctor.infraestructura.ServicioSintomaImpl;
 import com.drivedoctor.integracion.config.HibernateTestConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

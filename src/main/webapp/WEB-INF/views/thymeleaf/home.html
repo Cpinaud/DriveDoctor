@@ -22,10 +22,10 @@
 
 <main role="main" class="container mainc">
   <div >
-    <h1><span th:text="'Hola, ' + ${userName}" ></span></h1>
+    <h1><span th:text="'Hola, ' + ${name}" ></span></h1>
   </div>
   <div id="links">
-    <a href="/spring/verVehiculos" class="btn btn-outline-dark">Mis Vehiculos</a>
+    <a href="/spring/verMisVehiculos" class="btn btn-outline-dark">Mis Vehiculos</a>
     <a href="/spring/nuevo-vehiculo" class="btn btn-outline-dark">Agregar Vehiculo</a>
     <a href="login.html" class="btn btn-outline-dark">Volver</a>
     <a th:href="@{/sintoma}" id="irSintoma" class="btn btn-outline-dark">Ir a Síntoma</a>

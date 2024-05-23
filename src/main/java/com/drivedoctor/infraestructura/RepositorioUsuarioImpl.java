@@ -3,6 +3,7 @@ package com.drivedoctor.infraestructura;
 import com.drivedoctor.dominio.RepositorioUsuario;
 import com.drivedoctor.dominio.Usuario;
 import com.drivedoctor.dominio.Vehiculo;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -50,6 +51,22 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
     @Override
     public void modificar(Usuario usuario) {
         sessionFactory.getCurrentSession().update(usuario);
+    }
+
+    @Override
+    public Usuario buscarPorId(Long usuarioId) {
+        return (Usuario) sessionFactory.getCurrentSession().createCriteria(Usuario.class)
+                .add(Restrictions.eq("id", usuarioId))
+                .uniqueResult();
+    }
+
+    @Override
+    public List<Vehiculo> getMisVehiculos(Usuario usuario) {
+        Long userid = usuario.getId();
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = session.createCriteria(Vehiculo.class);
+        criteria.add(Restrictions.eq("usuario", usuario));
+        return criteria.list();
     }
 
     /*@Override

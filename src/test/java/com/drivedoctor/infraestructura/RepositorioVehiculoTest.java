@@ -1,8 +1,10 @@
 package com.drivedoctor.infraestructura;
 
-import com.drivedoctor.dominio.*;
+import com.drivedoctor.dominio.Marca;
+import com.drivedoctor.dominio.Modelo;
+import com.drivedoctor.dominio.RepositorioVehiculo;
+import com.drivedoctor.dominio.Vehiculo;
 import com.drivedoctor.infraestructura.config.HibernateTestInfraestructuraConfig;
-import org.hamcrest.core.IsEqual;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import com.drivedoctor.integracion.config.HibernateTestConfig;
 
 import javax.transaction.Transactional;
 
@@ -18,11 +21,11 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Mockito.mock;
+import static org.mockito.ArgumentMatchers.anyString;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {HibernateTestInfraestructuraConfig.class})
-public class RepositorioUsuarioTest {
+public class RepositorioVehiculoTest {
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -39,16 +42,17 @@ public class RepositorioUsuarioTest {
     @Rollback
     public void queSePuedaAgregarUnVehiculo(){
         // preparacion
+        Vehiculo vehiculo = this.crearVehiculo(Marca.RENAULT, Modelo.CLIO,2013,"AAA123");
 
-        Vehiculo vehiculo = this.crearVehiculo(Marca.RENAULT, Modelo.CLIO,2013,"AAA132");
-
+        // ejecucion
         this.repositorioVehiculo.guardar(vehiculo);
 
-        Vehiculo vehiculoObtenido = (Vehiculo) this.sessionFactory.getCurrentSession()
-                .createQuery("FROM Vehiculo where id = 1").getSingleResult();
+        // verificacion
+        Vehiculo itemObtenido = (Vehiculo) this.sessionFactory.getCurrentSession()
+                .createQuery("FROM Vehiculo where id = 1")
+                .getSingleResult();
 
-
-        assertThat(vehiculoObtenido, IsEqual.equalTo(vehiculo));
+        assertThat(itemObtenido, equalTo(vehiculo));
     }
 
     @Test

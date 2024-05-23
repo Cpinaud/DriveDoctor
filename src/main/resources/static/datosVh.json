@@ -1,0 +1,45 @@
+{
+  "marcas": [
+    {
+      "nombre": "Citroën",
+      "modelos": ["C3", "C4", "C4 Cactus", "Berlingo", "C-Elysée", "Spacetourer", "C5 Aircross", "Jumpy"]
+    },
+    {
+      "nombre": "Kia",
+      "modelos": ["Rio", "Picanto", "Sportage", "Seltos", "Cerato", "Stonic", "Sorento", "Carnival"]
+    },
+    {
+      "nombre": "Mercedes-Benz",
+      "modelos": ["Clase A", "Clase C", "Clase E", "Clase S", "Clase G", "GLA", "GLC", "GLE", "GLS"]
+    },
+    {
+      "nombre": "BMW",
+      "modelos": ["Serie 1", "Serie 2", "Serie 3", "Serie 4", "Serie 5", "X1", "X3", "X5", "X7"]
+    },
+    {
+      "nombre": "Audi",
+      "modelos": ["A1", "A3", "A4", "A5", "Q2", "Q3", "Q5", "Q7", "Q8"]
+    },
+    {
+      "nombre": "Mazda",
+      "modelos": ["2", "3", "6", "CX-3", "CX-30", "CX-5", "MX-5", "BT-50"]
+    },
+    {
+      "nombre": "Subaru",
+      "modelos": ["Impreza", "Legacy", "Forester", "Outback", "XV"]
+    },
+    {
+      "nombre": "Suzuki",
+      "modelos": ["Swift", "Vitara", "Jimny", "Ignis", "S-Cross"]
+    },
+    {
+      "nombre": "Jeep",
+      "modelos": ["Renegade", "Compass", "Cherokee", "Grand Cherokee", "Wrangler"]
+    },
+    {
+      "nombre": "Land Rover",
+      "modelos": ["Range Rover Evoque", "Discovery Sport", "Defender", "Discovery", "Range Rover"]
+    }
+    // Agrega más marcas y modelos según sea necesario
+  ]
+}

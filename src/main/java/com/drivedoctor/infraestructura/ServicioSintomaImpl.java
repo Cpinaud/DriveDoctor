@@ -1,5 +1,9 @@
-package com.drivedoctor.dominio;
+package com.drivedoctor.infraestructura;
 
+import com.drivedoctor.dominio.ItemTablero;
+import com.drivedoctor.dominio.RepositorioSintoma;
+import com.drivedoctor.dominio.ServicioSintoma;
+import com.drivedoctor.dominio.Sintoma;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,7 +12,7 @@ import java.util.List;
 
 @Service("servicioSintoma")
 @Transactional
-public class ServicioSintomaImpl implements ServicioSintoma{
+public class ServicioSintomaImpl implements ServicioSintoma {
 
     private RepositorioSintoma repositorioSintoma;
     @Autowired

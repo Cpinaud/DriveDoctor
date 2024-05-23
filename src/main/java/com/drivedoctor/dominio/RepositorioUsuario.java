@@ -9,6 +9,10 @@ public interface RepositorioUsuario {
     Usuario buscar(String email);
     void modificar(Usuario usuario);
 
+    Usuario buscarPorId(Long usuarioId);
+
+    List<Vehiculo> getMisVehiculos(Usuario usuario);
+
     /*List<Vehiculo> verMisVehiculos(Usuario usuario);
     void agregarVehiculo(Usuario usuario,Vehiculo vehiculo);*/
 }
