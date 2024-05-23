@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Seleccionar Item del Tablero</title>
+  <title>Seleccionar Items del Tablero</title>
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -11,12 +11,19 @@
 <div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-md-6">
-      <h1 class="mb-4">Seleccionar Items del Tablero</h1>
+      <h1 class="mb-4">Seleccionar Items del tablero y Síntomas </h1>
       <form th:action="@{/mostrarSintomasDependiendoItems}" method="post">
         <div class="form-group">
-          <label for="itemTablero">Seleccione lod items del tablero:</label>
-          <select class="form-control" id="itemTablero" name="itemTablero[]" multiple>
-            <option th:each="opcion : ${opcionesItemsTablero}" th:value="${opcion}" th:text="${opcion}"></option>
+          <label for="itemsTablero">Seleccione los items del tablero:</label>
+          <select class="form-control" id="itemsTablero" name="itemsTablero[]" multiple>
+            <option th:each="opcion : ${opcionesItemsTablero}" th:value="${opcion}" th:text
+                    ="${opcion}"></option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="itemsTablero">Seleccione síntomas:</label>
+          <select class="form-control" id="sintomas" name="sintomas[]" multiple>
+            <option th:each="opcion : ${opcionesSintomas}" th:value="${opcion}" th:text="${opcion}"></option>
           </select>
         </div>
         <button type="submit" class="btn btn-outline-dark">Mostrar Síntomas</button>
