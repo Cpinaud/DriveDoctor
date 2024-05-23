@@ -8,4 +8,6 @@ public interface RepositorioSintoma {
     void guardar(Sintoma sintoma);
     List<Sintoma> obtenerPorItemTablero(ItemTablero itemTablero);
     List<Sintoma> getAll();
+
+    List<Sintoma> obtenerPorItemsTablero(List<ItemTablero> items);
 }

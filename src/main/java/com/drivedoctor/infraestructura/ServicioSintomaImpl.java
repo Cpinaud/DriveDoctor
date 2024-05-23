@@ -31,6 +31,16 @@ public class ServicioSintomaImpl implements ServicioSintoma {
         repositorioSintoma.guardar(sintoma);
     }
 
+    @Override
+    public List<Sintoma> problemasEnTableros(List<ItemTablero> items) {
+        return repositorioSintoma.obtenerPorItemsTablero(items);
+    }
+
+    @Override
+    public List<Sintoma> obtenerSintomas() {
+        return repositorioSintoma.getAll();
+    }
+
 
 }
 

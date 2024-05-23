@@ -18,7 +18,8 @@ public class RepositorioSintomaImpl implements RepositorioSintoma {
         private SessionFactory sessionFactory;
     private List<Sintoma> sintomas;
 
-        public RepositorioSintomaImpl(SessionFactory sessionFactory){this.sessionFactory = sessionFactory; }
+        public RepositorioSintomaImpl(SessionFactory sessionFactory){this.sessionFactory = sessionFactory;
+            this.sintomas = new ArrayList<>();}
 
     @Override
     public Sintoma buscar(ItemTablero itemTablero) {
@@ -42,5 +43,17 @@ public class RepositorioSintomaImpl implements RepositorioSintoma {
     @Override
     public List<Sintoma> getAll() {
         return this.sintomas;
+    }
+
+    @Override
+    public List<Sintoma> obtenerPorItemsTablero(List<ItemTablero> items) {
+        String sql = "FROM Sintoma WHERE itemTablero IN (:items)";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
+
+
+            query.setParameter("items" ,items);
+
+
+        return query.getResultList();
     }
 }
