@@ -61,6 +61,17 @@ public class ControladorSintoma {
 
     @RequestMapping("/mostrarSintomaPorItem")
     public ModelAndView mostrarSintoma() {
+        ModelAndView modelAndView = new ModelAndView("items-tablero");
+        List<String> opcionesItemsTablero = Arrays.stream(ItemTablero.values())
+                .map(ItemTablero::name) // Obtener el nombre de cada elemento del enum
+                .collect(Collectors.toList());
+        modelAndView.addObject("opcionesItemTablero", opcionesItemsTablero);
+        modelAndView.addObject("sintoma", new Sintoma());
+        return modelAndView;
+    }
+
+    @RequestMapping("/mostrarVariosSintomasPorVariosItem")
+    public ModelAndView mostrarSintomas() {
         ModelAndView modelAndView = new ModelAndView("item-tablero");
         List<String> opcionesItemTablero = Arrays.stream(ItemTablero.values())
                 .map(ItemTablero::name) // Obtener el nombre de cada elemento del enum
@@ -69,13 +80,24 @@ public class ControladorSintoma {
         modelAndView.addObject("sintoma", new Sintoma());
         return modelAndView;
     }
-
     @RequestMapping(value = "/mostrarSintomaDependiendoItem", method = RequestMethod.POST )
     public ModelAndView mostrarSintomaDependiendoItem(ItemTablero itemTablero){
         ModelMap modelo = new ModelMap();
        List<Sintoma> sintomas  = servicioSintoma.problemaEnTablero(itemTablero);
        modelo.addAttribute("sintomas", sintomas);
        obtenerSintomas(sintomas, modelo);
+
+
+        return new ModelAndView("mostrar-sintoma", modelo);
+
+
+    }
+    @RequestMapping(value = "/mostrarSintomasDependiendoItems", method = RequestMethod.POST )
+    public ModelAndView mostrarSintomasDependiendoItems(ItemTablero itemTablero){
+        ModelMap modelo = new ModelMap();
+        List<Sintoma> sintomas  = servicioSintoma.problemaEnTablero(itemTablero);
+        modelo.addAttribute("sintomas", sintomas);
+        obtenerSintomas(sintomas, modelo);
 
 
         return new ModelAndView("mostrar-sintoma", modelo);
