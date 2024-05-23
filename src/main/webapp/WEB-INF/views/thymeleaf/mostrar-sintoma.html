@@ -4,22 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Síntomas Relacionados</title>
+    <!-- Agregar enlaces a Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      
+    </style>
 </head>
 <body>
-<h1>Síntomas Relacionados</h1>
+<div class="container">
+    <h1 class="mt-5">Síntomas Relacionados</h1>
 
-<div th:if="${sintomas.size() > 0}">
-    <ul>
-        <th:block th:each="sintoma : ${sintomas}">
-            <li th:text="${sintoma.nombre}"></li>
-            <a th:href="@{/diagnostico/{id}(id=${sintoma.diagnostico.id})}">Ver diagnóstico</a>
-        </th:block>
-    </ul>
+    <div th:if="${sintomas.size() > 0}">
+        <ul class="list-group mt-3">
+            <th:block th:each="sintoma : ${sintomas}">
+                <li class="list-group-item">
+                    <span th:text="${sintoma.nombre}"></span>
+                    <a class="btn btn-primary btn-sm ml-2" th:href="@{'/diagnostico/' + ${sintoma.getDiagnostico().getIdDiagnostico()}}">
+                        Ver Diagnóstico
+                    </a>
+                </li>
+            </th:block>
+        </ul>
+    </div>
+
+    <div th:if="${sintomas.size() == 0}" class="mt-3">
+        <p class="alert alert-warning" th:text="${mensaje}"></p>
+    </div>
 </div>
 
-<div th:if="${sintomas.size() == 0}">
-    <p th:text="${mensaje}"></p>
-</div>
-
+<!-- Agregar scripts de Bootstrap al final del body para mejorar el rendimiento -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

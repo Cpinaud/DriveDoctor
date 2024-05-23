@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Repository("repositorioSintoma")
@@ -33,13 +35,18 @@ public class RepositorioSintomaImpl implements RepositorioSintoma {
 
     @Override
     public List<Sintoma> obtenerPorItemTablero(ItemTablero itemTablero) {
-        String sql = "From Sintoma where itemTablero = :itemTablero";
-        Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
-        query.setParameter("itemTablero", itemTablero);
+            System.out.println(itemTablero);
+        try {
+            String sql = "From Sintoma where itemTablero = :itemTablero";
+            Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
+            query.setParameter("itemTablero", itemTablero);
 
             return query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
     }
-
     @Override
     public List<Sintoma> getAll() {
         return this.sintomas;
