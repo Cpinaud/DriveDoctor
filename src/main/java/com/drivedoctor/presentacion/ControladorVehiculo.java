@@ -48,7 +48,7 @@ public class ControladorVehiculo {
 
         }
 
-        return new ModelAndView("redirect:/verVehiculos");
+        return new ModelAndView("redirect:/verMisVehiculos");
     }
 
 

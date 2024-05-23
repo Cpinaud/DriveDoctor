@@ -7,7 +7,7 @@
     <!-- Agregar enlaces a Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-      
+
     </style>
 </head>
 <body>
@@ -21,6 +21,9 @@
                     <span th:text="${sintoma.nombre}"></span>
                     <a class="btn btn-primary btn-sm ml-2" th:href="@{'/diagnostico/' + ${sintoma.getDiagnostico().getIdDiagnostico()}}">
                         Ver Diagnóstico
+                    </a>
+                    <a class="btn btn-primary btn-sm ml-2" th:href="@{/'obtenerPorcentajeRoto'}">
+                        Porcentaje de urgencia
                     </a>
                 </li>
             </th:block>
