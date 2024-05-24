@@ -44,8 +44,8 @@
             <li th:text="${vehiculo.modelo}"></li>
         </ul>
     </div>
-    <p th:if="${mensaje != null}" class="alert alert-danger" th:text="${mensaje}">
-    <p th:if="${error != null}" class="alert alert-danger" th:text="${error}">
+        <p th:if="${mensaje != null}" class="alert alert-danger" th:text="${mensaje}"></p>
+    <p th:if="${error != null}" class="alert alert-danger" th:text="${error}"></p>
     <hr>
     <div class="container" >
 
@@ -57,7 +57,7 @@
                 <option th:each="marca : ${T(com.drivedoctor.dominio.Marca).values()}"
                         th:value="${marca}" th:text="${marca}"></option>
             </select>
-            <button id="btn-registrarme" class="btn boton-principal" Type="Submit">Buscar</button>
+            <button id="btn-registrarme" class="btn boton-principal" type="Submit">Buscar</button>
         </form>
     </div>
     </div>

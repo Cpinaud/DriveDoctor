@@ -23,7 +23,7 @@ public class HibernateConfig {
 
         dataSource.setPassword("root");
 
-        dataSource.setPassword("nachito26");
+        /*dataSource.setPassword("nachito26");*/
         // dataSource.setUsername("sa");
         // dataSource.setPassword("");
 

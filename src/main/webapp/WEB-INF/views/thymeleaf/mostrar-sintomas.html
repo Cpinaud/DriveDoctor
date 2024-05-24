@@ -6,6 +6,44 @@
   <title>Síntomas Relacionados</title>
 </head>
 <body>
+<nav class="navbar colorOscuro-2 navbar-expand-md navbar-dark flex-md-column" style="height: 100vh; width: 30vw;">
+  <a class="navbar-brand" href="/spring/home"><img src="static/logo.png"></a>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav flex-column">
+      <li class="nav-item">
+        <a class="nav-link" href="/spring/verMisVehiculos">Mis Vehiculos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/spring/nuevo-vehiculo">Agregar Vehiculo</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="login.html">Volver</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/sintoma}" id="irSintoma">Ir a Síntoma</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<main role="main" class = "container mainc">
+  <h1>Síntomas Relacionados</h1>
+
+  <div th:if="${sintomas.size() > 0}">
+    <ul>
+      <th:block th:each="sintoma : ${sintomas}">
+        <li th:text="${sintoma.nombre}"></li>
+        <a th:href="@{/diagnostico/{id}(id=${sintoma.diagnostico.id})}">Ver diagnóstico</a>
+      </th:block>
+    </ul>
+  </div>
+
+  <div th:if="${sintomas.size() == 0}">
+    <p th:text="${mensaje}"></p>
+  </div>
+
+
+</main>
 <h1>Síntomas Relacionados</h1>
 
 <div th:if="${sintomas.size() > 0}">
