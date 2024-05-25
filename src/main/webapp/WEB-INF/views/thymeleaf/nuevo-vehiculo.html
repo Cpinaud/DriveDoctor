@@ -16,34 +16,16 @@
 
 <body>
 
-<nav class="navbar colorOscuro-2 navbar-expand-md navbar-dark flex-md-column" style="height: 100vh; width: 30vw;">
-    <a class="navbar-brand" href="/spring/home"><img src="static/logo.png"></a>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav flex-column">
-            <li class="nav-item">
-                <a class="nav-link" href="/spring/verMisVehiculos">Mis Vehiculos</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/spring/nuevo-vehiculo">Agregar Vehiculo</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="login.html">Volver</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/sintoma}" id="irSintoma">Ir a Síntoma</a>
-            </li>
-        </ul>
-    </div>
-</nav>
+<main>
+    <!-- Incluir el fragmento del sidebar -->
+    <div th:include="templates/sidebar.html"></div>
 
-<main role="main" class="container mainc">
+    <div class="container" style="margin-top:50px;">
+        <div class="col-md-6">
 
-    <div class = "container">
-        <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
             <form action="#" th:action="@{/agregarVehiculo}" method="POST" th:object="${vehiculo}">
-                <h3 class="form-signin-heading">Agregar Vehiculo</h3>
-                <br class="colorgraph"><br>
-
+                <h2>Agregar Vehiculo</h2>
+                <br>
                 <label for="marca">Marca: </label>
                 <select th:field="*{marca}" id="marca" class="form-control" required>
                     <option th:each="marca : ${T(com.drivedoctor.dominio.Marca).values()}"
@@ -56,9 +38,7 @@
                             th:value="${modelo}" th:text="${modelo}"></option>
                 </select>
                 <button id="btn-registrarme" class="btn boton-principal" Type="Submit">Agregar Vehiculo</button>
-                </p>
             </form>
-
         </div>
     </div>
 
@@ -67,5 +47,6 @@
 
 <!-- Boostrap core js -->
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/sidebar.js}"></script>
 </body>
 </html>

@@ -1,0 +1,30 @@
+<div class="d-flex flex-column flex-shrink-0 p-3 text-white colorOscuro-2 h-100" style="width: 280px;">
+    <a th:href="@{/home}"  class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <span class="fs-4">DriveDoctor</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+
+        <li class="nav-item">
+            <a th:href="@{/home}" class="nav-link text-white">
+                Inicio
+            </a>
+        </li >
+        <li  class="nav-item">
+            <a th:href="@{/verMisVehiculos}" class="nav-link text-white">
+                Mis vehículos
+            </a>
+        </li>
+        <li  class="nav-item">
+            <a th:href="@{/nuevo-vehiculo}" class="nav-link text-white">
+                Agregar Vehículos
+            </a>
+        </li>
+        <li  class="nav-item">
+            <a th:href="@{/sintoma}" id="irSintoma"  class="nav-link text-white">
+                Diagnosticar
+            </a>
+        </li>
+    </ul>
+    <hr>
+</div>

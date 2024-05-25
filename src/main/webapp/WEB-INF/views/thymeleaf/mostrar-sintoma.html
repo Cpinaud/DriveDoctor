@@ -4,38 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Síntomas Relacionados</title>
-    <!-- Agregar enlaces a Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Boostrap core css -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+
+    <!-- custom style -->
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
     <style>
 
     </style>
 </head>
 <body>
-<div class="container">
-    <h1 class="mt-5">Síntomas Relacionados</h1>
+<main>
+    <!-- Incluir el fragmento del sidebar -->
+    <div th:include="templates/sidebar.html"></div>
 
-    <div th:if="${sintomas.size() > 0}">
-        <ul class="list-group mt-3">
-            <th:block th:each="sintoma : ${sintomas}">
-                <li class="list-group-item">
-                    <span th:text="${sintoma.nombre}"></span>
-                    <a class="btn btn-primary btn-sm ml-2" th:href="@{'/diagnostico/' + ${sintoma.getDiagnostico().getIdDiagnostico()}}">
-                        Ver Diagnóstico
-                    </a>
-                    <a class="btn btn-primary btn-sm ml-2" th:href="@{/'obtenerPorcentajeRoto'}">
-                        Porcentaje de urgencia
-                    </a>
-                </li>
-            </th:block>
-        </ul>
+    <div class="container" style="margin-top:50px;">
+        <h2>Síntomas Relacionados</h2>
+        <br>
+        <div th:if="${sintomas.size() > 0}">
+            <ul class="list-group mt-3">
+                <th:block th:each="sintoma : ${sintomas}">
+                    <li class="list-group-item">
+                        <span th:text="${sintoma.nombre}"></span>
+                        <a class="btn btn-primary btn-sm ml-2" th:href="@{'/diagnostico/' + ${sintoma.getDiagnostico().getIdDiagnostico()}}">
+                            Ver Diagnóstico
+                        </a>
+                        <a class="btn btn-primary btn-sm ml-2" th:href="@{/'obtenerPorcentajeRoto'}">
+                            Porcentaje de urgencia
+                        </a>
+                    </li>
+                </th:block>
+            </ul>
+        </div>
+
+        <div th:if="${sintomas.size() == 0}" class="mt-3">
+            <p class="alert alert-warning" th:text="${mensaje}"></p>
+        </div>
     </div>
 
-    <div th:if="${sintomas.size() == 0}" class="mt-3">
-        <p class="alert alert-warning" th:text="${mensaje}"></p>
-    </div>
-</div>
+</main>
 
 <!-- Agregar scripts de Bootstrap al final del body para mejorar el rendimiento -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/sidebar.js}"></script>
 </body>
 </html>

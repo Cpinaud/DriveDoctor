@@ -4,23 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mostrar Diagnóstico</title>
+    <!-- Boostrap core css -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+
+    <!-- custom style -->
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
 <body>
-<h1>Diagnóstico</h1>
+<main>
+    <!-- Incluir el fragmento del sidebar -->
+    <div th:include="templates/sidebar.html"></div>
+    <div class="container" style="margin-top:50px;">
+        <h2>Diagnóstico</h2>
+        <br>
+        <div th:if="${sintoma != null}">
+            <p>Nombre del síntoma: <span th:text="${sintoma.nombre}"></span></p>
+            <p>Descripción del síntoma: <span th:text="${sintoma.descripcion}"></span></p>
+        </div>
 
-<div th:if="${sintoma != null}">
-    <p>Nombre del síntoma: <span th:text="${sintoma.nombre}"></span></p>
-    <p>Descripción del síntoma: <span th:text="${sintoma.descripcion}"></span></p>
-</div>
-
-<div th:if="${diagnostico != null}">
+        <div th:if="${diagnostico != null}">
 
 
-    <p>Descripción del diagnóstico: <span th:text="${diagnostico.descripcion}"></span></p>
-</div>
+            <p>Descripción del diagnóstico: <span th:text="${diagnostico.descripcion}"></span></p>
+        </div>
 
-<div th:if="${diagnostico == null}">
-    <p>No se encontró ningún diagnóstico asociado a este síntoma.</p>
-</div>
+        <div th:if="${diagnostico == null}">
+            <p>No se encontró ningún diagnóstico asociado a este síntoma.</p>
+        </div>
+    </div>
+
+</main>
+<script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/sidebar.js}"></script>
 </body>
 </html>
