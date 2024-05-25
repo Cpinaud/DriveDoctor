@@ -1,16 +1,27 @@
-html{
+:root {
+    --color-fondo: #1F2128;
+    --color-principal: #A162F7;
+    --color-secundario: #0d6efd;
+    --color-oscuro-2: #242731;
+    --color-blanco: #FFFFFF;
+    --color-negro: #000000;
+}
+
+html {
     height: -webkit-fill-available;
     height: 100%;
 }
+
 body {
     display: flex;
-    color: white;
-    background-color: #1F2128;
+    color: var(--color-blanco);
+    background-color: var(--color-fondo);
     height: 100%;
     height: -webkit-fill-available;
     margin: 0;
 }
-main{
+
+main {
     flex: 1;
     display: flex;
     flex-wrap: nowrap;
@@ -20,11 +31,13 @@ main{
     overflow-x: auto;
     overflow-y: hidden;
 }
+
 .bi {
     vertical-align: -.125em;
     pointer-events: none;
     fill: currentColor;
 }
+
 .starter-template {
     padding: 3rem 1.5rem;
     text-align: center;
@@ -32,7 +45,7 @@ main{
 
 a {
     text-decoration: none;
-    color: black;
+    color: var(--color-negro);
 }
 
 img {
@@ -47,18 +60,18 @@ img {
     gap: 10px;
 }
 
-.boton-principal {
+.btn.boton-principal {
     margin-top: 10px;
-    background-color: #A162F7;
-    color: white;
+    background-color: var(--color-principal);
+    color: var(--color-blanco);
     width: 100%;
     text-align: center;
     text-decoration: none;
 }
 
-.boton-secundario {
-    background-color: #0d6efd;
-    color: white;
+.btn.boton-secundario {
+    background-color: var(--color-secundario);
+    color: var(--color-blanco);
     width: 100%;
     text-align: center;
     text-decoration: none;
@@ -70,25 +83,27 @@ img {
 }
 
 .colorOscuro-2 {
-    background-color: #242731;
+    background-color: var(--color-oscuro-2);
 }
 
 .btn-outline-dark {
-    background-color: #FFFFFF;
-    color: #1F2128;
-    border: 2px solid #A162F7;
+    background-color: var(--color-blanco);
+    color: var(--color-fondo);
+    border: 2px solid var(--color-principal);
 }
 
 .btn-outline-dark:hover {
-    background-color: #A162F7;
-    color: white;
-    border-color: #A162F7;
+    background-color: var(--color-principal);
+    color: var(--color-blanco);
+    border-color: var(--color-principal);
 }
-.nav-link:hover{
+
+.nav-link:hover {
     background-color: #8b8b8b29 !important;
-    color: white !important;
+    color: var(--color-blanco) !important;
 }
+
 .nav-link.active {
     background-color: rgba(161, 98, 247, 0.45) !important;
-    color: white !important;
+    color: var(--color-blanco) !important;
 }
