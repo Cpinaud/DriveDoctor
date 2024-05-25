@@ -14,8 +14,8 @@ html {
 
 body {
     display: flex;
-    color: var(--color-blanco);
-    background-color: var(--color-fondo);
+    color: var(--color-blanco)!important;
+    background-color: var(--color-fondo)!important;
     height: 100%;
     height: -webkit-fill-available;
     margin: 0;
@@ -104,6 +104,6 @@ img {
 }
 
 .nav-link.active {
-    background-color: rgba(161, 98, 247, 0.45) !important;
+    background-color: rgba(144, 142, 142, 0.21) !important;
     color: var(--color-blanco) !important;
 }

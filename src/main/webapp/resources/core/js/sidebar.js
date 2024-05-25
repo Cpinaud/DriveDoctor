@@ -1,27 +1,21 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const navContainer = document.querySelector('.nav');
     const navLinks = document.querySelectorAll('.nav-link');
-
 
     function setActiveLink() {
         const currentPath = window.location.pathname;
         navLinks.forEach(link => {
-            // Obtener el atributo href y normalizar la URL base
             const linkPath = new URL(link.href).pathname;
-            if (linkPath === currentPath) {
-                link.classList.add('active');
-            } else {
-                link.classList.remove('active');
-            }
+            link.classList.toggle('active', linkPath === currentPath);
         });
     }
 
     setActiveLink();
 
-    //
-    navLinks.forEach(link => {
-        link.addEventListener('click', function() {
+    navContainer.addEventListener('click', function(event) {
+        if (event.target.classList.contains('nav-link')) {
             navLinks.forEach(nav => nav.classList.remove('active'));
-            this.classList.add('active');
-        });
+            event.target.classList.add('active');
+        }
     });
 });
