@@ -31,7 +31,6 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
         
         return repositorioDiagnostico.findById(idDiagnostico);
     }
-
     @Override
     public double calcularRiesgoPorSintoma(List<Sintoma> sintomas) {
         double riesgoTotal = 0.0;

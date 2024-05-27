@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
+import java.util.List;
 
 
 @Repository("repositorioDiagnostico")
@@ -32,6 +33,5 @@ public class RepositorioDiagnosticoImpl implements RepositorioDiagnostico {
 
         return sessionFactory.getCurrentSession().get(Diagnostico.class, idDiagnostico);
     }
-
 
 }
