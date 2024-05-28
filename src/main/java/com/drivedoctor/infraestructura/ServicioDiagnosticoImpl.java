@@ -41,56 +41,59 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
         }
         return diagnostico;
     }
-    @Override
+@Override
     public double calcularRiesgoPorSintoma(List<Sintoma> sintomas) {
         if (sintomas == null || sintomas.isEmpty()) {
-            throw new IllegalArgumentException("La lista de síntomas no puede ser nula o vacía");
-        }
-        double riesgoTotal = 0.0;
-
-        Set<ItemTablero> itemsProcesados = new HashSet<>();
-
-        for(Sintoma sintoma : sintomas){
-        ItemTablero itemTablero = sintoma.getItemTablero();
-
-        if(itemTablero != null && !itemsProcesados.contains(itemTablero)) {
-            switch (itemTablero) {
-                case FRENOS:
-                    riesgoTotal+= 20.0;
-                    break;
-                case MOTOR:
-                    riesgoTotal += 60.0;
-                    break;
-                case FILTRO_GASOLINA:
-                    riesgoTotal += 40.0;
-                    break;
-                case SUSPENSION:
-                    riesgoTotal += 10.0;
-                    break;
-                case AIRBAG:
-                    riesgoTotal += 40.0;
-                    break;
-                case EMBRAGUE:
-                    riesgoTotal += 50.0;
-                    break;
-                case DIRECCION:
-                    riesgoTotal += 20.0;
-                    break;
-                case ESTABILIDAD:
-                    riesgoTotal += 5.0;
-                    break;
-                case SERVICE:
-                    riesgoTotal += 40.0;
-                    break;
-                case EPC:
-                    riesgoTotal += 20.0;
-                    break;
-
+                throw new IllegalArgumentException("La lista de síntomas no puede ser nula o vacía");
             }
+            double riesgoTotal = 0.0;
+
+            Set<ItemTablero> itemsProcesados = new HashSet<>();
+
+            for(Sintoma sintoma : sintomas){
+            ItemTablero itemTablero = sintoma.getItemTablero();
+
+            if(itemTablero != null && !itemsProcesados.contains(itemTablero)) {
+                switch (itemTablero) {
+                    case FRENOS:
+                        riesgoTotal+= 20.0;
+                        break;
+                    case MOTOR:
+                        riesgoTotal += 60.0;
+                        break;
+                    case FILTRO_GASOLINA:
+                        riesgoTotal += 40.0;
+                        break;
+                    case SUSPENSION:
+                        riesgoTotal += 10.0;
+                        break;
+                    case AIRBAG:
+                        riesgoTotal += 40.0;
+                        break;
+                    case EMBRAGUE:
+                        riesgoTotal += 50.0;
+                        break;
+                    case DIRECCION:
+                        riesgoTotal += 20.0;
+                        break;
+                    case ESTABILIDAD:
+                        riesgoTotal += 5.0;
+                        break;
+                    case SERVICE:
+                        riesgoTotal += 40.0;
+                        break;
+                    case EPC:
+                        riesgoTotal += 20.0;
+                        break;
+                    default:
+                        return 0.0;
+                }
+
+                itemsProcesados.add(itemTablero);
+            }
+        }
             // Asegura que el riesgo total no sea mayor que 100.0
-            itemsProcesados.add(itemTablero);
-        }
-        }
         return Math.min(riesgoTotal, 100.0);
     }
+
 }
