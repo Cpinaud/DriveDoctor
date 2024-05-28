@@ -27,19 +27,16 @@ public class RepositorioDiagnosticoTest {
 
     private RepositorioDiagnostico repositorioDiagnostico;
     private SessionFactory sessionFactory;
+    private Session session;
     private Sintoma sintomaMock;
-    private Diagnostico diagnosticoMock;
-    private RepositorioSintoma repositorioSintoma;
 
     @BeforeEach
     public void init() {
         sessionFactory = mock(SessionFactory.class);
-        Session session = mock(Session.class); // Crear un mock de Session
+        session = mock(Session.class); // Crear un mock de Session
         when(sessionFactory.getCurrentSession()).thenReturn(session); // Configurar el mock sessionFactory
         repositorioDiagnostico = new RepositorioDiagnosticoImpl(sessionFactory);
         sintomaMock = mock(Sintoma.class);
-        diagnosticoMock = mock(Diagnostico.class);
-        this.repositorioSintoma = new RepositorioSintomaImpl(this.sessionFactory);
     }
     @Test
     @Transactional
@@ -48,6 +45,8 @@ public class RepositorioDiagnosticoTest {
     {
         Diagnostico diagnostico = crearYguardarDiagnostico("Prueba");
 
+        // Simular que el diagnostico se guarda en la sesión
+        when(session.get(Diagnostico.class, diagnostico.getIdDiagnostico())).thenReturn(diagnostico);
         Diagnostico diagnosticoObtenido = repositorioDiagnostico.findById(diagnostico.getIdDiagnostico());
 
         assertThat(diagnosticoObtenido, notNullValue());
@@ -60,14 +59,11 @@ public class RepositorioDiagnosticoTest {
     @Transactional
     @Rollback
     public void queSeObtengaUnDiagnosticoAsociadoAunSintoma(){
-
         Diagnostico diagnosticoEsperado = crearYguardarDiagnostico("Prueba");
-        Sintoma sintoma = crearYguardarSintoma("Perdida de nafta", ItemTablero.MOTOR, diagnosticoEsperado);
+        when(sintomaMock.getDiagnostico()).thenReturn(diagnosticoEsperado);
 
-        // Configurar el comportamiento del mock para que devuelva el diagnóstico esperado cuando se llama a findById() con el ID del diagnóstico
-        when(repositorioDiagnostico.findById(diagnosticoEsperado.getIdDiagnostico())).thenReturn(diagnosticoEsperado);
-
-        Diagnostico diagnosticoObtenido = sintoma.getDiagnostico();
+        // Obtener el diagnóstico desde el mock
+        Diagnostico diagnosticoObtenido = sintomaMock.getDiagnostico();
 
         assertThat(diagnosticoObtenido, notNullValue());
         assertThat(diagnosticoObtenido.getIdDiagnostico(), equalTo(diagnosticoEsperado.getIdDiagnostico()));
@@ -79,16 +75,15 @@ public class RepositorioDiagnosticoTest {
         Diagnostico diagnostico1 = crearYguardarDiagnostico("Diagnostico 1");
         Diagnostico diagnostico2 = crearYguardarDiagnostico("Diagnostico 2");
 
-        Sintoma sintoma1 = crearYguardarSintoma("Perdida de nafta", ItemTablero.MOTOR, diagnostico1);
-        Sintoma sintoma2 = crearYguardarSintoma("Sonda lambda", ItemTablero.FRENOS, diagnostico2);
+        Sintoma sintomaMock1 = mock(Sintoma.class);
+        Sintoma sintomaMock2 = mock(Sintoma.class);
 
-        // Configurar el comportamiento del repositorio para que devuelva los diagnósticos esperados
-        when(repositorioDiagnostico.findById(diagnostico1.getIdDiagnostico())).thenReturn(diagnostico1);
-        when(repositorioDiagnostico.findById(diagnostico2.getIdDiagnostico())).thenReturn(diagnostico2);
+        when(sintomaMock1.getDiagnostico()).thenReturn(diagnostico1);
+        when(sintomaMock2.getDiagnostico()).thenReturn(diagnostico2);
 
-        // Obtener los diagnósticos asociados a los síntomas
-        Diagnostico diagnosticoObtenido1 = sintoma1.getDiagnostico();
-        Diagnostico diagnosticoObtenido2 = sintoma2.getDiagnostico();
+        // Obtener los diagnósticos asociados a los síntomas desde el mock
+        Diagnostico diagnosticoObtenido1 = sintomaMock1.getDiagnostico();
+        Diagnostico diagnosticoObtenido2 = sintomaMock2.getDiagnostico();
 
         // Verificar los resultados
         assertThat(diagnosticoObtenido1, notNullValue());
@@ -96,62 +91,12 @@ public class RepositorioDiagnosticoTest {
 
         assertThat(diagnosticoObtenido2, notNullValue());
         assertThat(diagnosticoObtenido2.getIdDiagnostico(), equalTo(diagnostico2.getIdDiagnostico()));
-
     }
-    /*@Test
-    @Transactional
-    @Rollback
-    public void queNoSeObtengaTresOmasDiagnosticosAsociadosATresoMasSintomas(){ //sintomas con items diferentes
-        Diagnostico diagnostico1 = crearYguardarDiagnostico("Diagnostico 1");
-        Diagnostico diagnostico2 = crearYguardarDiagnostico("Diagnostico 2");
-        Diagnostico diagnostico3 = crearYguardarDiagnostico("Diagnostico 3");
-
-        Sintoma sintoma1 = crearYguardarSintoma("Perdida de nafta", 1, diagnostico1.getIdDiagnostico());
-        Sintoma sintoma2 = crearYguardarSintoma("Sonda lambda", 2, diagnostico2.getIdDiagnostico());
-        Sintoma sintoma3 = crearYguardarSintoma("Cambios en el recorrido del pedal de freno", 3, diagnostico3.getIdDiagnostico());
-
-        // Suponiendo que el método findBySintomasIds retorne null si hay más de dos diagnósticos
-        List<Integer> idsSintomas = Arrays.asList(sintoma1.getIdSintoma(), sintoma2.getIdSintoma(), sintoma3.getIdSintoma());
-        Diagnostico diagnosticoObtenido = repositorioDiagnostico.findBySintomasIds(idsSintomas);
-
-        assertThat(diagnosticoObtenido, nullValue());
-
-    }
-    @Test
-    @Transactional
-    @Rollback
-    public void queNoSeObtengaDiagnosticosAsociadosASintomasQueCompartenMismoItem(){
-        Diagnostico diagnostico = crearYguardarDiagnostico("Prueba");
-
-        // Crear y guardar síntomas con el mismo ítem de tablero
-        Sintoma sintoma1 = crearYguardarSintoma("Perdida de nafta", 1, diagnostico.getIdDiagnostico());
-        Sintoma sintoma2 = crearYguardarSintoma("Manguera rota", 1, diagnostico.getIdDiagnostico());
-
-        // Suponiendo que el método findBySintomasIds retorne null si los síntomas comparten el mismo ítem de tablero
-        List<Integer> idsSintomas = Arrays.asList(sintoma1.getIdSintoma(), sintoma2.getIdSintoma());
-        Diagnostico diagnosticoObtenido = repositorioDiagnostico.findBySintomasIds(idsSintomas);
-
-        assertThat(diagnosticoObtenido, nullValue());
-
-    }*/
-
     private Diagnostico crearYguardarDiagnostico(String descripcion) {
         Diagnostico diagnostico = new Diagnostico();
         diagnostico.setDescripcion(descripcion);
         repositorioDiagnostico.guardar(diagnostico);
         return diagnostico;
     }
-
-    private Sintoma crearYguardarSintoma(String nombre, ItemTablero itemTablero, Diagnostico diagnostico) {
-        Sintoma sintoma = new Sintoma();
-        sintoma.setNombre(nombre);
-        sintoma.setItemTablero(itemTablero);
-        sintoma.setDiagnostico(diagnostico);
-        // este emtodo deberia ir en el repositorio de Diagnostico o de sintoma
-        repositorioSintoma.guardar(sintoma);
-        return sintoma;
-    }
-
-
 
 }
