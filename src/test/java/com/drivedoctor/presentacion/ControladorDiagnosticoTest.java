@@ -6,9 +6,6 @@ import com.drivedoctor.dominio.Sintoma;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.Model;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,7 +15,6 @@ public class ControladorDiagnosticoTest {
 
     private ControladorDiagnostico controladorDiagnostico;
     private ServicioDiagnostico servicioDiagnostico;
-    private Diagnostico diagnosticoMock;
     private Sintoma sintomaMock;
 
 
@@ -26,7 +22,6 @@ public class ControladorDiagnosticoTest {
     public void init(){
         this.servicioDiagnostico = mock(ServicioDiagnostico.class);
         this.controladorDiagnostico = new ControladorDiagnostico(this.servicioDiagnostico);
-        diagnosticoMock = mock(Diagnostico.class);
         sintomaMock = mock(Sintoma.class);
     }
 

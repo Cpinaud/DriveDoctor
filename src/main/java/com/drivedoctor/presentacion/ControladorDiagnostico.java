@@ -2,6 +2,7 @@ package com.drivedoctor.presentacion;
 
 import com.drivedoctor.dominio.Diagnostico;
 import com.drivedoctor.dominio.ServicioDiagnostico;
+import com.drivedoctor.dominio.excepcion.DiagnosticoNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,15 +28,18 @@ public class ControladorDiagnostico {
 
     @GetMapping("/diagnostico/{id}")
     public String obtenerDiagnostico(@PathVariable("id") Integer id, Model model) {
-        Diagnostico diagnostico = servicioDiagnostico.findById(id);
-        if(diagnostico != null) {
-
-           model.addAttribute("diagnostico", diagnostico);
-           return "mostrarDiagnostico";
-        }else {
-            model.addAttribute("mensaje", "No se encuuentra ningun diagnostico asociado a este sintoma");
+        try {
+            Diagnostico diagnostico = servicioDiagnostico.findById(id);
+            model.addAttribute("diagnostico", diagnostico);
+            return "mostrarDiagnostico";
+        } catch (DiagnosticoNotFoundException e) {
+            model.addAttribute("mensaje", "El diagnóstico no pudo ser encontrado");
+            return "error";
+        } catch (Exception e) {
+            model.addAttribute("mensaje", "Se produjo un error al procesar la solicitud");
             return "error";
         }
+
     }
     @GetMapping("/diagnosticos")
     public String obtenerDiagnosticoPorSintomas(@RequestParam("idsSintomas") List<Integer> idsSintomas, Model model) {
