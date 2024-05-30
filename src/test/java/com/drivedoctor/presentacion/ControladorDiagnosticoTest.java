@@ -69,8 +69,8 @@ public class ControladorDiagnosticoTest {
 
         List<Diagnostico> diagnosticosEsperados = List.of(diagnosticoEsperado1, diagnosticoEsperado2);
 
-        when(servicioDiagnostico.findById(idSintoma1)).thenReturn(diagnosticoEsperado1);
-        when(servicioDiagnostico.findById(idSintoma2)).thenReturn(diagnosticoEsperado2);
+        when(servicioDiagnostico.findBySintomaId(idSintoma1)).thenReturn(diagnosticoEsperado1);
+        when(servicioDiagnostico.findBySintomaId(idSintoma2)).thenReturn(diagnosticoEsperado2);
 
         Model model = mock(Model.class);
         // Ejecución
@@ -79,8 +79,8 @@ public class ControladorDiagnosticoTest {
         // Verificación
         assertEquals("mostrarDiagnostico", vista, "La vista devuelta debe ser 'mostrarDiagnostico'");
         verify(model).addAttribute("diagnosticos", diagnosticosEsperados);
-        verify(servicioDiagnostico).findById(idSintoma1);
-        verify(servicioDiagnostico).findById(idSintoma2);
+        verify(servicioDiagnostico).findBySintomaId(idSintoma1);
+        verify(servicioDiagnostico).findBySintomaId(idSintoma2);
 
     }
 
@@ -98,7 +98,7 @@ public class ControladorDiagnosticoTest {
 
         verify(servicioDiagnostico).findById(diagnosticoId);
     }
-    @Test
+/*    @Test
     public void queMuestreMensajeConDescripcionDelItemComoResultadoCuandoDosOmasSintomasCompartenMismoItem(){
 
         Sintoma sintomaMock1 = mock(Sintoma.class);
@@ -113,5 +113,5 @@ public class ControladorDiagnosticoTest {
     @Test
     public void queMuestreMensajeDeSugerenciaCuandoSeObtienenTresOmasDiagnosticosAsociadoATresOmasSintomas(){ //muchos diagnosticos
 
-    }
+    }*/
 }

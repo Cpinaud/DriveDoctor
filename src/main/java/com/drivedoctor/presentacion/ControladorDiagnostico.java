@@ -33,12 +33,8 @@ public class ControladorDiagnostico {
         try {
             Diagnostico diagnostico = servicioDiagnostico.findById(id);
             model.addAttribute("diagnostico", diagnostico);
-        } catch (DiagnosticoNotFoundException e) {
-            model.addAttribute("mensaje", "El diagnóstico no pudo ser encontrado");
-
-        } catch (Exception e) {
-            model.addAttribute("mensaje", "Se produjo un error al procesar la solicitud");
-
+        } catch (DiagnosticoNotFoundException | IllegalArgumentException e) {
+            model.addAttribute("mensaje", e);
         }
         return "mostrarDiagnostico";
     }

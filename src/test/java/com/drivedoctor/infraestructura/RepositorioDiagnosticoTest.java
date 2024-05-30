@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -27,17 +28,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @ContextConfiguration(classes = {HibernateTestInfraestructuraConfig.class})
 public class RepositorioDiagnosticoTest {
 
-    private RepositorioDiagnostico repositorioDiagnostico;
+    @Autowired
     private SessionFactory sessionFactory;
-    private Session session;
+    private RepositorioDiagnostico repositorioDiagnostico;
     private Sintoma sintomaMock;
 
     @BeforeEach
     public void init() {
-        sessionFactory = mock(SessionFactory.class);
-        session = mock(Session.class); // Crear un mock de Session
-        when(sessionFactory.getCurrentSession()).thenReturn(session); // Configurar el mock sessionFactory
-        repositorioDiagnostico = new RepositorioDiagnosticoImpl(sessionFactory);
+        this.repositorioDiagnostico = new RepositorioDiagnosticoImpl(this.sessionFactory);
         sintomaMock = mock(Sintoma.class);
     }
     @Test
@@ -46,9 +44,6 @@ public class RepositorioDiagnosticoTest {
     public void queSeObtengaElDiagnosticoCreado()
     {
         Diagnostico diagnostico = crearYguardarDiagnostico("Prueba");
-
-        // Simular que el diagnostico se guarda en la sesión
-        when(session.get(Diagnostico.class, diagnostico.getIdDiagnostico())).thenReturn(diagnostico);
         Diagnostico diagnosticoObtenido = repositorioDiagnostico.findById(diagnostico.getIdDiagnostico());
 
         assertThat(diagnosticoObtenido, notNullValue());
