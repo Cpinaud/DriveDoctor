@@ -71,7 +71,7 @@ public class ControladorSintoma {
         return modelAndView;
     }
 
-    @RequestMapping("/mostrarVariosSintomasPorVariosItem")
+    @RequestMapping("/mostrarSintomasPorItems")  //PROBLEM
     public ModelAndView mostrarSintomas() {
         ModelAndView modelAndView = new ModelAndView("items-tablero");
 
@@ -81,13 +81,14 @@ public class ControladorSintoma {
 
 
         List<Sintoma> sintomas = servicioSintoma.findAll();
+        System.out.println("sintomas = " + sintomas);
         List<String> opcionesSintomas = sintomas.stream()
                 .map(Sintoma::getNombre)
                 .collect(Collectors.toList());
 
         modelAndView.addObject("opcionesItemsTablero", opcionesItemsTablero);
         modelAndView.addObject("opcionesSintomas", opcionesSintomas); // Agregar las opciones de los síntomas al modelo
-        modelAndView.addObject("sintoma", new Sintoma());
+        modelAndView.addObject("sintoma", sintomas);
         return modelAndView;
     }
     @RequestMapping(value = "/mostrarSintomaDependiendoItem", method = RequestMethod.POST )
@@ -95,8 +96,6 @@ public class ControladorSintoma {
 
         ModelMap modelo = new ModelMap();
        List<Sintoma> sintomas  = servicioSintoma.problemaEnTablero(itemTablero);
-
-       modelo.addAttribute("sintomas", sintomas);
 
        obtenerSintomas(sintomas, modelo);
 
@@ -114,12 +113,12 @@ public class ControladorSintoma {
                 .collect(Collectors.toList());
 
 
-        List<Sintoma> sintomasResultantes = servicioSintoma.problemasEnTableros(items);
+        List<Sintoma> sintomas= servicioSintoma.problemasEnTableros(items);
 
-        modelo.addAttribute("sintomas", sintomasResultantes);
+        modelo.addAttribute("sintomas", sintomas);
 
 
-        obtenerSintomas(sintomasResultantes, modelo);
+        obtenerSintomas(sintomas, modelo);
 
         return new ModelAndView("mostrar-sintoma", modelo);
 
@@ -128,13 +127,14 @@ public class ControladorSintoma {
 
     private static void obtenerSintomas(List<Sintoma> sintomas, ModelMap modelo) {
         try {
-            if(sintomas == null|| sintomas.isEmpty()){
-                modelo.addAttribute("mensaje", "No se encontraron sintomas para el item seleccionado");
+            if (sintomas == null || sintomas.isEmpty()) {
+                modelo.addAttribute("mensaje", "No se encontraron síntomas para el item seleccionado");
+            } else {
+                modelo.addAttribute("sintomas", sintomas);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-
 
 }

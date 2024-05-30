@@ -38,11 +38,11 @@ public class ControladorSintomaTest {
 
     @Test
     public void queSePuedaObtenerTodosLosSintomasDependiendoQueItemElijo() throws Exception{
-        ItemTablero item = ItemTablero.FILTRO_GASOLINA;
-        when(servicioSintoma.problemaEnTablero(ItemTablero.FILTRO_GASOLINA)).thenReturn(Arrays.asList(sintomaMock));
+        ItemTablero item = ItemTablero.ItemFiltroGasolina;
+        when(servicioSintoma.problemaEnTablero(ItemTablero.ItemFiltroGasolina)).thenReturn(Arrays.asList(sintomaMock));
         ModelAndView modelAndView = controladorSintoma.mostrarSintomaDependiendoItem(item);
 
-        verify(servicioSintoma).problemaEnTablero(ItemTablero.FILTRO_GASOLINA);
+        verify(servicioSintoma).problemaEnTablero(ItemTablero.ItemFiltroGasolina);
 
         List<Sintoma> sintomas = (List<Sintoma>) modelAndView.getModel().get("sintomas");
         assertThat(sintomas, hasSize(1));

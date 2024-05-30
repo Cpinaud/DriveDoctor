@@ -31,7 +31,7 @@ public class ServicioSintomaTest {
 
     @Test
     public void queSePuedaGuardarUnSintomaEnElSistema(){
-        Sintoma sintoma = new Sintoma(ItemTablero.EMBRAGUE);
+        Sintoma sintoma = new Sintoma(ItemTablero.ItemEmbrague);
 
         this.repositorioSintoma.guardar(sintoma);
 
@@ -41,11 +41,11 @@ public class ServicioSintomaTest {
     @Test
     public void quePuedaObtenerLosItemsDelTableroEnBaseAMiSintoma(){
         List<Sintoma> sintomasMock = new ArrayList<>();
-        sintomasMock.add(new Sintoma(ItemTablero.EMBRAGUE));
-        sintomasMock.add(new Sintoma(ItemTablero.EMBRAGUE));
-        when(this.repositorioSintoma.obtenerPorItemTablero(ItemTablero.EMBRAGUE)).thenReturn(sintomasMock);
+        sintomasMock.add(new Sintoma(ItemTablero.ItemEmbrague));
+        sintomasMock.add(new Sintoma(ItemTablero.ItemEmbrague));
+        when(this.repositorioSintoma.obtenerPorItemTablero(ItemTablero.ItemEmbrague)).thenReturn(sintomasMock);
 
-        List<Sintoma> sintomas = this.servicioSintoma.problemaEnTablero(ItemTablero.EMBRAGUE);
+        List<Sintoma> sintomas = this.servicioSintoma.problemaEnTablero(ItemTablero.ItemEmbrague);
 
         assertThat(sintomas.size(), equalTo(2));
 

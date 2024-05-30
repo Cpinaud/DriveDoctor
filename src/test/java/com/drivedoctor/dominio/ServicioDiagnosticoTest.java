@@ -54,7 +54,7 @@ public class ServicioDiagnosticoTest {
     @Test
     public void queSePuedaSaberElRiesgoDelCocheCuandoUnAutoTieneUnItemDeTipoMotor(){
         List<Sintoma> sintomasMock = new ArrayList<>();
-        sintomasMock.add(new Sintoma(ItemTablero.MOTOR));
+        sintomasMock.add(new Sintoma(ItemTablero.ItemMotor));
 
         double riesgoCalculado = servicioDiagnostico.calcularRiesgoPorSintoma(sintomasMock);
         double riesgoEsperado = 60.0;
@@ -65,7 +65,7 @@ public class ServicioDiagnosticoTest {
     @Test
     public void queSePuedaSaberElRiesgoDelCocheCuandoUnAutoTieneUnItemDeTipoFrenos(){
         List<Sintoma> sintomasMock = new ArrayList<>();
-        sintomasMock.add(new Sintoma(ItemTablero.FRENOS));
+        sintomasMock.add(new Sintoma(ItemTablero.ItemFreno));
 
         double riesgoCalculado = servicioDiagnostico.calcularRiesgoPorSintoma(sintomasMock);
         double riesgoEsperado = 20.0;
@@ -76,7 +76,7 @@ public class ServicioDiagnosticoTest {
     @Test
     public void queSePuedaSaberElRiesgoDelCocheCuandoUnAutoTieneUnItemDeTipoFiltroGasolina(){
         List<Sintoma> sintomasMock = new ArrayList<>();
-        sintomasMock.add(new Sintoma(ItemTablero.FILTRO_GASOLINA));
+        sintomasMock.add(new Sintoma(ItemTablero.ItemFiltroGasolina));
 
         double riesgoCalculado = servicioDiagnostico.calcularRiesgoPorSintoma(sintomasMock);
         double riesgoEsperado = 40.0;
@@ -98,8 +98,8 @@ public class ServicioDiagnosticoTest {
     @Test
     public void queSePuedaTenerMasDeUnItemEnElTablero(){
         List<Sintoma> sintomasMock = new ArrayList<>();
-        sintomasMock.add(new Sintoma(ItemTablero.MOTOR));
-        sintomasMock.add(new Sintoma(ItemTablero.FRENOS));
+        sintomasMock.add(new Sintoma(ItemTablero.ItemMotor));
+        sintomasMock.add(new Sintoma(ItemTablero.ItemFreno));
 
         double riesgoCalculado = servicioDiagnostico.calcularRiesgoPorSintoma(sintomasMock);
         double riesgoEsperado = 80.0;
@@ -110,9 +110,9 @@ public class ServicioDiagnosticoTest {
     @Test
     public void queSePuedaTenerMasDeDosItemEnElTablero(){
         List<Sintoma> sintomasMock = new ArrayList<>();
-        sintomasMock.add(new Sintoma(ItemTablero.FILTRO_GASOLINA));
-        sintomasMock.add(new Sintoma(ItemTablero.FRENOS));
-        sintomasMock.add(new Sintoma(ItemTablero.EPC));
+        sintomasMock.add(new Sintoma(ItemTablero.ItemFiltroGasolina));
+        sintomasMock.add(new Sintoma(ItemTablero.ItemFreno));
+        sintomasMock.add(new Sintoma(ItemTablero.ItemEPC));
 
         double riesgoCalculado = servicioDiagnostico.calcularRiesgoPorSintoma(sintomasMock);
         double riesgoEsperado = 80.0;
@@ -124,8 +124,8 @@ public class ServicioDiagnosticoTest {
     @Test
     public void queEnCasoDeQueSeIngresenDosSintomasConElMismoItemNoSeSumen(){
         List<Sintoma> sintomasMock = new ArrayList<>();
-        sintomasMock.add(new Sintoma(ItemTablero.FRENOS));
-        sintomasMock.add(new Sintoma(ItemTablero.FRENOS));
+        sintomasMock.add(new Sintoma(ItemTablero.ItemFreno));
+        sintomasMock.add(new Sintoma(ItemTablero.ItemFreno));
 
         double riesgoCalculado = servicioDiagnostico.calcularRiesgoPorSintoma(sintomasMock);
         double riesgoEsperado = 20.0;
@@ -137,9 +137,9 @@ public class ServicioDiagnosticoTest {
     @Test
     public void queEnCasoDeQueSeIngresenDosSintomasConElMismoItemNoSeSumenYAgregandoOtroItemAsiVerificamosQueSigaSumandoSiEsDiferente(){
         List<Sintoma> sintomasMock = new ArrayList<>();
-        sintomasMock.add(new Sintoma(ItemTablero.FRENOS));
-        sintomasMock.add(new Sintoma(ItemTablero.FRENOS));
-        sintomasMock.add(new Sintoma(ItemTablero.MOTOR));
+        sintomasMock.add(new Sintoma(ItemTablero.ItemFreno));
+        sintomasMock.add(new Sintoma(ItemTablero.ItemFreno));
+        sintomasMock.add(new Sintoma(ItemTablero.ItemMotor));
 
         double riesgoCalculado = servicioDiagnostico.calcularRiesgoPorSintoma(sintomasMock);
         double riesgoEsperado = 80.0;
@@ -150,9 +150,9 @@ public class ServicioDiagnosticoTest {
     @Test
     public void queEnCasoDeQueHallaVariosItemsYSupereEl100PorcientMuestreComoMaximoEseValor(){
         List<Sintoma> sintomasMock = new ArrayList<>();
-        sintomasMock.add(new Sintoma(ItemTablero.AIRBAG));
-        sintomasMock.add(new Sintoma(ItemTablero.FRENOS));
-        sintomasMock.add(new Sintoma(ItemTablero.MOTOR));
+        sintomasMock.add(new Sintoma(ItemTablero.ItemAirbag));
+        sintomasMock.add(new Sintoma(ItemTablero.ItemFreno));
+        sintomasMock.add(new Sintoma(ItemTablero.ItemMotor));
 
 
         double riesgoCalculado = servicioDiagnostico.calcularRiesgoPorSintoma(sintomasMock);

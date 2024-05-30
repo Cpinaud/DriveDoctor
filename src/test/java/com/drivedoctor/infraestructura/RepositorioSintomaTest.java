@@ -41,7 +41,7 @@ public class RepositorioSintomaTest {
     @Rollback
     public void queSePuedaGuardarUnSintomaAsociadoAunItemDelTablero(){
 
-        Sintoma sintoma = this.crearSintoma(ItemTablero.AIRBAG);
+        Sintoma sintoma = this.crearSintoma(ItemTablero.ItemAirbag);
 
         this.repositorioSintoma.guardar(sintoma);
         this.sessionFactory.getCurrentSession().flush(); // Asegura que el ID se asigne
@@ -59,7 +59,7 @@ public class RepositorioSintomaTest {
     public void queSePuedaObtenerUnSintomaAsociadoAunItemDelTablero(){
         sintomasExistentes();
 
-        List<Sintoma> sintomasObtenidos = this.repositorioSintoma.obtenerPorItemTablero(ItemTablero.EPC);
+        List<Sintoma> sintomasObtenidos = this.repositorioSintoma.obtenerPorItemTablero(ItemTablero.ItemEPC);
 
         Integer cantidadEsperada = 1;
         assertThat(cantidadEsperada, equalTo(sintomasObtenidos.size()));
@@ -72,7 +72,7 @@ public class RepositorioSintomaTest {
     public void queSePuedaObtenerDosSintomasAsociadoAunItemDelTablero(){
         sintomasExistentes();
 
-        List<Sintoma> sintomasObtenidos = this.repositorioSintoma.obtenerPorItemTablero(ItemTablero.EMBRAGUE);
+        List<Sintoma> sintomasObtenidos = this.repositorioSintoma.obtenerPorItemTablero(ItemTablero.ItemEmbrague);
 
         Integer cantidadEsperada = 2;
         assertThat(cantidadEsperada, equalTo(sintomasObtenidos.size()));
@@ -87,9 +87,9 @@ public class RepositorioSintomaTest {
     }
 
     private void sintomasExistentes() {
-        Sintoma sintoma = new Sintoma(ItemTablero.EPC);
-        Sintoma sintoma2 = new Sintoma(ItemTablero.EMBRAGUE);
-        Sintoma sintoma3 = new Sintoma(ItemTablero.EMBRAGUE);
+        Sintoma sintoma = new Sintoma(ItemTablero.ItemEPC);
+        Sintoma sintoma2 = new Sintoma(ItemTablero.ItemEmbrague);
+        Sintoma sintoma3 = new Sintoma(ItemTablero.ItemEmbrague);
 
         this.sessionFactory.getCurrentSession().save(sintoma);
         this.sessionFactory.getCurrentSession().save(sintoma2);

@@ -28,7 +28,7 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="itemsTablero">Seleccione síntomas:</label>
+            <label for="sintomas">Seleccione síntomas:</label>
             <select class="form-control" id="sintomas" name="sintomas[]" multiple>
               <option th:each="opcion : ${opcionesSintomas}" th:value="${opcion}" th:text="${opcion}"></option>
             </select>

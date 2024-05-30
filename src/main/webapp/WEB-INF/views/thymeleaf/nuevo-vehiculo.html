@@ -37,7 +37,15 @@
                     <option th:each="modelo : ${T(com.drivedoctor.dominio.Modelo).values()}"
                             th:value="${modelo}" th:text="${modelo}"></option>
                 </select>
-                <button id="btn-registrarme" class="btn boton-principal" Type="Submit">Agregar Vehiculo</button>
+                <label for="anoFabricacion">Año de Fabricaión: </label>
+                <select id="anoFabricacion" class="form-control" required>
+                    <option></option>
+                </select>
+                <label for="patente">Patente: </label>
+                <select  id="patente" class="form-control" required>
+                    <option></option>
+                </select>
+                <button id="btn-registrarme" class="btn boton-principal" Type="Submit"> + Agregar Vehiculo</button>
             </form>
         </div>
     </div>

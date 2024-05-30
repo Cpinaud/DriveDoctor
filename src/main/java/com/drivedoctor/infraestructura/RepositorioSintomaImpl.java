@@ -3,12 +3,13 @@ package com.drivedoctor.infraestructura;
 import com.drivedoctor.dominio.ItemTablero;
 import com.drivedoctor.dominio.RepositorioSintoma;
 import com.drivedoctor.dominio.Sintoma;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.Query;
+import org.hibernate.query.Query;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -49,7 +50,18 @@ public class RepositorioSintomaImpl implements RepositorioSintoma {
     }
     @Override
     public List<Sintoma> getAll() {
+
+        if (sintomas == null) {
+            cargarSintomasDesdeBD();
+        }
         return this.sintomas;
+    }
+
+    private void cargarSintomasDesdeBD() {
+        // Cargar los síntomas desde la base de datos utilizando Hibernate
+        Session session = sessionFactory.getCurrentSession();
+        Query<Sintoma> query = session.createQuery("FROM Sintoma", Sintoma.class);
+        sintomas = query.getResultList();
     }
 
     @Override

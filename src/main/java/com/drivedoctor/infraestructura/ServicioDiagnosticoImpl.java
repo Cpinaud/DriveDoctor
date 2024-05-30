@@ -55,34 +55,34 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
 
             if(itemTablero != null && !itemsProcesados.contains(itemTablero)) {
                 switch (itemTablero) {
-                    case FRENOS:
+                    case ItemFreno:
                         riesgoTotal+= 20.0;
                         break;
-                    case MOTOR:
+                    case ItemMotor:
                         riesgoTotal += 60.0;
                         break;
-                    case FILTRO_GASOLINA:
+                    case ItemFiltroGasolina:
                         riesgoTotal += 40.0;
                         break;
-                    case SUSPENSION:
+                    case ItemSuspension:
                         riesgoTotal += 10.0;
                         break;
-                    case AIRBAG:
+                    case ItemAirbag:
                         riesgoTotal += 40.0;
                         break;
-                    case EMBRAGUE:
+                    case ItemEmbrague:
                         riesgoTotal += 50.0;
                         break;
-                    case DIRECCION:
+                    case ItemDireccion:
                         riesgoTotal += 20.0;
                         break;
-                    case ESTABILIDAD:
+                    case ItemEstabilidad:
                         riesgoTotal += 5.0;
                         break;
-                    case SERVICE:
+                    case ItemService:
                         riesgoTotal += 40.0;
                         break;
-                    case EPC:
+                    case ItemEPC:
                         riesgoTotal += 20.0;
                         break;
                     default:
