@@ -14,7 +14,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import javax.transaction.Transactional;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
@@ -81,16 +83,17 @@ public class RepositorioDiagnosticoTest {
         when(sintomaMock1.getDiagnostico()).thenReturn(diagnostico1);
         when(sintomaMock2.getDiagnostico()).thenReturn(diagnostico2);
 
-        // Obtener los diagnósticos asociados a los síntomas desde el mock
         Diagnostico diagnosticoObtenido1 = sintomaMock1.getDiagnostico();
         Diagnostico diagnosticoObtenido2 = sintomaMock2.getDiagnostico();
 
-        // Verificar los resultados
+        // Verificar que cada síntoma tenga un diagnóstico asociado y que sean distintos
         assertThat(diagnosticoObtenido1, notNullValue());
-        assertThat(diagnosticoObtenido1.getIdDiagnostico(), equalTo(diagnostico1.getIdDiagnostico()));
-
         assertThat(diagnosticoObtenido2, notNullValue());
-        assertThat(diagnosticoObtenido2.getIdDiagnostico(), equalTo(diagnostico2.getIdDiagnostico()));
+        assertThat(diagnosticoObtenido1, not(equalTo(diagnosticoObtenido2)));
+
+        // Verificar que exactamente dos diagnósticos fueron obtenidos
+        Set<Diagnostico> diagnosticosObtenidos = new HashSet<>(Arrays.asList(diagnosticoObtenido1, diagnosticoObtenido2));
+        assertThat(diagnosticosObtenidos.size(), equalTo(2));
     }
     private Diagnostico crearYguardarDiagnostico(String descripcion) {
         Diagnostico diagnostico = new Diagnostico();

@@ -6,6 +6,7 @@ import com.drivedoctor.dominio.excepcion.DiagnosticoNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,31 +27,30 @@ public class ControladorDiagnostico {
         this.servicioDiagnostico = servicioDiagnostico;
     }
 
+    //MUESTRA EL DIAGNOSTICO ASOCIADO A UN SINTOMA
     @GetMapping("/diagnostico/{id}")
     public String obtenerDiagnostico(@PathVariable("id") Integer id, Model model) {
         try {
             Diagnostico diagnostico = servicioDiagnostico.findById(id);
             model.addAttribute("diagnostico", diagnostico);
-            return "mostrarDiagnostico";
         } catch (DiagnosticoNotFoundException e) {
             model.addAttribute("mensaje", "El diagnóstico no pudo ser encontrado");
-            return "error";
+
         } catch (Exception e) {
             model.addAttribute("mensaje", "Se produjo un error al procesar la solicitud");
-            return "error";
-        }
 
+        }
+        return "mostrarDiagnostico";
     }
+    //MUESTRA EL DIAGNOSTICO ASOCIADO HASTA 3 SINTOMAS
     @GetMapping("/diagnosticos")
     public String obtenerDiagnosticoPorSintomas(@RequestParam("idsSintomas") List<Integer> idsSintomas, Model model) {
-        List<Diagnostico> diagnosticos = new ArrayList<>();
-        for (Integer idSintoma : idsSintomas) {
-            Diagnostico diagnostico = servicioDiagnostico.findById(idSintoma);
-            if (diagnostico != null) {
-                diagnosticos.add(diagnostico);
+        if(idsSintomas.size() <= 3) {
+            List<Diagnostico> diagnosticos = servicioDiagnostico.findBySintomasIds(idsSintomas);
+            if(diagnosticos.size() < 3) {
+                model.addAttribute("diagnosticos", diagnosticos);
             }
         }
-        model.addAttribute("diagnosticos", diagnosticos);
         return "mostrarDiagnostico";
     }
 

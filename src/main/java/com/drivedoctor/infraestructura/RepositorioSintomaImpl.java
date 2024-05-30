@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import org.hibernate.query.Query;
+
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -34,6 +36,7 @@ public class RepositorioSintomaImpl implements RepositorioSintoma {
             sessionFactory.getCurrentSession().save(sintoma);
     }
 
+    //OBTIENE LOS SINTOMAS ASOCIADOS A UN ITEM
     @Override
     public List<Sintoma> obtenerPorItemTablero(ItemTablero itemTablero) {
             System.out.println(itemTablero);
@@ -48,6 +51,8 @@ public class RepositorioSintomaImpl implements RepositorioSintoma {
             return Collections.emptyList();
         }
     }
+
+    //OBTIENE TODOS LOS SINTOMAS DE LA BD
     @Override
     public List<Sintoma> getAll() {
 
@@ -57,22 +62,32 @@ public class RepositorioSintomaImpl implements RepositorioSintoma {
         return this.sintomas;
     }
 
-    private void cargarSintomasDesdeBD() {
-        // Cargar los síntomas desde la base de datos utilizando Hibernate
+   //OBTIENE UN SINTOMA POR SU ID
+    @Override
+    public Sintoma findById(Integer idSintoma) {
         Session session = sessionFactory.getCurrentSession();
-        Query<Sintoma> query = session.createQuery("FROM Sintoma", Sintoma.class);
-        sintomas = query.getResultList();
+        return session.get(Sintoma.class, idSintoma);
     }
 
+
+    //OBTIENE LOS SINTOMAS DE VARIOS ITEMS
     @Override
     public List<Sintoma> obtenerPorItemsTablero(List<ItemTablero> items) {
         String sql = "FROM Sintoma WHERE itemTablero IN (:items)";
-        Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
-
-
-            query.setParameter("items" ,items);
-
-
+        Query<Sintoma> query = this.sessionFactory.getCurrentSession().createQuery(sql, Sintoma.class);
+        query.setParameter("items", items);
         return query.getResultList();
+    }
+
+    @Override
+    public List<Sintoma> obtenerPorIds(List<Integer> idSintomas) {
+        return null;
+    }
+
+
+    private void cargarSintomasDesdeBD() {
+        String sql = "FROM Sintoma";
+        Query<Sintoma> query = this.sessionFactory.getCurrentSession().createQuery(sql, Sintoma.class);
+        sintomas = query.getResultList();
     }
 }

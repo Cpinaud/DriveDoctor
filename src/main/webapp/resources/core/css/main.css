@@ -61,7 +61,6 @@ img {
 }
 
 .btn.boton-principal {
-    margin-top: 10px;
     background-color: var(--color-principal);
     color: var(--color-blanco);
     text-align: center;
@@ -74,7 +73,6 @@ img {
     color: var(--color-blanco);
     text-align: center;
     text-decoration: none;
-    margin-top: 10px;
 }
 .btn.boton-secundario:hover {
     border: 2px solid var(--color-blanco);

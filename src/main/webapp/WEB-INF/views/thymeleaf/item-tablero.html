@@ -22,11 +22,11 @@
                 <form th:action="@{/mostrarSintomaDependiendoItem}" method="post">
                     <div class="form-group">
                         <label for="itemTablero">Seleccione un item del tablero:</label>
-                        <select class="form-control" id="itemTablero" name="itemTablero">
+                        <select class="form-control" id="itemTablero" name="itemTablero" required>
                             <option th:each="opcion : ${opcionesItemTablero}" th:value="${opcion}" th:text="${opcion}"></option>
                         </select>
                     </div>
-                    <div>
+                    <div style="margin-top: 10px">
                         <a th:href="@{/sintoma}" class="btn boton-secundario">Volver</a>
                         <button type="submit" class="btn boton-principal">Mostrar Síntomas</button>
                     </div>

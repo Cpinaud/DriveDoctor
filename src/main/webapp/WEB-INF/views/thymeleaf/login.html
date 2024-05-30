@@ -28,12 +28,12 @@
                 <label>Password: </label>
                 <input th:field="*{password}" type="password" id="password" class="form-control" required/>
 
-                <button id="btn-login" class="btn boton-secundario form-control" Type="Submit">Login</button>
+                <button id="btn-login" class="btn boton-secundario form-control" Type="Submit" style="margin-top: 10px">Login</button>
 
                 <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}">
                 </p>
             </form>
-            <div >
+            <div style="margin-top: 10px">
                     <a  class="btn btn-outline-dark" id="ir-a-registrarme" href="nuevo-usuario">Registrarme</a>
             </div>
 

@@ -6,15 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service("servicioDiagnostico")
 @Transactional
 public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
 
     private RepositorioDiagnostico repositorioDiagnostico;
+    private RepositorioSintoma repositorioSintoma;
+
 
     @Autowired
     public ServicioDiagnosticoImpl(RepositorioDiagnostico repositorioDiagnostico){
@@ -30,6 +30,7 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
         repositorioDiagnostico.guardar(diagnostico);
     }
 
+    //TRAE EL DIAGNOSTICO POR SU ID
     @Override
     public Diagnostico findById(Integer idDiagnostico) {
         if (idDiagnostico == null) {
@@ -41,7 +42,48 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
         }
         return diagnostico;
     }
-@Override
+
+    //TRAE EL DIAGNOSTICO ASOCIADO A UN SINTOMA
+    @Override
+    public Diagnostico findBySintoma(Sintoma sintoma) {
+        if (sintoma != null) {
+            Optional<Diagnostico> diagnosticoOpt = Optional.ofNullable(sintoma.getDiagnostico());
+            if (diagnosticoOpt.isPresent()) {
+               Diagnostico diagnostico = diagnosticoOpt.get();
+               return repositorioDiagnostico.findById(diagnostico.getIdDiagnostico());
+
+            } else {
+                throw new DiagnosticoNotFoundException("No se encontró ningún diagnóstico para el síntoma proporcionado");
+            }
+        }else {
+            throw new IllegalArgumentException("El síntoma no puede ser nulo");
+        }
+    }
+
+    //TRAE LOS DIAGNOSTICOS ASOCIADOS A LOS SINTOMAS
+    @Override
+    public List<Diagnostico> findBySintomas(List<Sintoma> sintomas) {
+        if (sintomas.isEmpty()) {
+            throw new IllegalArgumentException("La lista de síntomas no puede estar vacía");
+        }
+        List<Diagnostico> diagnosticos = new ArrayList<>();
+        for (Sintoma sintoma : sintomas) {
+            Optional<Diagnostico> diagnosticoOpt = Optional.ofNullable(sintoma.getDiagnostico());
+            diagnosticoOpt.ifPresent(diagnosticos::add);
+        }
+        return diagnosticos;
+    }
+    //OBTIENE UN DIAGNOSTICO POR EL ID DEL SINTOMA
+    @Override
+    public Diagnostico findBySintomaId(Integer idSintoma) {
+        return repositorioDiagnostico.obtenerPorSintomaId(idSintoma);
+    }
+    //OBTIENE LOS DIAGNOSTICOS POR EL IDs DE MAS SINTOMAS
+    @Override
+    public List<Diagnostico> findBySintomasIds(List<Integer> idsSintomas) {
+        return repositorioDiagnostico.obtenerPorSintomasIds(idsSintomas);
+    }
+    @Override
     public double calcularRiesgoPorSintoma(List<Sintoma> sintomas) {
         if (sintomas == null || sintomas.isEmpty()) {
                 throw new IllegalArgumentException("La lista de síntomas no puede ser nula o vacía");

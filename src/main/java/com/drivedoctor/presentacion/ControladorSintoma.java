@@ -5,7 +5,6 @@ import com.drivedoctor.dominio.ServicioSintoma;
 import com.drivedoctor.dominio.Sintoma;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -113,7 +112,7 @@ public class ControladorSintoma {
                 .collect(Collectors.toList());
 
 
-        List<Sintoma> sintomas= servicioSintoma.problemasEnTableros(items);
+        List<Sintoma> sintomas= servicioSintoma.problemasEnTablero(items);
 
         modelo.addAttribute("sintomas", sintomas);
 

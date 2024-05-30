@@ -48,13 +48,18 @@ public class ControladorDiagnosticoTest {
 
     @Test
     public void mostrarVistaCuandoSeObtenganDosDiagnosticosAsociadosAdosSintomas(){ //sintomas con items diferentes
-        //Sintomas
-        Sintoma sintoma1 = new Sintoma();
-        sintoma1.setIdSintoma(1);
-        Sintoma sintoma2= new Sintoma();
-        sintoma2.setIdSintoma(2);
+        // Mock de Sintomas
+        Sintoma sintomaMock1 = mock(Sintoma.class);
+        Sintoma sintomaMock2 = mock(Sintoma.class);
 
-        List<Integer> idsSintomas = List.of(sintoma1.getIdSintoma(), sintoma2.getIdSintoma());
+        int idSintoma1 = 1;
+        int idSintoma2 = 2;
+
+        when(sintomaMock1.getIdSintoma()).thenReturn(idSintoma1);
+        when(sintomaMock2.getIdSintoma()).thenReturn(idSintoma2);
+
+        List<Integer> idsSintomas = List.of(idSintoma1, idSintoma2);
+
         // Diagnostico
         Diagnostico diagnosticoEsperado1 = new Diagnostico();
         diagnosticoEsperado1.setIdDiagnostico(1);
@@ -64,10 +69,9 @@ public class ControladorDiagnosticoTest {
 
         List<Diagnostico> diagnosticosEsperados = List.of(diagnosticoEsperado1, diagnosticoEsperado2);
 
-        when(servicioDiagnostico.findById(sintoma1.getIdSintoma())).thenReturn(diagnosticoEsperado1);
-        when(servicioDiagnostico.findById(sintoma2.getIdSintoma())).thenReturn(diagnosticoEsperado2);
+        when(servicioDiagnostico.findById(idSintoma1)).thenReturn(diagnosticoEsperado1);
+        when(servicioDiagnostico.findById(idSintoma2)).thenReturn(diagnosticoEsperado2);
 
-        // Mock del Model
         Model model = mock(Model.class);
         // Ejecución
         String vista = controladorDiagnostico.obtenerDiagnosticoPorSintomas(idsSintomas, model);
@@ -75,8 +79,8 @@ public class ControladorDiagnosticoTest {
         // Verificación
         assertEquals("mostrarDiagnostico", vista, "La vista devuelta debe ser 'mostrarDiagnostico'");
         verify(model).addAttribute("diagnosticos", diagnosticosEsperados);
-        verify(servicioDiagnostico).findById(sintoma1.getIdSintoma());
-        verify(servicioDiagnostico).findById(sintoma2.getIdSintoma());
+        verify(servicioDiagnostico).findById(idSintoma1);
+        verify(servicioDiagnostico).findById(idSintoma2);
 
     }
 
@@ -97,6 +101,9 @@ public class ControladorDiagnosticoTest {
     @Test
     public void queMuestreMensajeConDescripcionDelItemComoResultadoCuandoDosOmasSintomasCompartenMismoItem(){
 
+        Sintoma sintomaMock1 = mock(Sintoma.class);
+        Sintoma sintomaMock2 = mock(Sintoma.class);
+        Sintoma sintomaMock3 = mock(Sintoma.class);
     }
 
     @Test

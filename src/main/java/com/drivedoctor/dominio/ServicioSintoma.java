@@ -9,7 +9,7 @@ public interface ServicioSintoma {
     void guardarSintoma(Sintoma sintoma);
     List<Sintoma> findAll();
 
-    List<Sintoma> problemasEnTableros(List<ItemTablero> items);
+    List<Sintoma> problemasEnTablero(List<ItemTablero> items);
 
 
 }

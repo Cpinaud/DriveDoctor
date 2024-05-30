@@ -20,7 +20,7 @@ public class ServicioSintomaImpl implements ServicioSintoma {
         this.repositorioSintoma = repositorioSintoma;
     }
 
-
+    //TRAE DEL REPO TODOS LOS SINTOMAS QUE SE ASOCIAN AL ITEM
     @Override
     public List<Sintoma> problemaEnTablero(ItemTablero itemTablero) {
         return repositorioSintoma.obtenerPorItemTablero(itemTablero);
@@ -31,16 +31,17 @@ public class ServicioSintomaImpl implements ServicioSintoma {
         repositorioSintoma.guardar(sintoma);
     }
 
+    //TRAE TODOS LOS SINTOMAS DE LA TABLA
     @Override
     public List<Sintoma> findAll() {
         return repositorioSintoma.getAll();
     }
 
+    //TRAE DEL REPO TODOS LOS SINTOMAS QUE SE ASOCIAN AL ITEM
     @Override
-    public List<Sintoma> problemasEnTableros(List<ItemTablero> items) {
-        return List.of();
+    public List<Sintoma> problemasEnTablero(List<ItemTablero> items) {
+        return repositorioSintoma.obtenerPorItemsTablero(items);
     }
-
 
 }
 
