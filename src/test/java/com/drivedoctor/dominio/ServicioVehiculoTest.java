@@ -46,12 +46,16 @@ public class ServicioVehiculoTest {
     @Test
     public void queAlBuscarVehiculosPorMarcaRenaultDevuelvaLosVehiculosDeEsaMarca(){
         // preparacion
+        Marca marca = mock(Marca.class);
+        marca.setId(2);
+        marca.setNombre("Ford");
+        Modelo modelo = mock(Modelo.class);
         List<Vehiculo> vehiculosMock = new ArrayList<>();
-        vehiculosMock.add(new Vehiculo(Marca.RENAULT, Modelo.CLIO,2015,"AA203IK"));
-        when(this.repositorioVehiculo.getPorMarca(Marca.RENAULT)).thenReturn(vehiculosMock);
+        vehiculosMock.add(new Vehiculo(marca, modelo,2015,"AA203IK"));
+        when(this.repositorioVehiculo.getPorMarca(marca)).thenReturn(vehiculosMock);
 
         // ejecucion
-        List<Vehiculo> items = this.servicioVehiculo.getPorMarca(Marca.RENAULT);
+        List<Vehiculo> items = this.servicioVehiculo.getPorMarca(marca);
 
         // verificacion
         assertThat(items.size(), equalTo(1)); // Existan 1 elementos
@@ -59,12 +63,16 @@ public class ServicioVehiculoTest {
 
     @Test
     public void queAlCrearUnVehiculoSeAsocieAUnUsuarioExistente() throws UsuarioInexistente {
-        Long usuarioId = 1L;
+        Integer usuarioId = 1;
         Usuario usuario = new Usuario();
         usuario.setId(usuarioId);
         usuario.setEmail("test@Test.com");
+        Marca marca = mock(Marca.class);
+        marca.setId(2);
+        marca.setNombre("Ford");
+        Modelo modelo = mock(Modelo.class);
 
-        Vehiculo vehiculo = new Vehiculo(Marca.FORD,Modelo.FIESTA,2015,"AA203IK");
+        Vehiculo vehiculo = new Vehiculo(marca,modelo,2015,"AA203IK");
 
         when(repositorioUsuario.buscarPorId(usuarioId)).thenReturn(usuario);
         servicioVehiculo.agregarVehiculo(usuarioId, vehiculo);

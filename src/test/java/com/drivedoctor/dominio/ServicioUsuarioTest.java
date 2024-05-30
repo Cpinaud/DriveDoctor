@@ -34,14 +34,16 @@ public class ServicioUsuarioTest {
     @Test
     public void queSePuedanObtenerTodosLosVehiculosDeUnUsuarioCuandoElUsuarioTengaVehiculos() throws UsuarioSinVehiculos {
         Usuario usuario = mock(Usuario.class);
-        usuario.setId(1L);
-        Long usuarioId = usuario.getId();
+        usuario.setId(1);
+        Integer usuarioId = usuario.getId();
         when(repositorioUsuario.buscarPorId(usuarioId)).thenReturn(usuario);
+        Marca marca = mock(Marca.class);
+        Modelo modelo = mock(Modelo.class);
 
         List<Vehiculo> vehiculosMock = new ArrayList<>();
-        vehiculosMock.add(new Vehiculo(Marca.RENAULT, Modelo.CLIO,2015, "AA203IK"));
-        vehiculosMock.add(new Vehiculo(Marca.VOLKSWAGEN,Modelo.GOL,2020, "AA111OK"));
-        vehiculosMock.add(new Vehiculo(Marca.FORD,Modelo.FIESTA,2018, "AA201OO"));
+        vehiculosMock.add(new Vehiculo(marca, modelo,2015, "AA203IK"));
+        vehiculosMock.add(new Vehiculo(marca,modelo,2020, "AA111OK"));
+        vehiculosMock.add(new Vehiculo(marca,modelo,2018, "AA201OO"));
         when(this.repositorioUsuario.getMisVehiculos(usuario)).thenReturn(vehiculosMock);
 
         List<Vehiculo> vehiculosObtenidos= servicioUsuario.getMisVehiculos(usuario);

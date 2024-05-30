@@ -36,8 +36,8 @@
                 <form action="#" th:action="@{/buscarPorMarca}" method="POST">
                     <label>Marca: </label>
                     <select name="marca" id="marca" class="form-control" required>
-                            <option th:each="marca : ${T(com.drivedoctor.dominio.Marca).values()}"
-                                    th:value="${marca}" th:text="${marca}"></option>
+                        <option th:each="marca : ${marcas}"
+                                th:value="${marca.id}" th:text="${marca.nombre}"></option>
                     </select>
                     <button id="btn-registrarme" class="btn boton-principal" type="Submit">Buscar</button>
                 </form>

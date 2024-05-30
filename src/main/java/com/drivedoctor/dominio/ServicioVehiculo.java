@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 public interface ServicioVehiculo {
 
-    void agregarVehiculo(Long usuarioId,Vehiculo vehiculo) throws UsuarioInexistente;
+    void agregarVehiculo(Integer usuarioId,Vehiculo vehiculo) throws UsuarioInexistente;
 
     List<Vehiculo> verVehiculos(HttpServletRequest request) throws UserSinPermiso;
 

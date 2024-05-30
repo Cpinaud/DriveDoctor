@@ -86,5 +86,15 @@ public class ControladorLogin {
     public ModelAndView inicio() {
         return new ModelAndView("redirect:/login");
     }
+
+
+    @RequestMapping("/logout")
+    public ModelAndView cerrarSesion(HttpServletRequest request) {
+        if (request.getSession() != null) {
+            request.getSession().invalidate(); // Invalida la sesión si existe
+        }
+
+        return new ModelAndView("redirect:/login");
+    }
 }
 

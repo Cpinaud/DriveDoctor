@@ -1,26 +1,60 @@
 package com.drivedoctor.presentacion;
 
 import com.drivedoctor.dominio.*;
+import org.hamcrest.text.IsEqualIgnoringCase;
 import org.junit.jupiter.api.BeforeEach;
-import static org.mockito.Mockito.mock;
+import org.junit.jupiter.api.Test;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.*;
 
 
 public class ControladorVehiculoTest {
 
     private ControladorVehiculo controladorVehiculo;
     private ServicioVehiculo servicioVehiculo;
+    private ServicioMarca servicioMarca;
 
     @BeforeEach
     public void init(){
         this.servicioVehiculo = mock(ServicioVehiculo.class);
+        this.servicioMarca = mock(ServicioMarca.class);
         //this.servicioUsuario = new servicioUsuarioImpl();
-        this.controladorVehiculo = new ControladorVehiculo(this.servicioVehiculo);
+        this.controladorVehiculo = new ControladorVehiculo(this.servicioVehiculo,this.servicioMarca);
+    }
+    @Test
+    public void queDevuelvaLaVistaDeVehiculosCuandoSeAgregaUnVehiculo() {
+        // Preparar los datos de prueba
+
+        Vehiculo vehiculo = mock(Vehiculo.class);
+
+        HttpServletRequest request = this.mockeoSessionUser();
+        when(request.getSession().getAttribute("ID")).thenReturn(1);
+
+        // Ejecutar el método agregarVehiculo
+        ModelAndView modelAndView = this.controladorVehiculo.agregarVehiculo(vehiculo, request);
+        assertThat(modelAndView.getViewName(), IsEqualIgnoringCase.equalToIgnoringCase("redirect:/verMisVehiculos"));
+
+
     }
 
+    private HttpServletRequest mockeoSessionUser() {
+        Usuario usuario = mock(Usuario.class);
+        when(usuario.getId()).thenReturn(123);
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpSession session = mock(HttpSession.class);
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("ID")).thenReturn(123);
+        return request;
+    }
     /*@Test
     public void queInformeErrorSiSeNavegaAVerVehiculosSinSerAdministrador(){
         // preparacion
-        Long usuarioId = 1L;
+        Integer usuarioId = 1;
         Usuario usuario = mock(Usuario.class);
         usuario.setRol("USER");
         usuario.setEmail("test@Test.com");
@@ -35,16 +69,8 @@ public class ControladorVehiculoTest {
 
 
     }
+/*
 
-    private HttpServletRequest mockeoSessionUser() {
-        Usuario usuario = mock(Usuario.class);
-        when(usuario.getId()).thenReturn(123L);
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        HttpSession session = mock(HttpSession.class);
-        when(request.getSession()).thenReturn(session);
-        when(session.getAttribute("ID")).thenReturn(123L);
-        return request;
-    }
 
 /*
     @Test

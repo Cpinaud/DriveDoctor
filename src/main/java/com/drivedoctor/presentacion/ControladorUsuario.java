@@ -1,10 +1,9 @@
 package com.drivedoctor.presentacion;
 
-import com.drivedoctor.dominio.ServicioUsuario;
-import com.drivedoctor.dominio.Usuario;
-import com.drivedoctor.dominio.Vehiculo;
+import com.drivedoctor.dominio.*;
 import com.drivedoctor.dominio.excepcion.UsuarioExistente;
 import com.drivedoctor.dominio.excepcion.UsuarioSinVehiculos;
+import com.drivedoctor.infraestructura.ServicioMarcaImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,10 +18,13 @@ import java.util.List;
 public class ControladorUsuario {
 
     private ServicioUsuario servicioUsuario;
+    private ServicioMarca servicioMarca;
 
-    public ControladorUsuario(ServicioUsuario servicioUsuario) {
+    public ControladorUsuario(ServicioUsuario servicioUsuario,ServicioMarca servicioMarca) {
         this.servicioUsuario = servicioUsuario;
+        this.servicioMarca = servicioMarca;
     }
+
 
 
 
@@ -32,9 +34,10 @@ public class ControladorUsuario {
     public ModelAndView verMisVehiculos( HttpServletRequest request) {
         String viewName = "misVehiculos";
         ModelMap model = new ModelMap();
-        Long usuarioId= (Long) request.getSession().getAttribute("ID");
+        Integer usuarioId= (Integer) request.getSession().getAttribute("ID");
         Usuario usuario = servicioUsuario.buscar(usuarioId);
-
+        List<Marca> marcas = this.servicioMarca.obtenerMarcasAll();
+        model.put("marcas", marcas);
         try{
             servicioUsuario.getMisVehiculos(usuario);
             model.put("vehiculos", servicioUsuario.getMisVehiculos(usuario));

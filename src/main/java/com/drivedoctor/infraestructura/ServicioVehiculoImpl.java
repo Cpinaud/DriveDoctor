@@ -26,7 +26,7 @@ public class ServicioVehiculoImpl implements ServicioVehiculo {
     }
 
     @Override
-    public void agregarVehiculo(Long usuarioId, Vehiculo vehiculo) throws UsuarioInexistente{
+    public void agregarVehiculo(Integer usuarioId, Vehiculo vehiculo) throws UsuarioInexistente{
         Usuario usuario = repositorioUsuario.buscarPorId(usuarioId);
         if(usuario == null){
             throw new UsuarioInexistente();

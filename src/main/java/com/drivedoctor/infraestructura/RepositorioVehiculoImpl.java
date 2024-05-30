@@ -2,10 +2,8 @@ package com.drivedoctor.infraestructura;
 
 import com.drivedoctor.dominio.Marca;
 import com.drivedoctor.dominio.RepositorioVehiculo;
-import com.drivedoctor.dominio.Usuario;
 import com.drivedoctor.dominio.Vehiculo;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

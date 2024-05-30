@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import com.drivedoctor.integracion.config.HibernateTestConfig;
 
 import javax.transaction.Transactional;
 
@@ -21,7 +20,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {HibernateTestInfraestructuraConfig.class})
@@ -42,7 +41,9 @@ public class RepositorioVehiculoTest {
     @Rollback
     public void queSePuedaAgregarUnVehiculo(){
         // preparacion
-        Vehiculo vehiculo = this.crearVehiculo(Marca.RENAULT, Modelo.CLIO,2013,"AAA123");
+        Marca marca = this.crearMarca("Renault");
+        Modelo modelo = this.crearModelo("Clio",marca);
+        Vehiculo vehiculo = this.crearVehiculo(marca, modelo,2013,"AAA123");
 
         // ejecucion
         this.repositorioVehiculo.guardar(vehiculo);
@@ -55,21 +56,28 @@ public class RepositorioVehiculoTest {
         assertThat(itemObtenido, equalTo(vehiculo));
     }
 
+
+
     @Test
     @Transactional
     @Rollback
     public void queTraigaSoloVehiculosDeMarcaRenaultCuandoObtengoVehiculosPorMarcaRenault(){
         // preparacion
-        Vehiculo vehiculoRenault = new Vehiculo(Marca.RENAULT, Modelo.CLIO,2013,"AAA132");
-        Vehiculo vehiculoRenault1 = new Vehiculo(Marca.RENAULT, Modelo.SANDERO,2021,"AB123RR");
-        Vehiculo vehiculoFord = new Vehiculo(Marca.FORD, Modelo.FIESTA,2023,"AF444GG");
+        Marca marca = this.crearMarca("Renault");
+        Marca marca1 = this.crearMarca("Ford");
+        Modelo modelo = this.crearModelo("Clio",marca);
+        Modelo modelo1 = this.crearModelo("Sandero",marca);
+        Modelo modelo2 = this.crearModelo("Fiesta",marca1);
+        Vehiculo vehiculoRenault = new Vehiculo(marca, modelo,2013,"AAA132");
+        Vehiculo vehiculoRenault1 = new Vehiculo(marca, modelo1,2021,"AB123RR");
+        Vehiculo vehiculoFord = new Vehiculo(marca1, modelo2,2023,"AF444GG");
 
         this.sessionFactory.getCurrentSession().save(vehiculoRenault);
         this.sessionFactory.getCurrentSession().save(vehiculoRenault1);
         this.sessionFactory.getCurrentSession().save(vehiculoFord);
 
         // ejecucion
-         List<Vehiculo> vehiculosObtenidos = this.repositorioVehiculo.getPorMarca(Marca.RENAULT);
+         List<Vehiculo> vehiculosObtenidos = this.repositorioVehiculo.getPorMarca(marca);
 
         // verificacion
         assertThat(vehiculosObtenidos.size(), equalTo(2));
@@ -80,6 +88,18 @@ public class RepositorioVehiculoTest {
         Vehiculo vehiculo = new Vehiculo(marca, modelo,anoFabricacion,patente);
         this.sessionFactory.getCurrentSession().save(vehiculo);
         return vehiculo;
+    }
+
+    private Marca crearMarca(String nombre) {
+        Marca marca = new Marca(nombre);
+        this.sessionFactory.getCurrentSession().save(marca);
+        return marca;
+    }
+
+    private Modelo crearModelo(String nombre,Marca marca) {
+        Modelo modelo = new Modelo(nombre,marca);
+        this.sessionFactory.getCurrentSession().save(modelo);
+        return modelo;
     }
 
 }
