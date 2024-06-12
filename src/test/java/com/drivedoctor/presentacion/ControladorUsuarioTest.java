@@ -23,10 +23,12 @@ public class ControladorUsuarioTest {
     private ControladorUsuario controladorUsuario;
     private ServicioUsuario servicioUsuario;
 
+    private ServicioMarca servicioMarca;
     @BeforeEach
     public void init(){
         this.servicioUsuario = mock(ServicioUsuario.class);
-        this.controladorUsuario = new ControladorUsuario(this.servicioUsuario);
+        this.servicioMarca = mock(ServicioMarca.class);
+        this.controladorUsuario = new ControladorUsuario(this.servicioUsuario,this.servicioMarca);
     }
     @Test
     public void queIndiqueNoTenerVehiculosCuandoSeConsultenLosVehiculosDeUnUsuarioQueNoTieneNinguno() throws UsuarioSinVehiculos{
@@ -58,11 +60,11 @@ public class ControladorUsuarioTest {
 
     private HttpServletRequest mockeoSessionUser() {
         Usuario usuario = mock(Usuario.class);
-        when(usuario.getId()).thenReturn(123L);
+        when(usuario.getId()).thenReturn(123);
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpSession session = mock(HttpSession.class);
         when(request.getSession()).thenReturn(session);
-        when(session.getAttribute("ID")).thenReturn(123L);
+        when(session.getAttribute("ID")).thenReturn(123);
         return request;
     }
 

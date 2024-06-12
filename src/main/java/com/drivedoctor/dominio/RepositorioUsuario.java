@@ -9,7 +9,7 @@ public interface RepositorioUsuario {
     Usuario buscar(String email);
     void modificar(Usuario usuario);
 
-    Usuario buscarPorId(Long usuarioId);
+    Usuario buscarPorId(Integer usuarioId);
 
     List<Vehiculo> getMisVehiculos(Usuario usuario);
 

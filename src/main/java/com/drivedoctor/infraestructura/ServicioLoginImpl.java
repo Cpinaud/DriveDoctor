@@ -16,7 +16,8 @@ public class ServicioLoginImpl implements ServicioLogin {
     private RepositorioUsuario repositorioUsuario;
 
     @Autowired
-    public ServicioLoginImpl(RepositorioUsuario repositorioUsuario){
+    public ServicioLoginImpl(RepositorioUsuario repositorioUsuario)
+    {
         this.repositorioUsuario = repositorioUsuario;
     }
 
@@ -33,6 +34,8 @@ public class ServicioLoginImpl implements ServicioLogin {
         }
         repositorioUsuario.guardar(usuario);
     }
+
+
 
 }
 

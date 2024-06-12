@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository("repositorioUsuario")
+
 public class RepositorioUsuarioImpl implements RepositorioUsuario {
 
     private SessionFactory sessionFactory;
@@ -54,7 +55,7 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
     }
 
     @Override
-    public Usuario buscarPorId(Long usuarioId) {
+    public Usuario buscarPorId(Integer usuarioId) {
         return (Usuario) sessionFactory.getCurrentSession().createCriteria(Usuario.class)
                 .add(Restrictions.eq("id", usuarioId))
                 .uniqueResult();
@@ -62,7 +63,7 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
 
     @Override
     public List<Vehiculo> getMisVehiculos(Usuario usuario) {
-        Long userid = usuario.getId();
+        Integer userid = usuario.getId();
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = session.createCriteria(Vehiculo.class);
         criteria.add(Restrictions.eq("usuario", usuario));
