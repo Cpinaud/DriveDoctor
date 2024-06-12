@@ -16,11 +16,11 @@ public class Vehiculo {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_modelo")
     private Modelo modelo;
-    @Min(value = 2001, message = "El año de fabricación debe ser mayor a 2000")
+    @Min(value = 2000, message = "El año de fabricación debe ser mayor a 2000")
     private Integer anoFabricacion;
 
     @Column(unique = true)
-    @Pattern(regexp = "^[A-Z]{3}[0-9]{3}$|^[A-Z]{2}[0-9]{3}[A-Z]{2}$", message = "El formato del dominio es incorrecto.")
+    @Pattern(regexp = "^[a-zA-Z]{3}[0-9]{3}$|^[a-zA-Z]{2}[0-9]{3}[a-zA-Z]{2}$", message = "El formato del dominio es incorrecto.")
     private String patente;
 
     @ManyToOne(cascade = CascadeType.PERSIST)

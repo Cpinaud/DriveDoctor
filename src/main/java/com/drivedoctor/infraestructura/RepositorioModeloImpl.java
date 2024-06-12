@@ -35,5 +35,13 @@ public class RepositorioModeloImpl implements RepositorioModelo {
         return criteria.list();
     }
 
+    @Override
+    public Modelo getById(Integer id) {
+        String hql = "FROM Modelo WHERE id = :id";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("id", id);
+        return (Modelo) query.getSingleResult();
+    }
+
 
 }

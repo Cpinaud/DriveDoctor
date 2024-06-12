@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository("repositorioUsuario")
+
 public class RepositorioUsuarioImpl implements RepositorioUsuario {
 
     private SessionFactory sessionFactory;

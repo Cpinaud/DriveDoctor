@@ -6,4 +6,6 @@ public interface ServicioMarca {
     List<Marca> obtenerMarcasAll();
 
     Marca obtenerMarcaPorId(Integer idMarca);
+
+
 }

@@ -33,6 +33,7 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
 
     @Override
     public Usuario buscar(Integer usuarioId) {
+
         return repositorioUsuario.buscarPorId(usuarioId);
     }
 

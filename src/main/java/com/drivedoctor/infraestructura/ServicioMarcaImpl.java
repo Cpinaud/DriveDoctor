@@ -1,9 +1,6 @@
 package com.drivedoctor.infraestructura;
 
-import com.drivedoctor.dominio.Marca;
-import com.drivedoctor.dominio.RepositorioMarca;
-import com.drivedoctor.dominio.RepositorioUsuario;
-import com.drivedoctor.dominio.ServicioMarca;
+import com.drivedoctor.dominio.*;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -30,4 +27,6 @@ public class ServicioMarcaImpl implements ServicioMarca {
     public Marca obtenerMarcaPorId(Integer idMarca) {
         return this.repositorioMarca.getById(idMarca);
     }
+
+
 }

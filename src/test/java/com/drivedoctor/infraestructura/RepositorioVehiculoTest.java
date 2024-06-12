@@ -20,6 +20,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.Mockito.mock;
 
 @ExtendWith(SpringExtension.class)
@@ -39,21 +40,28 @@ public class RepositorioVehiculoTest {
     @Test
     @Transactional
     @Rollback
-    public void queSePuedaAgregarUnVehiculo(){
-        // preparacion
+    public void queSePuedaAgregarUnVehiculo() {
+        // Preparación
         Marca marca = this.crearMarca("Renault");
-        Modelo modelo = this.crearModelo("Clio",marca);
-        Vehiculo vehiculo = this.crearVehiculo(marca, modelo,2013,"AAA123");
+        Modelo modelo = this.crearModelo("Clio", marca);
+        Vehiculo vehiculo = this.crearVehiculo(marca, modelo, 2013, "AAA123");
 
-        // ejecucion
+        // Ejecución
         this.repositorioVehiculo.guardar(vehiculo);
 
-        // verificacion
+        // Verificación
         Vehiculo itemObtenido = (Vehiculo) this.sessionFactory.getCurrentSession()
-                .createQuery("FROM Vehiculo where id = 1")
-                .getSingleResult();
+                .createQuery("FROM Vehiculo WHERE patente = :patente", Vehiculo.class)
+                .setParameter("patente", "AAA123")
+                .uniqueResult();
+
 
         assertThat(itemObtenido, equalTo(vehiculo));
+        assertThat(itemObtenido, notNullValue());
+        assertThat(itemObtenido.getMarca().getNombre(), equalTo("Renault"));
+        assertThat(itemObtenido.getModelo().getNombre(), equalTo("Clio"));
+        assertThat(itemObtenido.getAnoFabricacion(), equalTo(2013));
+        assertThat(itemObtenido.getPatente(), equalTo("AAA123"));
     }
 
 

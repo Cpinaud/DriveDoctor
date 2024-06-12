@@ -2,16 +2,20 @@ package com.drivedoctor.infraestructura;
 
 import com.drivedoctor.dominio.Marca;
 import com.drivedoctor.dominio.RepositorioVehiculo;
+import com.drivedoctor.dominio.Usuario;
 import com.drivedoctor.dominio.Vehiculo;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+
+@Repository("repositorioVehiculo")
 public class RepositorioVehiculoImpl implements RepositorioVehiculo {
     private SessionFactory sessionFactory;
 
@@ -43,5 +47,12 @@ public class RepositorioVehiculoImpl implements RepositorioVehiculo {
             }
         }
         return vehiculosPorMarca;
+    }
+
+    @Override
+    public Vehiculo getByPatente(String patente) {
+        return (Vehiculo) sessionFactory.getCurrentSession().createCriteria(Vehiculo.class)
+                .add(Restrictions.eq("patente", patente))
+                .uniqueResult();
     }
 }

@@ -90,6 +90,7 @@ public class ControladorLogin {
 
     @RequestMapping("/logout")
     public ModelAndView cerrarSesion(HttpServletRequest request) {
+
         if (request.getSession() != null) {
             request.getSession().invalidate(); // Invalida la sesión si existe
         }

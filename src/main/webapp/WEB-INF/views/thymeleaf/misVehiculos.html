@@ -23,8 +23,8 @@
             <br>
             <div>
                 <ul  th:each="vehiculo : ${vehiculos}" >
-                    <li th:text="${vehiculo.marca}"></li>
-                    <li th:text="${vehiculo.modelo}"></li>
+                    <li th:text="${vehiculo.marca.nombre}"></li>
+                    <li th:text="${vehiculo.modelo.nombre}"></li>
                 </ul>
             </div>
             <p th:if="${mensaje != null}" class="alert alert-danger" th:text="${mensaje}"></p>

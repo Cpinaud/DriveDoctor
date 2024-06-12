@@ -24,5 +24,10 @@ public class ServicioModeloImpl implements ServicioModelo {
         return this.repositorioModelo.getByMarca(marca);
     }
 
+    @Override
+    public Modelo getById(Integer modeloId) {
+        return this.repositorioModelo.getById(modeloId);
+    }
+
 
 }
