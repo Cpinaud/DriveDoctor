@@ -44,7 +44,6 @@ public class ServicioVehiculoTest {
     public void init() {
         this.repositorioVehiculo = mock(RepositorioVehiculo.class);
         this.repositorioUsuario = mock(RepositorioUsuario.class);
-        this.repositorioModelo = mock(RepositorioUsuario.class);
         this.servicioVehiculo = new ServicioVehiculoImpl(this.repositorioVehiculo, this.repositorioUsuario);
 
     }
