@@ -12,7 +12,7 @@ public class ItemTablero {
     private String nombre;
     private String descripcion;
 
-    @OneToMany(mappedBy = "ItemTablero")
+    @OneToMany(mappedBy = "itemTablero")
     private List<Sintoma> sintomas;
 
     public ItemTablero(String nombre){

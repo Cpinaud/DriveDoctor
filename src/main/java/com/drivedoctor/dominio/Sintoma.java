@@ -13,7 +13,7 @@ public class Sintoma {
     private String descripcion;
 
     @ManyToOne
-    @JoinColumn(name = "iditemTablero")
+    @JoinColumn(name = "item_tablero_id")
     private ItemTablero itemTablero;
 
     @ManyToOne

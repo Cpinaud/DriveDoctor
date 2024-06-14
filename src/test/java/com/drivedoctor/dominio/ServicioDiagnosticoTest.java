@@ -54,7 +54,9 @@ public class ServicioDiagnosticoTest {
     @Test
     public void queSePuedaSaberElRiesgoDelCocheCuandoUnAutoTieneUnItemDeTipoMotor(){
         List<Sintoma> sintomasMock = new ArrayList<>();
-        sintomasMock.add(new Sintoma(ItemTablero.ItemMotor));
+        ItemTablero itemTableroMock = mock(ItemTablero.class);
+        when(itemTableroMock.getNombre()).thenReturn("ItemMotor");
+        sintomasMock.add(new Sintoma(itemTableroMock));
 
         double riesgoCalculado = servicioDiagnostico.calcularRiesgoPorSintoma(sintomasMock);
         double riesgoEsperado = 60.0;
@@ -65,7 +67,9 @@ public class ServicioDiagnosticoTest {
     @Test
     public void queSePuedaSaberElRiesgoDelCocheCuandoUnAutoTieneUnItemDeTipoFrenos(){
         List<Sintoma> sintomasMock = new ArrayList<>();
-        sintomasMock.add(new Sintoma(ItemTablero.ItemFreno));
+        ItemTablero itemTableroMock = mock(ItemTablero.class);
+        when(itemTableroMock.getNombre()).thenReturn("ItemFreno");
+        sintomasMock.add(new Sintoma(itemTableroMock));
 
         double riesgoCalculado = servicioDiagnostico.calcularRiesgoPorSintoma(sintomasMock);
         double riesgoEsperado = 20.0;
@@ -76,7 +80,9 @@ public class ServicioDiagnosticoTest {
     @Test
     public void queSePuedaSaberElRiesgoDelCocheCuandoUnAutoTieneUnItemDeTipoFiltroGasolina(){
         List<Sintoma> sintomasMock = new ArrayList<>();
-        sintomasMock.add(new Sintoma(ItemTablero.ItemFiltroGasolina));
+        ItemTablero itemTableroMock = mock(ItemTablero.class);
+        when(itemTableroMock.getNombre()).thenReturn("ItemFiltroGasolina");
+        sintomasMock.add(new Sintoma(itemTableroMock));
 
         double riesgoCalculado = servicioDiagnostico.calcularRiesgoPorSintoma(sintomasMock);
         double riesgoEsperado = 40.0;
@@ -98,8 +104,13 @@ public class ServicioDiagnosticoTest {
     @Test
     public void queSePuedaTenerMasDeUnItemEnElTablero(){
         List<Sintoma> sintomasMock = new ArrayList<>();
-        sintomasMock.add(new Sintoma(ItemTablero.ItemMotor));
-        sintomasMock.add(new Sintoma(ItemTablero.ItemFreno));
+        ItemTablero itemTableroMock = mock(ItemTablero.class);
+        when(itemTableroMock.getNombre()).thenReturn("ItemMotor");
+        ItemTablero itemTableroMock2 = mock(ItemTablero.class);
+
+        when(itemTableroMock.getNombre()).thenReturn("ItemFreno");
+        sintomasMock.add(new Sintoma(itemTableroMock));
+        sintomasMock.add(new Sintoma(itemTableroMock2));
 
         double riesgoCalculado = servicioDiagnostico.calcularRiesgoPorSintoma(sintomasMock);
         double riesgoEsperado = 80.0;
@@ -110,9 +121,16 @@ public class ServicioDiagnosticoTest {
     @Test
     public void queSePuedaTenerMasDeDosItemEnElTablero(){
         List<Sintoma> sintomasMock = new ArrayList<>();
-        sintomasMock.add(new Sintoma(ItemTablero.ItemFiltroGasolina));
-        sintomasMock.add(new Sintoma(ItemTablero.ItemFreno));
-        sintomasMock.add(new Sintoma(ItemTablero.ItemEPC));
+        ItemTablero itemTableroFrenoMock = mock(ItemTablero.class);
+        when(itemTableroFrenoMock.getNombre()).thenReturn("ItemFreno");
+        ItemTablero itemTableroGasolinaMock = mock(ItemTablero.class);
+        when(itemTableroGasolinaMock.getNombre()).thenReturn("ItemFiltroGasolina");
+        ItemTablero itemTableroEpcMock = mock(ItemTablero.class);
+        when(itemTableroEpcMock.getNombre()).thenReturn("ItemEpc");
+
+        sintomasMock.add(new Sintoma(itemTableroEpcMock));
+        sintomasMock.add(new Sintoma(itemTableroFrenoMock));
+        sintomasMock.add(new Sintoma(itemTableroGasolinaMock));
 
         double riesgoCalculado = servicioDiagnostico.calcularRiesgoPorSintoma(sintomasMock);
         double riesgoEsperado = 80.0;
@@ -124,8 +142,10 @@ public class ServicioDiagnosticoTest {
     @Test
     public void queEnCasoDeQueSeIngresenDosSintomasConElMismoItemNoSeSumen(){
         List<Sintoma> sintomasMock = new ArrayList<>();
-        sintomasMock.add(new Sintoma(ItemTablero.ItemFreno));
-        sintomasMock.add(new Sintoma(ItemTablero.ItemFreno));
+        ItemTablero itemTableroFrenoMock = mock(ItemTablero.class);
+        when(itemTableroFrenoMock.getNombre()).thenReturn("ItemFreno");
+        sintomasMock.add(new Sintoma(itemTableroFrenoMock));
+        sintomasMock.add(new Sintoma(itemTableroFrenoMock));
 
         double riesgoCalculado = servicioDiagnostico.calcularRiesgoPorSintoma(sintomasMock);
         double riesgoEsperado = 20.0;
@@ -137,9 +157,13 @@ public class ServicioDiagnosticoTest {
     @Test
     public void queEnCasoDeQueSeIngresenDosSintomasConElMismoItemNoSeSumenYAgregandoOtroItemAsiVerificamosQueSigaSumandoSiEsDiferente(){
         List<Sintoma> sintomasMock = new ArrayList<>();
-        sintomasMock.add(new Sintoma(ItemTablero.ItemFreno));
-        sintomasMock.add(new Sintoma(ItemTablero.ItemFreno));
-        sintomasMock.add(new Sintoma(ItemTablero.ItemMotor));
+        ItemTablero itemTableroFrenoMock = mock(ItemTablero.class);
+        when(itemTableroFrenoMock.getNombre()).thenReturn("ItemFreno");
+        ItemTablero itemTableroMotorMock = mock(ItemTablero.class);
+        when(itemTableroMotorMock.getNombre()).thenReturn("ItemMotor");
+        sintomasMock.add(new Sintoma(itemTableroFrenoMock));
+        sintomasMock.add(new Sintoma(itemTableroFrenoMock));
+        sintomasMock.add(new Sintoma(itemTableroMotorMock));
 
         double riesgoCalculado = servicioDiagnostico.calcularRiesgoPorSintoma(sintomasMock);
         double riesgoEsperado = 80.0;
@@ -150,9 +174,15 @@ public class ServicioDiagnosticoTest {
     @Test
     public void queEnCasoDeQueHallaVariosItemsYSupereEl100PorcientMuestreComoMaximoEseValor(){
         List<Sintoma> sintomasMock = new ArrayList<>();
-        sintomasMock.add(new Sintoma(ItemTablero.ItemAirbag));
-        sintomasMock.add(new Sintoma(ItemTablero.ItemFreno));
-        sintomasMock.add(new Sintoma(ItemTablero.ItemMotor));
+        ItemTablero itemTableroFrenoMock = mock(ItemTablero.class);
+        when(itemTableroFrenoMock.getNombre()).thenReturn("ItemFreno");
+        ItemTablero itemTableroAirbagMock = mock(ItemTablero.class);
+        when(itemTableroAirbagMock.getNombre()).thenReturn("ItemAirbag");
+        ItemTablero itemTableroMotorMock = mock(ItemTablero.class);
+        when(itemTableroMotorMock.getNombre()).thenReturn("ItemMotor");
+        sintomasMock.add(new Sintoma(itemTableroAirbagMock));
+        sintomasMock.add(new Sintoma(itemTableroFrenoMock));
+        sintomasMock.add(new Sintoma(itemTableroMotorMock));
 
 
         double riesgoCalculado = servicioDiagnostico.calcularRiesgoPorSintoma(sintomasMock);

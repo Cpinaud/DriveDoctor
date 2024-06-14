@@ -108,7 +108,7 @@ public class ControladorSintoma {
 
 
     }
-    @RequestMapping(value = "/mostrarSintomasDependiendoItems", method = RequestMethod.POST )
+    /* @RequestMapping(value = "/mostrarSintomasDependiendoItems", method = RequestMethod.POST )
     public ModelAndView mostrarSintomasDependiendoItems(@RequestParam("itemsTablero[]") String[] itemsTablero){
         ModelMap modelo = new ModelMap();
 
@@ -128,7 +128,7 @@ public class ControladorSintoma {
         return new ModelAndView("mostrar-sintoma", modelo);
 
 
-    }
+    } */
 
     private static void obtenerSintomas(List<Sintoma> sintomas, ModelMap modelo) {
         try {

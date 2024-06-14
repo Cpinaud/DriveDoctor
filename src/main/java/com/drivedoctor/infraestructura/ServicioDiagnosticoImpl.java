@@ -96,35 +96,36 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
             ItemTablero itemTablero = sintoma.getItemTablero();
 
             if(itemTablero != null && !itemsProcesados.contains(itemTablero)) {
-                switch (itemTablero) {
-                    case ItemFreno:
+                String nombreItemTablero = itemTablero.getNombre();
+                switch (nombreItemTablero) {
+                    case "ItemFreno":
                         riesgoTotal+= 20.0;
                         break;
-                    case ItemMotor:
+                    case "ItemMotor":
                         riesgoTotal += 60.0;
                         break;
-                    case ItemFiltroGasolina:
+                    case "ItemFiltroGasolina":
                         riesgoTotal += 40.0;
                         break;
-                    case ItemSuspension:
+                    case "ItemSuspension":
                         riesgoTotal += 10.0;
                         break;
-                    case ItemAirbag:
+                    case "ItemAirbag":
                         riesgoTotal += 40.0;
                         break;
-                    case ItemEmbrague:
+                    case "ItemEmbrague":
                         riesgoTotal += 50.0;
                         break;
-                    case ItemDireccion:
+                    case "ItemDireccion":
                         riesgoTotal += 20.0;
                         break;
-                    case ItemEstabilidad:
+                    case "ItemEstabilidad":
                         riesgoTotal += 5.0;
                         break;
-                    case ItemService:
+                    case "ItemService":
                         riesgoTotal += 40.0;
                         break;
-                    case ItemEPC:
+                    case "ItemEPC":
                         riesgoTotal += 20.0;
                         break;
                     default:
