@@ -41,7 +41,9 @@ public class RepositorioSintomaTest {
     @Rollback
     public void queSePuedaGuardarUnSintomaAsociadoAunItemDelTablero(){
 
-        Sintoma sintoma = this.crearSintoma(ItemTablero.ItemAirbag);
+        ItemTablero itemTableroGasolinaMock = crearItemTableroFiltroGasolinaMock();
+
+        Sintoma sintoma = this.crearSintoma(itemTableroGasolinaMock);
 
         this.repositorioSintoma.guardar(sintoma);
         this.sessionFactory.getCurrentSession().flush(); // Asegura que el ID se asigne
@@ -58,8 +60,8 @@ public class RepositorioSintomaTest {
     @Rollback
     public void queSePuedaObtenerUnSintomaAsociadoAunItemDelTablero(){
         sintomasExistentes();
-
-        List<Sintoma> sintomasObtenidos = this.repositorioSintoma.obtenerPorItemTablero(ItemTablero.ItemEPC);
+        ItemTablero itemTableroGasolinaMock = crearItemTableroFiltroGasolinaMock();
+        List<Sintoma> sintomasObtenidos = this.repositorioSintoma.obtenerPorItemTablero(itemTableroGasolinaMock);
 
         Integer cantidadEsperada = 1;
         assertThat(cantidadEsperada, equalTo(sintomasObtenidos.size()));
@@ -71,8 +73,8 @@ public class RepositorioSintomaTest {
     @Rollback
     public void queSePuedaObtenerDosSintomasAsociadoAunItemDelTablero(){
         sintomasExistentes();
-
-        List<Sintoma> sintomasObtenidos = this.repositorioSintoma.obtenerPorItemTablero(ItemTablero.ItemEmbrague);
+        ItemTablero itemTableroGasolinaMock = crearItemTableroFiltroGasolinaMock();
+        List<Sintoma> sintomasObtenidos = this.repositorioSintoma.obtenerPorItemTablero(itemTableroGasolinaMock);
 
         Integer cantidadEsperada = 2;
         assertThat(cantidadEsperada, equalTo(sintomasObtenidos.size()));
@@ -87,14 +89,26 @@ public class RepositorioSintomaTest {
     }
 
     private void sintomasExistentes() {
-        Sintoma sintoma = new Sintoma(ItemTablero.ItemEPC);
-        Sintoma sintoma2 = new Sintoma(ItemTablero.ItemEmbrague);
-        Sintoma sintoma3 = new Sintoma(ItemTablero.ItemEmbrague);
+        ItemTablero itemTableroGasolinaMock = crearItemTableroFiltroGasolinaMock();
+        ItemTablero itemTableroEmbragueMock = crearItemTableroEmbragueMock();
+
+        Sintoma sintoma = new Sintoma(itemTableroGasolinaMock);
+        Sintoma sintoma2 = new Sintoma(itemTableroEmbragueMock);
+        Sintoma sintoma3 = new Sintoma(itemTableroEmbragueMock);
 
         this.sessionFactory.getCurrentSession().save(sintoma);
         this.sessionFactory.getCurrentSession().save(sintoma2);
         this.sessionFactory.getCurrentSession().save(sintoma3);
 
+    }
+
+    private ItemTablero crearItemTableroFiltroGasolinaMock(){
+        ItemTablero itemTableroMock = new ItemTablero("itemFiltroGasolina");
+        return itemTableroMock;
+    }
+    private ItemTablero crearItemTableroEmbragueMock(){
+        ItemTablero itemTableroMock = new ItemTablero("itemEmbrague");
+        return itemTableroMock;
     }
 
 

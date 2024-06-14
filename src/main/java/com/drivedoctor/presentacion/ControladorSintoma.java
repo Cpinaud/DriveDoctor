@@ -1,6 +1,7 @@
 package com.drivedoctor.presentacion;
 
 import com.drivedoctor.dominio.ItemTablero;
+import com.drivedoctor.dominio.ServicioItemTablero;
 import com.drivedoctor.dominio.ServicioSintoma;
 import com.drivedoctor.dominio.Sintoma;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,13 @@ import java.util.stream.Collectors;
 public class ControladorSintoma {
 
     private ServicioSintoma servicioSintoma;
+    private ServicioItemTablero servicioItemTablero;
+
 
     @Autowired
-    public ControladorSintoma(ServicioSintoma servicioSintoma){
+    public ControladorSintoma(ServicioSintoma servicioSintoma) {
         this.servicioSintoma = servicioSintoma;
+
     }
 
 
@@ -40,8 +44,9 @@ public class ControladorSintoma {
     @RequestMapping("/nuevoSintoma")
     public ModelAndView nuevoSintoma() {
         ModelAndView modelAndView = new ModelAndView("nuevo-sintoma");
-        List<String> opcionesItemTablero = Arrays.stream(ItemTablero.values())
-                .map(Enum::name)
+        List<ItemTablero> itemsTablero = servicioItemTablero.obtenerTodosLosItems();
+        List<String> opcionesItemTablero = itemsTablero.stream()
+                .map(ItemTablero::getNombre)
                 .collect(Collectors.toList());
         modelAndView.addObject("opcionesItemTablero", opcionesItemTablero);
         modelAndView.addObject("sintoma", new Sintoma());
@@ -62,8 +67,9 @@ public class ControladorSintoma {
     @RequestMapping("/mostrarSintomaPorItem")
     public ModelAndView mostrarSintoma() {
         ModelAndView modelAndView = new ModelAndView("item-tablero");
-        List<String> opcionesItemTablero = Arrays.stream(ItemTablero.values())
-                .map(ItemTablero::name)
+        List<ItemTablero> itemsTablero = servicioItemTablero.obtenerTodosLosItems();
+        List<String> opcionesItemTablero = itemsTablero.stream()
+                .map(ItemTablero::getNombre)
                 .collect(Collectors.toList());
         modelAndView.addObject("opcionesItemTablero", opcionesItemTablero);
         modelAndView.addObject("sintoma", new Sintoma());
@@ -73,9 +79,9 @@ public class ControladorSintoma {
     @RequestMapping("/mostrarSintomasPorItems")  //PROBLEM
     public ModelAndView mostrarSintomas() {
         ModelAndView modelAndView = new ModelAndView("items-tablero");
-
-        List<String> opcionesItemsTablero = Arrays.stream(ItemTablero.values())
-                .map(ItemTablero::name)
+        List<ItemTablero> itemsTablero = servicioItemTablero.obtenerTodosLosItems();
+        List<String> opcionesItemsTablero = itemsTablero.stream()
+                .map(ItemTablero::getNombre)
                 .collect(Collectors.toList());
 
 
@@ -108,7 +114,7 @@ public class ControladorSintoma {
 
 
         List<ItemTablero> items = Arrays.stream(itemsTablero)
-                .map(ItemTablero::valueOf)
+                .map(ItemTablero::getDescripcion)
                 .collect(Collectors.toList());
 
 

@@ -12,7 +12,8 @@ public class Sintoma {
     private String nombre;
     private String descripcion;
 
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
+    @JoinColumn(name = "iditemTablero")
     private ItemTablero itemTablero;
 
     @ManyToOne

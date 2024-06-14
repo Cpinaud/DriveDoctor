@@ -41,7 +41,7 @@ public class RepositorioSintomaImpl implements RepositorioSintoma {
     public List<Sintoma> obtenerPorItemTablero(ItemTablero itemTablero) {
             System.out.println(itemTablero);
         try {
-            String sql = "From Sintoma where itemTablero = :itemTablero";
+            String sql = "From Sintoma s where s.itemTablero = :itemTablero";
             Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
             query.setParameter("itemTablero", itemTablero);
 
