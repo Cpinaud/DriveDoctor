@@ -7,7 +7,9 @@ public interface ServicioSintoma {
 
     List<Sintoma> problemaEnTablero(ItemTablero itemTablero);
     void guardarSintoma(Sintoma sintoma);
+    List<Sintoma> findAll();
 
+    List<Sintoma> problemasEnTablero(List<ItemTablero> items);
 
 
 }

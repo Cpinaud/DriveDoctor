@@ -1,10 +1,15 @@
 package com.drivedoctor.dominio;
+import com.drivedoctor.dominio.excepcion.*;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 public interface ServicioVehiculo {
 
-    void agregarVehiculo(Vehiculo vehiculos);
+    void agregarVehiculo(Integer usuarioId,Vehiculo vehiculo) throws UsuarioInexistente, AnioInvalido, PatenteInvalida, PatenteExistente;
 
-    List<Vehiculo> verVehiculos();
+    List<Vehiculo> verVehiculos(HttpServletRequest request) throws UserSinPermiso;
 
     List<Vehiculo> getPorMarca(Marca marca);
+
+
 }

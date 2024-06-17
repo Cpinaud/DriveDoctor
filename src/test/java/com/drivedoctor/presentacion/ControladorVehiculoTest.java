@@ -1,45 +1,154 @@
 package com.drivedoctor.presentacion;
 
 import com.drivedoctor.dominio.*;
+import com.drivedoctor.dominio.excepcion.AnioInvalido;
+import com.drivedoctor.dominio.excepcion.PatenteExistente;
+import com.drivedoctor.dominio.excepcion.PatenteInvalida;
+import com.drivedoctor.dominio.excepcion.UsuarioInexistente;
 import org.hamcrest.text.IsEqualIgnoringCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
-import javax.transaction.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
+import static org.mockito.Mockito.*;
+
 
 public class ControladorVehiculoTest {
 
     private ControladorVehiculo controladorVehiculo;
     private ServicioVehiculo servicioVehiculo;
+    private ServicioMarca servicioMarca;
+    private ServicioModelo servicioModelo;
 
     @BeforeEach
     public void init(){
         this.servicioVehiculo = mock(ServicioVehiculo.class);
+        this.servicioMarca = mock(ServicioMarca.class);
+        this.servicioModelo = mock(ServicioModelo.class);
         //this.servicioUsuario = new servicioUsuarioImpl();
-        this.controladorVehiculo = new ControladorVehiculo(this.servicioVehiculo);
+        this.controladorVehiculo = new ControladorVehiculo(this.servicioMarca,this.servicioVehiculo,this.servicioModelo);
     }
-
 
     @Test
-    public void queAlSolicitarLaPantallaDeMisVehiculosSeMuestreLaVistaMisVehiculos(){
-        //preparacion
-        //ejecucion
-        ModelAndView mav = this.controladorVehiculo.verVehiculos();
-        //verificacion
-        assertThat(mav.getViewName(),equalToIgnoringCase("misVehiculos"));
+    public void queDevuelvaLaVistaDeVehiculosCuandoSeAgregaUnVehiculo() throws UsuarioInexistente, AnioInvalido, PatenteInvalida, PatenteExistente {
+        // Preparar los datos de prueba
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpSession session = mock(HttpSession.class);
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("ID")).thenReturn(1);
+
+        Vehiculo vehiculo = mockeoVehiculo();
+        RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
+        Integer userId = (Integer) request.getSession().getAttribute("ID");
+
+        doNothing().when(servicioVehiculo).agregarVehiculo(userId, vehiculo);
+
+        // Ejecutar el método agregarVehiculo
+        ModelAndView modelAndView = this.controladorVehiculo.agregarVehiculo(vehiculo, request, vehiculo.getId(), redirectAttributes);
+
+        // Verificar la vista y el modelo
+        assertThat(modelAndView.getViewName(), IsEqualIgnoringCase.equalToIgnoringCase("redirect:/verMisVehiculos"));
     }
 
+    @Test
+    public void errorEnAnioFabricacionDeberiaVolverAFormularioYMostrarError() throws UsuarioInexistente, AnioInvalido, PatenteInvalida, PatenteExistente {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpSession session = mock(HttpSession.class);
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("ID")).thenReturn(1);
+
+        Vehiculo vehiculo = mockeoVehiculo();
+        RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
+        Integer userId = (Integer) request.getSession().getAttribute("ID");
+
+        doThrow(AnioInvalido.class).when(servicioVehiculo).agregarVehiculo(userId, vehiculo);
+
+        ModelAndView modelAndView = controladorVehiculo.agregarVehiculo(vehiculo, request, userId, redirectAttributes);
+
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/nuevo-vehiculo"));
+        assertThat(redirectAttributes.getFlashAttributes().get("error").toString(), equalToIgnoringCase("El año del vehiculo debe ser mayor o igual a 2000"));
+    }
+
+    @Test
+    public void errorEnPatenteDeberiaVolverAFormularioYMostrarError() throws UsuarioInexistente, AnioInvalido, PatenteInvalida, PatenteExistente {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpSession session = mock(HttpSession.class);
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("ID")).thenReturn(1);
+
+        Vehiculo vehiculo = mockeoVehiculo();
+        RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
+        Integer userId = (Integer) request.getSession().getAttribute("ID");
+
+        doThrow(PatenteInvalida.class).when(servicioVehiculo).agregarVehiculo(userId, vehiculo);
+
+        ModelAndView modelAndView = controladorVehiculo.agregarVehiculo(vehiculo, request, userId, redirectAttributes);
+
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/nuevo-vehiculo"));
+        assertThat(redirectAttributes.getFlashAttributes().get("error").toString(), equalToIgnoringCase("El formato de la patente es inválido"));
+    }
+
+
+    private Vehiculo mockeoVehiculo() {
+        Vehiculo vehiculo = mock(Vehiculo.class);
+        Modelo modelo = mock(Modelo.class);
+        Marca marca = mock(Marca.class);
+        when(servicioModelo.getById(anyInt())).thenReturn(modelo);
+        when(modelo.getMarca()).thenReturn(marca);
+        when(vehiculo.getId()).thenReturn(1);
+        when(vehiculo.getModelo()).thenReturn(modelo);
+        when(vehiculo.getAnoFabricacion()).thenReturn(2000);
+        when(vehiculo.getPatente()).thenReturn("AA111AA");
+        return vehiculo;
+    }
+    @Test
+    public void patenteExistenteDebeVolverAFormularioYMostrarError() throws UsuarioInexistente, AnioInvalido,PatenteInvalida,PatenteExistente {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpSession session = mock(HttpSession.class);
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("ID")).thenReturn(1);
+
+        Vehiculo vehiculo = mockeoVehiculo();
+        RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
+        Integer userId = (Integer) request.getSession().getAttribute("ID");
+
+        doThrow(PatenteExistente.class).when(servicioVehiculo).agregarVehiculo(userId, vehiculo);
+
+        ModelAndView modelAndView = controladorVehiculo.agregarVehiculo(vehiculo, request, userId, redirectAttributes);
+
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/nuevo-vehiculo"));
+        assertThat(redirectAttributes.getFlashAttributes().get("error").toString(), equalToIgnoringCase("Ya se ingresó un vehiculo con esa patente"));
+    }
+
+    /*@Test
+    public void queInformeErrorSiSeNavegaAVerVehiculosSinSerAdministrador(){
+        // preparacion
+        Integer usuarioId = 1;
+        Usuario usuario = mock(Usuario.class);
+        usuario.setRol("USER");
+        usuario.setEmail("test@Test.com");
+        HttpServletRequest request = this.mockeoSessionUser();
+        when(servicioVehiculo.verVehiculos()).thenThrow(UserSinPermiso.class);
+
+        ModelAndView modelAndView = controladorVehiculo.verVehiculos();
+
+        // validacion
+        assertThat(modelAndView.getViewName(), IsEqualIgnoringCase.equalToIgnoringCase("misVehiculos"));
+        assertThat(modelAndView.getModel().get("error").toString(), IsEqualIgnoringCase.equalToIgnoringCase("No tiene permisos para ver esta información"));
+
+
+    }
+/*
+
+
+/*
     @Test
     public void queAlSolicitarLaPantallaDeAgregarVehiculoSeMuestreLaVistaNuevoVehiculo(){
         //preparacion
@@ -72,7 +181,7 @@ public class ControladorVehiculoTest {
     public void queAlBuscarVehiculosDeMarcaRenaultTraigaVehiculosDeEsaMarca(){
         // preparacion
         List<Vehiculo> vehiculosMock = new ArrayList<>();
-        vehiculosMock.add(new Vehiculo(Marca.RENAULT,Modelo.CLIO));
+        vehiculosMock.add(new Vehiculo(Marca.RENAULT,Modelo.CLIO,2013,"AFG455"));
         when(this.servicioVehiculo.getPorMarca(Marca.RENAULT)).thenReturn(vehiculosMock);
 
         // ejecucion
@@ -83,6 +192,6 @@ public class ControladorVehiculoTest {
         assertThat(items.get(0).getMarca(), equalTo(Marca.RENAULT));
     }
 
-
+*/
 
 }

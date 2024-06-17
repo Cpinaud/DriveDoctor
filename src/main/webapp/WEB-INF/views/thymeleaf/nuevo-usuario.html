@@ -15,14 +15,10 @@
 </head>
 
 <body>
+<main>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-  <a class="navbar-brand" href="/spring/home"><img src="static/logo.png"></a>
-</nav>
-<main role="main" class="container">
-
-  <div class = "container">
-    <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+  <div class = "container d-flex justify-content-center">
+    <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-sm-8">
       <form action="#" th:action="@{/registrarme}" method="POST" th:object="${usuario}">
         <h3 class="form-signin-heading">SingIn</h3>
         <hr class="colorgraph"><br>
@@ -33,7 +29,10 @@
         <label>Password: </label>
         <input th:field="*{password}" type="password" id="password" class="form-control" required/>
 
-        <button id="btn-registrarme" class="btn btn-outline-dark" Type="Submit">Registrarme</button>
+        <div>
+          <button id="btn-registrarme" class="btn boton-principal" Type="Submit">Registrarme</button>
+        </div>
+
         <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}">
         </p>
       </form>
@@ -46,5 +45,6 @@
 
 <!-- Boostrap core js -->
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/sidebar.js}"></script>
 </body>
 </html>

@@ -3,35 +3,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
   <title>DriveDoctor</title>
-
-  <!-- Boostrap core css -->
+  <!-- Bootstrap core css -->
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
-
-  <!-- custom style -->
+  <!-- Custom style -->
   <link rel="stylesheet" th:href="@{/css/main.css}"/>
-
 </head>
-
 <body>
+<main >
+  <!-- Incluir el fragmento del sidebar -->
+  <div th:include="templates/sidebar.html"></div>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-dark">
-  <a class="navbar-brand" href="/spring/home"><img src="static/logo.png"></a>
-</nav>
-
-<main role="main" class="container mainc">
-  <div >
-    <h1><span th:text="'Hola, ' + ${userName}" ></span></h1>
-  </div>
-  <div id="links">
-    <a href="/spring/verVehiculos" class="btn btn-outline-dark">Mis Vehiculos</a>
-    <a href="/spring/nuevo-vehiculo" class="btn btn-outline-dark">Agregar Vehiculo</a>
-    <a href="login.html" class="btn btn-outline-dark">Volver</a>
-    <a th:href="@{/sintoma}" id="irSintoma" class="btn btn-outline-dark">Ir a Síntoma</a>
+  <div class="container" style="margin-top:50px;">
+    <h1><span th:text="'Hola, ' + ${name}"></span></h1>
   </div>
 </main>
 
+<!-- js -->
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/sidebar.js}"></script>
 </body>
 </html>

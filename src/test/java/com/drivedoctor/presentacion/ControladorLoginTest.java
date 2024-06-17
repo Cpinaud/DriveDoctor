@@ -13,6 +13,8 @@ import javax.servlet.http.HttpSession;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.util.AssertionErrors.assertNotNull;
+import static org.springframework.test.util.AssertionErrors.assertNull;
 
 public class ControladorLoginTest {
 
@@ -50,7 +52,7 @@ public class ControladorLoginTest {
 	}
 	
 	@Test
-	public void loginConUsuarioYPasswordCorrectosDeberiaLLevarAHome(){
+	public void loginConUsuarioYPasswordCorrectosDeberiaLLevarAHomeYMostrarNombre(){
 		// preparacion
 		Usuario usuarioEncontradoMock = mock(Usuario.class);
 		when(usuarioEncontradoMock.getRol()).thenReturn("ADMIN");
@@ -64,6 +66,7 @@ public class ControladorLoginTest {
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("home"));
 		verify(sessionMock, times(1)).setAttribute("ROL", usuarioEncontradoMock.getRol());
+		verify(sessionMock, times(1)).setAttribute("name", usuarioEncontradoMock.getNombre());
 	}
 
 	@Test
@@ -102,4 +105,24 @@ public class ControladorLoginTest {
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
 		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Error al registrar el nuevo usuario"));
 	}
+
+	@Test
+	public void queAlCerrarSesionVayaAlLogin()  {
+		ModelAndView modelAndView = this.controladorLogin.cerrarSesion(requestMock);
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/login"));
+
+	}
+
+	@Test
+	public void queAlCerrarSesionSeElimineLaSesionActual() {
+
+		when(requestMock.getSession()).thenReturn(sessionMock);
+		this.controladorLogin.cerrarSesion(requestMock);
+
+		when(requestMock.getSession()).thenReturn(null);
+
+
+		assertNull("Fallo", requestMock.getSession());
+	}
+
 }

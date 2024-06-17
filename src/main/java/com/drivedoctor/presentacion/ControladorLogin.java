@@ -39,7 +39,9 @@ public class ControladorLogin {
         Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLogin.getEmail(), datosLogin.getPassword());
         if (usuarioBuscado != null) {
             request.getSession().setAttribute("ROL", usuarioBuscado.getRol());
-            model.put("userName",usuarioBuscado.getNombre());
+            request.getSession().setAttribute("ID", usuarioBuscado.getId());
+            request.getSession().setAttribute("name", usuarioBuscado.getNombre());
+            model.put("name",usuarioBuscado.getNombre());
             return new ModelAndView("home",model);
         } else {
             model.put("error", "Usuario o clave incorrecta");
@@ -73,12 +75,26 @@ public class ControladorLogin {
     }
 
     @RequestMapping(path = "/home", method = RequestMethod.GET)
-    public ModelAndView irAHome() {
-        return new ModelAndView("home");
+    public ModelAndView irAHome(HttpServletRequest request)
+    {
+        ModelMap model = new ModelMap();
+        model.put("name",request.getSession().getAttribute("name"));
+        return new ModelAndView("home",model);
     }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public ModelAndView inicio() {
+        return new ModelAndView("redirect:/login");
+    }
+
+
+    @RequestMapping("/logout")
+    public ModelAndView cerrarSesion(HttpServletRequest request) {
+
+        if (request.getSession() != null) {
+            request.getSession().invalidate(); // Invalida la sesión si existe
+        }
+
         return new ModelAndView("redirect:/login");
     }
 }

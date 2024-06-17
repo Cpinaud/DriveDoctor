@@ -1,45 +1,117 @@
+:root {
+    --color-fondo: #1F2128;
+    --color-principal: #A162F7;
+    --color-secundario: rgb(217, 170, 31);
+    --color-oscuro-2: #242731;
+    --color-blanco: #FFFFFF;
+    --color-negro: #000000;
+}
+
+html {
+    height: -webkit-fill-available;
+    height: 100%;
+}
+
 body {
-    color:black;
+    display: flex;
+    color: var(--color-blanco)!important;
+    background-color: var(--color-fondo)!important;
+    height: 100%;
+    height: -webkit-fill-available;
+    margin: 0;
 }
+
+main {
+    flex: 1;
+    display: flex;
+    flex-wrap: nowrap;
+    height: 100%;
+    height: -webkit-fill-available;
+    max-height: 100vh;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.bi {
+    vertical-align: -.125em;
+    pointer-events: none;
+    fill: currentColor;
+}
+
 .starter-template {
-  padding: 3rem 1.5rem;
-  text-align: center;
+    padding: 3rem 1.5rem;
+    text-align: center;
 }
 
-.navbar-brand{
-    margin:0 2rem;
+a {
+    text-decoration: none;
+    color: var(--color-negro);
 }
 
-a{
-    text-decoration:none;
-    color:black;
-}
-
-img{
+img {
     width: 30%;
     height: 35%;
 }
 
-#links{
-    display:flex;
-    flex-direction: column;
-    align-content: space-between;
-    text-align: center;
-}
-
-.misVH{
+#links {
     display: flex;
     flex-direction: column;
-    align-content: space-between;
-
+    align-items: center;
+    gap: 10px;
 }
-.buscador{
+
+.btn.boton-principal {
+    background-color: var(--color-principal);
+    color: var(--color-blanco);
+    text-align: center;
+    text-decoration: none;
+}
+
+.btn.boton-secundario {
+    background-color: var(--color-fondo);
+    border: 2px solid var(--color-principal);
+    color: var(--color-blanco);
+    text-align: center;
+    text-decoration: none;
+}
+.btn.boton-secundario:hover {
+    border: 2px solid var(--color-blanco);
+}
+.buscador {
     width: 30%;
 }
-form{
-    display:flex;
-    flex-direction: column;
-    align-content: space-between;
-    align-content: space-around;
+
+.colorOscuro-2 {
+    background-color: var(--color-oscuro-2);
 }
 
+.btn-outline-dark {
+    background-color: var(--color-principal)!important;
+    color: var(--color-blanco);
+    width:100%;
+}
+
+.btn-outline-dark:hover {
+    border-color: var(--color-blanco);
+}
+
+.nav-link:hover {
+    background-color: #8b8b8b29 !important;
+    color: var(--color-blanco) !important;
+}
+
+.nav-link.active {
+    background-color: rgba(144, 142, 142, 0.21) !important;
+    color: var(--color-blanco) !important;
+}
+.table.table-striped.custom-table{
+    background-color:var(--color-oscuro-2);
+    color: var(--color-blanco);
+    margin-top: 15px;
+}
+.table.table-striped.custom-table td{
+    color: var(--color-blanco);
+}
+.table.table-striped.custom-table tbody tr:nth-child(odd){
+    background-color: var(--color-fondo);
+}

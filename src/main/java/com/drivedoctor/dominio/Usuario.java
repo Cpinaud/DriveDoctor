@@ -7,23 +7,27 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.servlet.http.HttpServletRequest;
 
 @Entity
-public class Usuario {
+public class Usuario  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     private String email;
     private String nombre;
     private String password;
     private String rol;
     private Boolean activo = false;
 
-    public Long getId() {
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Vehiculo> vehiculos = new ArrayList<>();
+
+    public Integer getId() {
         return id;
     }
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     public String getEmail() {
@@ -67,4 +71,11 @@ public class Usuario {
         this.nombre = nombre;
     }
 
+    public List<Vehiculo> getVehiculos() {
+        return vehiculos;
+    }
+
+    public void setVehiculos(List<Vehiculo> vehiculos) {
+        this.vehiculos = vehiculos;
+    }
 }

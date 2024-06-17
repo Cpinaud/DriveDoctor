@@ -23,7 +23,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {HibernateTestConfig.class})
+@ContextConfiguration(classes = {HibernateTestInfraestructuraConfig.class})
 public class RepositorioSintomaTest {
 
     @Autowired
@@ -39,49 +39,45 @@ public class RepositorioSintomaTest {
     @Test
     @Transactional
     @Rollback
-    public void queSePuedaGuardarUnSintoma(){
+    public void queSePuedaGuardarUnSintomaAsociadoAunItemDelTablero(){
 
-        Sintoma sintoma = this.crearSintoma(ItemTablero.AIRBAG);
+        Sintoma sintoma = this.crearSintoma(ItemTablero.ItemAirbag);
 
         this.repositorioSintoma.guardar(sintoma);
+        this.sessionFactory.getCurrentSession().flush(); // Asegura que el ID se asigne
 
         Sintoma sintomaObtenido = (Sintoma) this.sessionFactory.getCurrentSession()
-                .createQuery("FROM Sintoma where idSintoma = 4").getSingleResult();
-
+                .createQuery("FROM Sintoma WHERE idSintoma = :id")
+                .setParameter("id", sintoma.getIdSintoma())
+                .getSingleResult();
 
         assertThat(sintomaObtenido, equalTo(sintoma));
-//No se por que cuando corro todos juntos me da 4 y si corro de a uno el idSintoma es 1
+    }
+    @Test
+    @Transactional
+    @Rollback
+    public void queSePuedaObtenerUnSintomaAsociadoAunItemDelTablero(){
+        sintomasExistentes();
+
+        List<Sintoma> sintomasObtenidos = this.repositorioSintoma.obtenerPorItemTablero(ItemTablero.ItemEPC);
+
+        Integer cantidadEsperada = 1;
+        assertThat(cantidadEsperada, equalTo(sintomasObtenidos.size()));
+
 
     }
     @Test
     @Transactional
     @Rollback
-    public void queSePuedaBuscarUnSintomaPorUnTipoDeItemEnElTablero(){
-    sintomasExistentes();
+    public void queSePuedaObtenerDosSintomasAsociadoAunItemDelTablero(){
+        sintomasExistentes();
 
-    List<Sintoma> sintomasObtenidos = this.repositorioSintoma.obtenerPorItemTablero(ItemTablero.EPC);
+        List<Sintoma> sintomasObtenidos = this.repositorioSintoma.obtenerPorItemTablero(ItemTablero.ItemEmbrague);
 
-    Integer cantidadObtenida = 1;
-    assertThat(cantidadObtenida, equalTo(sintomasObtenidos.size()));
-
-
-    }
-    @Test
-    @Transactional
-    @Rollback
-    public void queTePuedaTraerDosSintomasConElMismoItemEnElTablero(){
-    sintomasExistentes();
-
-    List<Sintoma> sintomasObtenidos = this.repositorioSintoma.obtenerPorItemTablero(ItemTablero.EMBRAGUE);
-
-    Integer cantidadObtenida = 2;
-    assertThat(cantidadObtenida, equalTo(sintomasObtenidos.size()));
+        Integer cantidadEsperada = 2;
+        assertThat(cantidadEsperada, equalTo(sintomasObtenidos.size()));
 
     }
-
-   
-
-
 
 
     private Sintoma crearSintoma(ItemTablero itemTablero) {
@@ -91,9 +87,9 @@ public class RepositorioSintomaTest {
     }
 
     private void sintomasExistentes() {
-        Sintoma sintoma = new Sintoma(ItemTablero.EPC);
-        Sintoma sintoma2 = new Sintoma(ItemTablero.EMBRAGUE);
-        Sintoma sintoma3 = new Sintoma(ItemTablero.EMBRAGUE);
+        Sintoma sintoma = new Sintoma(ItemTablero.ItemEPC);
+        Sintoma sintoma2 = new Sintoma(ItemTablero.ItemEmbrague);
+        Sintoma sintoma3 = new Sintoma(ItemTablero.ItemEmbrague);
 
         this.sessionFactory.getCurrentSession().save(sintoma);
         this.sessionFactory.getCurrentSession().save(sintoma2);

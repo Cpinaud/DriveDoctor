@@ -4,25 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menú de Opciones</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Boostrap core css -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+
+    <!-- custom style -->
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
 <body>
+<main>
+    <!-- Incluir el fragmento del sidebar -->
+    <div th:include="templates/sidebar.html"></div>
 
-<div class="container mt-3">
-    <h1>Opciones</h1>
+        <div class="container" style="margin-top:50px;">
+            <h2>Diagnosticar</h2>
+            <br>
+            <h3>Opciones</h3>
+            <br>
+            <a th:href="@{/nuevoSintoma}" class="btn boton-principal mr-2">Nuevo Síntoma</a>
 
-    <div class="container mt-3">
-        <!-- Opción para ir a la página de Nuevo Síntoma -->
-        <a th:href="@{/nuevoSintoma}" class="btn btn-outline-dark mr-2">Nuevo Síntoma</a>
+            <a th:href="@{/mostrarSintomaPorItem}" class="btn boton-principal">Tengo un item en mi tablero...</a>
 
-        <!-- Opción para ir a la página de Mostrar Síntomas por Item del Tablero -->
-        <a th:href="@{/mostrarSintomaPorItem}" class="btn btn-outline-dark">Tengo un item en mi tablero...</a>
-    </div>
-</div>
+            <a th:href="@{/mostrarSintomasPorItems}" class="btn boton-principal">Tengo varios items en mi tablero...</a>
+        </div>
 
-<!-- Bootstrap JS (opcional, si necesitas funcionalidad de Bootstrap) -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</main>
+
+
+
+<script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/sidebar.js}"></script>
 </body>
 </html>
 

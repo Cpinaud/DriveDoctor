@@ -10,45 +10,63 @@
 
     <!-- custom style -->
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <style>
+        .table-container {
+            max-height: 300px; /* Puedes ajustar este valor según lo que necesites */
+            overflow-y: auto;
+        }
+    </style>
 </head>
 <body>
+<main>
+    <!-- Incluir el fragmento del sidebar -->
+    <div th:include="templates/sidebar.html"></div>
 
-<!-- Aquí va el contenido de tu página -->
-<nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <a class="navbar-brand" href="/spring/home"><img src="static/logo.png"></a>
-</nav>
-
-    <h1>Vehiculos</h1>
-
-
-<main class="misVH">
-    <div>
-        <ul  th:each="vehiculo : ${vehiculos}" >
-            <li th:text="${vehiculo.marca}"></li>
-            <li th:text="${vehiculo.modelo}"></li>
-        </ul>
+    <div class="container" style="margin-top:50px;">
+        <div class="col-md-6">
+            <h3>Filtrar vehículos por marca</h3>
+                <form action="#" th:action="@{/buscarPorMarca}" method="POST">
+                    <label>Marca: </label>
+                    <select name="marca" id="marca" class="form-control" required>
+                        <option th:each="marca : ${marcas}"
+                                th:value="${marca.id}" th:text="${marca.nombre}"></option>
+                    </select>
+                    <button id="btn-registrarme" class="btn boton-principal" type="Submit">Buscar</button>
+                </form>
+        </div>
+        <div class="col-md-10">
+            <div class="table-container">
+                <div>
+                    <table class="table table-striped custom-table">
+                        <thead>
+                        <tr>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Año</th>
+                            <th>Patente</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="vehiculo : ${vehiculos}">
+                            <td th:text="${vehiculo.marca.nombre}"></td>
+                            <td th:text="${vehiculo.modelo.nombre}"></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <p th:if="${mensaje != null}" class="alert alert-danger" th:text="${mensaje}"></p>
+        <p th:if="${error != null}" class="alert alert-danger" th:text="${error}"></p>
     </div>
-    <hr>
-    <div class="buscador">
-
-        <h3>Filtrar vehiculos por marca</h3>
-        <form action="#" th:action="@{/buscarPorMarca}" method="POST">
-            <label>Marca: </label>
-            <select name="marca" id="marca" class="form-control" required>
-                <option th:each="marca : ${T(com.drivedoctor.dominio.Marca).values()}"
-                        th:value="${marca}" th:text="${marca}"></option>
-            </select>
-            <button id="btn-registrarme" class="btn btn-outline-dark" Type="Submit">Buscar</button>
-        </form>
-    </div>
-
-
 </main>
 
-<footer>
-
-</footer>
-
 <!-- Scripts JavaScript -->
+<script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/sidebar.js}"></script>
 </body>
 </html>
