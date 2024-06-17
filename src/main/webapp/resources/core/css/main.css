@@ -1,7 +1,7 @@
 :root {
     --color-fondo: #1F2128;
     --color-principal: #A162F7;
-    --color-secundario: #0d6efd;
+    --color-secundario: rgb(217, 170, 31);
     --color-oscuro-2: #242731;
     --color-blanco: #FFFFFF;
     --color-negro: #000000;
@@ -61,23 +61,22 @@ img {
 }
 
 .btn.boton-principal {
-    margin-top: 10px;
     background-color: var(--color-principal);
     color: var(--color-blanco);
-    width: 100%;
     text-align: center;
     text-decoration: none;
 }
 
 .btn.boton-secundario {
-    background-color: var(--color-secundario);
+    background-color: var(--color-fondo);
+    border: 2px solid var(--color-principal);
     color: var(--color-blanco);
-    width: 100%;
     text-align: center;
     text-decoration: none;
-    margin-top: 10px;
 }
-
+.btn.boton-secundario:hover {
+    border: 2px solid var(--color-blanco);
+}
 .buscador {
     width: 30%;
 }
@@ -87,15 +86,13 @@ img {
 }
 
 .btn-outline-dark {
-    background-color: var(--color-blanco);
-    color: var(--color-fondo);
-    border: 2px solid var(--color-principal);
+    background-color: var(--color-principal)!important;
+    color: var(--color-blanco);
+    width:100%;
 }
 
 .btn-outline-dark:hover {
-    background-color: var(--color-principal);
-    color: var(--color-blanco);
-    border-color: var(--color-principal);
+    border-color: var(--color-blanco);
 }
 
 .nav-link:hover {
@@ -106,4 +103,15 @@ img {
 .nav-link.active {
     background-color: rgba(144, 142, 142, 0.21) !important;
     color: var(--color-blanco) !important;
+}
+.table.table-striped.custom-table{
+    background-color:var(--color-oscuro-2);
+    color: var(--color-blanco);
+    margin-top: 15px;
+}
+.table.table-striped.custom-table td{
+    color: var(--color-blanco);
+}
+.table.table-striped.custom-table tbody tr:nth-child(odd){
+    background-color: var(--color-fondo);
 }

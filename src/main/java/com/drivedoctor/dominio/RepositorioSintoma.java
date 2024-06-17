@@ -9,5 +9,7 @@ public interface RepositorioSintoma {
     List<Sintoma> obtenerPorItemTablero(ItemTablero itemTablero);
     List<Sintoma> getAll();
 
+    Sintoma findById(Integer idSintoma);
     List<Sintoma> obtenerPorItemsTablero(List<ItemTablero> items);
+    List<Sintoma> obtenerPorIds(List<Integer> idSintomas);
 }

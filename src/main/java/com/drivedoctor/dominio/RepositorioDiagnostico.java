@@ -1,5 +1,6 @@
 package com.drivedoctor.dominio;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface RepositorioDiagnostico {
@@ -8,4 +9,8 @@ public interface RepositorioDiagnostico {
     void guardar(Diagnostico diagnostico);
 
     Diagnostico findById(Integer idDiagnostico);
+    List<Diagnostico> findByIds(List<Integer> idsDiagnostico);
+
+    List<Diagnostico> obtenerPorSintomasIds(List<Integer> idSintomas);
+    Diagnostico obtenerPorSintomaId(Integer idSintoma);
 }

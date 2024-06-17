@@ -1,6 +1,7 @@
 package com.drivedoctor.infraestructura;
 
 import com.drivedoctor.dominio.ItemTablero;
+import com.drivedoctor.dominio.RepositorioItemTablero;
 import com.drivedoctor.dominio.RepositorioSintoma;
 import com.drivedoctor.dominio.Sintoma;
 import com.drivedoctor.infraestructura.config.HibernateTestInfraestructuraConfig;
@@ -17,10 +18,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.transaction.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.mockito.Mockito.mock;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {HibernateTestInfraestructuraConfig.class})
@@ -30,58 +33,78 @@ public class RepositorioSintomaTest {
     private SessionFactory sessionFactory;
 
     private RepositorioSintoma repositorioSintoma;
+    private RepositorioItemTablero repositorioItemTableroMock;
 
     @BeforeEach
     public void init(){
         this.repositorioSintoma = new RepositorioSintomaImpl(this.sessionFactory);
+        this.repositorioItemTableroMock = mock(RepositorioItemTablero.class);
     }
 
     @Test
     @Transactional
     @Rollback
-    public void queSePuedaGuardarUnSintoma(){
+    public void queSePuedaGuardarUnSintomaAsociadoAunItemDelTablero(){
 
-        Sintoma sintoma = this.crearSintoma(ItemTablero.AIRBAG);
+        ItemTablero itemTableroGasolinaMock = crearItemTableroFiltroGasolinaMock();
+
+        Sintoma sintoma = this.crearSintoma(itemTableroGasolinaMock);
 
         this.repositorioSintoma.guardar(sintoma);
+        this.sessionFactory.getCurrentSession().flush(); // Asegura que el ID se asigne
 
         Sintoma sintomaObtenido = (Sintoma) this.sessionFactory.getCurrentSession()
-                .createQuery("FROM Sintoma where idSintoma = 4").getSingleResult();
-
+                .createQuery("FROM Sintoma WHERE idSintoma = :id")
+                .setParameter("id", sintoma.getIdSintoma())
+                .getSingleResult();
 
         assertThat(sintomaObtenido, equalTo(sintoma));
-//No se por que cuando corro todos juntos me da 4 y si corro de a uno el idSintoma es 1
+    }
+    @Test
+    @Transactional
+    @Rollback
+    public void queSePuedaObtenerUnSintomaAsociadoAunItemDelTablero(){
+
+        ItemTablero itemTableroGasolinaMock = crearItemTableroFiltroGasolinaMock();
+        repositorioItemTableroMock.guardar(itemTableroGasolinaMock);
+        Sintoma sintoma = new Sintoma(itemTableroGasolinaMock);
+        this.sessionFactory.getCurrentSession().save(sintoma);
+
+
+        repositorioItemTableroMock.guardar(itemTableroGasolinaMock);
+        List<Sintoma> sintomasObtenidos = this.repositorioSintoma.obtenerPorItemTablero(itemTableroGasolinaMock);
+
+        Integer cantidadEsperada = 1;
+        assertThat(cantidadEsperada, equalTo(sintomasObtenidos.size()));
+
 
     }
     @Test
     @Transactional
     @Rollback
-    public void queSePuedaBuscarUnSintomaPorUnTipoDeItemEnElTablero(){
-    sintomasExistentes();
+    public void queSePuedaObtenerDosSintomasAsociadoAunItemDelTablero(){
 
-    List<Sintoma> sintomasObtenidos = this.repositorioSintoma.obtenerPorItemTablero(ItemTablero.EPC);
+        ItemTablero itemTableroGasolinaMock = crearItemTableroFiltroGasolinaMock();
+        ItemTablero itemTableroEmbragueMock = crearItemTableroEmbragueMock();
+        repositorioItemTableroMock.guardar(itemTableroEmbragueMock);
+        repositorioItemTableroMock.guardar(itemTableroGasolinaMock);
 
-    Integer cantidadObtenida = 1;
-    assertThat(cantidadObtenida, equalTo(sintomasObtenidos.size()));
 
+
+        Sintoma sintoma = new Sintoma(itemTableroGasolinaMock);
+        Sintoma sintoma2 = new Sintoma(itemTableroEmbragueMock);
+        Sintoma sintoma3 = new Sintoma(itemTableroEmbragueMock);
+
+        this.sessionFactory.getCurrentSession().save(sintoma);
+        this.sessionFactory.getCurrentSession().save(sintoma2);
+        this.sessionFactory.getCurrentSession().save(sintoma3);
+
+        List<Sintoma> sintomasObtenidos = this.repositorioSintoma.obtenerPorItemTablero(itemTableroEmbragueMock);
+
+        Integer cantidadEsperada = 2;
+        assertThat(cantidadEsperada, equalTo(sintomasObtenidos.size()));
 
     }
-    @Test
-    @Transactional
-    @Rollback
-    public void queTePuedaTraerDosSintomasConElMismoItemEnElTablero(){
-    sintomasExistentes();
-
-    List<Sintoma> sintomasObtenidos = this.repositorioSintoma.obtenerPorItemTablero(ItemTablero.EMBRAGUE);
-
-    Integer cantidadObtenida = 2;
-    assertThat(cantidadObtenida, equalTo(sintomasObtenidos.size()));
-
-    }
-
-   
-
-
 
 
     private Sintoma crearSintoma(ItemTablero itemTablero) {
@@ -91,14 +114,28 @@ public class RepositorioSintomaTest {
     }
 
     private void sintomasExistentes() {
-        Sintoma sintoma = new Sintoma(ItemTablero.EPC);
-        Sintoma sintoma2 = new Sintoma(ItemTablero.EMBRAGUE);
-        Sintoma sintoma3 = new Sintoma(ItemTablero.EMBRAGUE);
+        ItemTablero itemTableroGasolinaMock = crearItemTableroFiltroGasolinaMock();
+        ItemTablero itemTableroEmbragueMock = crearItemTableroEmbragueMock();
+        repositorioItemTableroMock.guardar(itemTableroEmbragueMock);
+        repositorioItemTableroMock.guardar(itemTableroGasolinaMock);
+
+        Sintoma sintoma = new Sintoma(itemTableroGasolinaMock);
+        Sintoma sintoma2 = new Sintoma(itemTableroEmbragueMock);
+        Sintoma sintoma3 = new Sintoma(itemTableroEmbragueMock);
 
         this.sessionFactory.getCurrentSession().save(sintoma);
         this.sessionFactory.getCurrentSession().save(sintoma2);
         this.sessionFactory.getCurrentSession().save(sintoma3);
 
+    }
+
+    private ItemTablero crearItemTableroFiltroGasolinaMock(){
+        ItemTablero itemTableroMock = new ItemTablero("itemFiltroGasolina");
+        return itemTableroMock;
+    }
+    private ItemTablero crearItemTableroEmbragueMock(){
+        ItemTablero itemTableroMock = new ItemTablero("itemEmbrague");
+        return itemTableroMock;
     }
 
 

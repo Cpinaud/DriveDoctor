@@ -12,7 +12,7 @@ public class Manifesto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idManifesto;
     private String descripcion;
-    private ItemTablero itemTablero;
+
 
     public Integer getIdManifesto() {
         return idManifesto;
@@ -30,11 +30,5 @@ public class Manifesto {
         this.descripcion = descripcion;
     }
 
-    public ItemTablero getItemTablero() {
-        return itemTablero;
-    }
 
-    public void setItemTablero(ItemTablero itemTablero) {
-        this.itemTablero = itemTablero;
-    }
 }
