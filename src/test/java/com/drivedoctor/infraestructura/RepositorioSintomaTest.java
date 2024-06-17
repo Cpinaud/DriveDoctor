@@ -18,6 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.transaction.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -87,6 +88,8 @@ public class RepositorioSintomaTest {
         ItemTablero itemTableroEmbragueMock = crearItemTableroEmbragueMock();
         repositorioItemTableroMock.guardar(itemTableroEmbragueMock);
         repositorioItemTableroMock.guardar(itemTableroGasolinaMock);
+
+
 
         Sintoma sintoma = new Sintoma(itemTableroGasolinaMock);
         Sintoma sintoma2 = new Sintoma(itemTableroEmbragueMock);

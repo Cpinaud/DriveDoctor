@@ -39,16 +39,19 @@ public class RepositorioSintomaImpl implements RepositorioSintoma {
     //OBTIENE LOS SINTOMAS ASOCIADOS A UN ITEM
     @Override
     public List<Sintoma> obtenerPorItemTablero(ItemTablero itemTablero) {
-            System.out.println(itemTablero);
+          Integer idItemTablero = itemTablero.getIdItemTablero();
+          System.out.println(idItemTablero);
         try {
-            String sql = "From Sintoma s where s.itemTablero = :itemTablero";
+            String sql = "From Sintoma s where s.itemTablero.idItemTablero = :itemTablero";
             Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
             query.setParameter("itemTablero", itemTablero);
-
-            return query.getResultList();
+            List<Sintoma> sintomas = query.getResultList();
+            System.out.println("Cantidad de síntomas encontrados: " + sintomas.size());
+            return sintomas;
         } catch (Exception e) {
             e.printStackTrace();
             return Collections.emptyList();
+
         }
     }
 

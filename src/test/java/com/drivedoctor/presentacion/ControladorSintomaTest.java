@@ -25,7 +25,7 @@ public class ControladorSintomaTest {
 
         this.servicioSintoma = mock(ServicioSintoma.class);
         this.servicioItemTableroMock = mock(ServicioItemTablero.class);
-        this.controladorSintoma =  new ControladorSintoma(this.servicioSintoma);
+        this.controladorSintoma =  new ControladorSintoma(this.servicioSintoma, this.servicioItemTableroMock);
         sintomaMock = mock(Sintoma.class);
 
     }
