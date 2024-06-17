@@ -6,4 +6,5 @@ public interface RepositorioItemTablero {
 
     List<ItemTablero> findAll();
     ItemTablero findById(Integer idItemTablero);
+    void guardar(ItemTablero itemTablero);
 }

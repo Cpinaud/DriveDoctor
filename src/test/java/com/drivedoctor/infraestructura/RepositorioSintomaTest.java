@@ -1,6 +1,7 @@
 package com.drivedoctor.infraestructura;
 
 import com.drivedoctor.dominio.ItemTablero;
+import com.drivedoctor.dominio.RepositorioItemTablero;
 import com.drivedoctor.dominio.RepositorioSintoma;
 import com.drivedoctor.dominio.Sintoma;
 import com.drivedoctor.infraestructura.config.HibernateTestInfraestructuraConfig;
@@ -21,6 +22,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.mockito.Mockito.mock;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {HibernateTestInfraestructuraConfig.class})
@@ -30,10 +32,12 @@ public class RepositorioSintomaTest {
     private SessionFactory sessionFactory;
 
     private RepositorioSintoma repositorioSintoma;
+    private RepositorioItemTablero repositorioItemTableroMock;
 
     @BeforeEach
     public void init(){
         this.repositorioSintoma = new RepositorioSintomaImpl(this.sessionFactory);
+        this.repositorioItemTableroMock = mock(RepositorioItemTablero.class);
     }
 
     @Test
@@ -59,8 +63,14 @@ public class RepositorioSintomaTest {
     @Transactional
     @Rollback
     public void queSePuedaObtenerUnSintomaAsociadoAunItemDelTablero(){
-        sintomasExistentes();
+
         ItemTablero itemTableroGasolinaMock = crearItemTableroFiltroGasolinaMock();
+        repositorioItemTableroMock.guardar(itemTableroGasolinaMock);
+        Sintoma sintoma = new Sintoma(itemTableroGasolinaMock);
+        this.sessionFactory.getCurrentSession().save(sintoma);
+
+
+        repositorioItemTableroMock.guardar(itemTableroGasolinaMock);
         List<Sintoma> sintomasObtenidos = this.repositorioSintoma.obtenerPorItemTablero(itemTableroGasolinaMock);
 
         Integer cantidadEsperada = 1;
@@ -72,9 +82,21 @@ public class RepositorioSintomaTest {
     @Transactional
     @Rollback
     public void queSePuedaObtenerDosSintomasAsociadoAunItemDelTablero(){
-        sintomasExistentes();
+
         ItemTablero itemTableroGasolinaMock = crearItemTableroFiltroGasolinaMock();
-        List<Sintoma> sintomasObtenidos = this.repositorioSintoma.obtenerPorItemTablero(itemTableroGasolinaMock);
+        ItemTablero itemTableroEmbragueMock = crearItemTableroEmbragueMock();
+        repositorioItemTableroMock.guardar(itemTableroEmbragueMock);
+        repositorioItemTableroMock.guardar(itemTableroGasolinaMock);
+
+        Sintoma sintoma = new Sintoma(itemTableroGasolinaMock);
+        Sintoma sintoma2 = new Sintoma(itemTableroEmbragueMock);
+        Sintoma sintoma3 = new Sintoma(itemTableroEmbragueMock);
+
+        this.sessionFactory.getCurrentSession().save(sintoma);
+        this.sessionFactory.getCurrentSession().save(sintoma2);
+        this.sessionFactory.getCurrentSession().save(sintoma3);
+
+        List<Sintoma> sintomasObtenidos = this.repositorioSintoma.obtenerPorItemTablero(itemTableroEmbragueMock);
 
         Integer cantidadEsperada = 2;
         assertThat(cantidadEsperada, equalTo(sintomasObtenidos.size()));
@@ -91,6 +113,8 @@ public class RepositorioSintomaTest {
     private void sintomasExistentes() {
         ItemTablero itemTableroGasolinaMock = crearItemTableroFiltroGasolinaMock();
         ItemTablero itemTableroEmbragueMock = crearItemTableroEmbragueMock();
+        repositorioItemTableroMock.guardar(itemTableroEmbragueMock);
+        repositorioItemTableroMock.guardar(itemTableroGasolinaMock);
 
         Sintoma sintoma = new Sintoma(itemTableroGasolinaMock);
         Sintoma sintoma2 = new Sintoma(itemTableroEmbragueMock);

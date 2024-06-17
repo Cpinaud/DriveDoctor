@@ -32,9 +32,13 @@ public class ControladorDiagnostico {
     public String obtenerDiagnostico(@PathVariable("id") Integer id, Model model) {
         try {
             Diagnostico diagnostico = servicioDiagnostico.findById(id);
+            if(diagnostico == null){
+                throw new DiagnosticoNotFoundException("No se encuentra ningun diagnostico asociado a este id");
+            }
             model.addAttribute("diagnostico", diagnostico);
         } catch (DiagnosticoNotFoundException | IllegalArgumentException e) {
-            model.addAttribute("mensaje", e);
+            model.addAttribute("mensaje", e.getMessage());
+            return "error";
         }
         return "mostrarDiagnostico";
     }
@@ -43,7 +47,7 @@ public class ControladorDiagnostico {
     public String obtenerDiagnosticoPorSintomas(@RequestParam("idsSintomas") List<Integer> idsSintomas, Model model) {
         if(idsSintomas.size() <= 3) {
             List<Diagnostico> diagnosticos = servicioDiagnostico.findBySintomasIds(idsSintomas);
-            if(diagnosticos.size() < 3) {
+            if(diagnosticos.size() <= 3) {
                 model.addAttribute("diagnosticos", diagnosticos);
             }
         }

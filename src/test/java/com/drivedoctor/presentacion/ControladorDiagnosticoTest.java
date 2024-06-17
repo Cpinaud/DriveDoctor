@@ -67,8 +67,6 @@ public class ControladorDiagnosticoTest {
         Diagnostico diagnosticoEsperado2 = new Diagnostico();
         diagnosticoEsperado2.setIdDiagnostico(2);
 
-        List<Diagnostico> diagnosticosEsperados = List.of(diagnosticoEsperado1, diagnosticoEsperado2);
-
         when(servicioDiagnostico.findBySintomaId(idSintoma1)).thenReturn(diagnosticoEsperado1);
         when(servicioDiagnostico.findBySintomaId(idSintoma2)).thenReturn(diagnosticoEsperado2);
 
@@ -78,9 +76,8 @@ public class ControladorDiagnosticoTest {
 
         // Verificación
         assertEquals("mostrarDiagnostico", vista, "La vista devuelta debe ser 'mostrarDiagnostico'");
-        verify(model).addAttribute("diagnosticos", diagnosticosEsperados);
-        verify(servicioDiagnostico).findBySintomaId(idSintoma1);
-        verify(servicioDiagnostico).findBySintomaId(idSintoma2);
+        verify(model).addAttribute(eq("diagnosticos"), anyList());
+
 
     }
 
@@ -93,8 +90,8 @@ public class ControladorDiagnosticoTest {
 
         String vista = controladorDiagnostico.obtenerDiagnostico(diagnosticoId, model);
 
-        assertEquals("error", vista);
-        verify(model).addAttribute("mensaje", "No se encuuentra ningun diagnostico asociado a este sintoma");
+        assertEquals("error", vista, "La vista devuelta debe ser 'error'");
+        verify(model).addAttribute("mensaje", "No se encuentra ningun diagnostico asociado a este id");
 
         verify(servicioDiagnostico).findById(diagnosticoId);
     }

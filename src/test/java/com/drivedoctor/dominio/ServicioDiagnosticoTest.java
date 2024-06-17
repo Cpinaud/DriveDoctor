@@ -1,5 +1,6 @@
 package com.drivedoctor.dominio;
 
+import com.drivedoctor.dominio.excepcion.DiagnosticoNotFoundException;
 import com.drivedoctor.infraestructura.ServicioDiagnosticoImpl;
 import com.drivedoctor.integracion.config.HibernateTestConfig;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,8 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {HibernateTestConfig.class})
@@ -41,14 +41,19 @@ public class ServicioDiagnosticoTest {
     }
 
     @Test
-    public void queEnCasoDeQueNoSeEncuentreDevuelvaNull(){
+    public void queEnCasoDeQueNoSeEncuentreDevuelvaNull() {
         Integer idDiagnostico = 1;
+        when(repositorioDiagnostico.findById(idDiagnostico)).thenReturn(null);
 
-        when(this.repositorioDiagnostico.findById(idDiagnostico)).thenReturn(null);
-        Diagnostico diagnosticoEncontrado = this.servicioDiagnostico.findById(1);
+        try {
+            servicioDiagnostico.findById(idDiagnostico);
+            fail("Se esperaba DiagnosticoNotFoundException");
+        } catch (DiagnosticoNotFoundException e) {
+            assertEquals("Diagnóstico no encontrado para el ID: " + idDiagnostico, e.getMessage());
+        }
 
-        assertNull(diagnosticoEncontrado );
 
+        verify(repositorioDiagnostico, times(1)).findById(idDiagnostico);
     }
 
     @Test
@@ -108,7 +113,7 @@ public class ServicioDiagnosticoTest {
         when(itemTableroMock.getNombre()).thenReturn("ItemMotor");
         ItemTablero itemTableroMock2 = mock(ItemTablero.class);
 
-        when(itemTableroMock.getNombre()).thenReturn("ItemFreno");
+        when(itemTableroMock2.getNombre()).thenReturn("ItemFreno");
         sintomasMock.add(new Sintoma(itemTableroMock));
         sintomasMock.add(new Sintoma(itemTableroMock2));
 
@@ -126,7 +131,7 @@ public class ServicioDiagnosticoTest {
         ItemTablero itemTableroGasolinaMock = mock(ItemTablero.class);
         when(itemTableroGasolinaMock.getNombre()).thenReturn("ItemFiltroGasolina");
         ItemTablero itemTableroEpcMock = mock(ItemTablero.class);
-        when(itemTableroEpcMock.getNombre()).thenReturn("ItemEpc");
+        when(itemTableroEpcMock.getNombre()).thenReturn("ItemEPC");
 
         sintomasMock.add(new Sintoma(itemTableroEpcMock));
         sintomasMock.add(new Sintoma(itemTableroFrenoMock));

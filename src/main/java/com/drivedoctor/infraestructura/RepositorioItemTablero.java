@@ -28,5 +28,10 @@ public class RepositorioItemTablero implements com.drivedoctor.dominio.Repositor
         return session.get(ItemTablero.class, idItemTablero);
     }
 
+    @Override
+    public void guardar(ItemTablero itemTablero) {
+        this.sessionFactory.getCurrentSession().save(itemTablero);
+    }
+
 
 }

@@ -39,6 +39,7 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
         Diagnostico diagnostico = repositorioDiagnostico.findById(idDiagnostico);
         if (diagnostico == null) {
             throw new DiagnosticoNotFoundException("Diagnóstico no encontrado para el ID: " + idDiagnostico);
+
         }
         return diagnostico;
     }
