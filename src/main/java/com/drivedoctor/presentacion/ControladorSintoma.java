@@ -4,6 +4,7 @@ import com.drivedoctor.dominio.ItemTablero;
 import com.drivedoctor.dominio.ServicioItemTablero;
 import com.drivedoctor.dominio.ServicioSintoma;
 import com.drivedoctor.dominio.Sintoma;
+import com.drivedoctor.infraestructura.ServicioItemTableroImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,7 +18,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-
 public class ControladorSintoma {
 
     private ServicioSintoma servicioSintoma;
@@ -25,8 +25,9 @@ public class ControladorSintoma {
 
 
     @Autowired
-    public ControladorSintoma(ServicioSintoma servicioSintoma) {
+    public ControladorSintoma(ServicioSintoma servicioSintoma, ServicioItemTablero servicioItemTablero) {
         this.servicioSintoma = servicioSintoma;
+        this.servicioItemTablero = servicioItemTablero;
 
     }
 
@@ -101,7 +102,7 @@ public class ControladorSintoma {
 
         ModelMap modelo = new ModelMap();
        List<Sintoma> sintomas  = servicioSintoma.problemaEnTablero(itemTablero);
-
+        System.out.println(sintomas);
        obtenerSintomas(sintomas, modelo);
 
         return new ModelAndView("mostrar-sintoma", modelo);
