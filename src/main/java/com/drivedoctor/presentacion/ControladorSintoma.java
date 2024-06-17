@@ -1,8 +1,10 @@
 package com.drivedoctor.presentacion;
 
 import com.drivedoctor.dominio.ItemTablero;
+import com.drivedoctor.dominio.ServicioItemTablero;
 import com.drivedoctor.dominio.ServicioSintoma;
 import com.drivedoctor.dominio.Sintoma;
+import com.drivedoctor.infraestructura.ServicioItemTableroImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,14 +18,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-
 public class ControladorSintoma {
 
     private ServicioSintoma servicioSintoma;
+    private ServicioItemTablero servicioItemTablero;
+
 
     @Autowired
-    public ControladorSintoma(ServicioSintoma servicioSintoma){
+    public ControladorSintoma(ServicioSintoma servicioSintoma, ServicioItemTablero servicioItemTablero) {
         this.servicioSintoma = servicioSintoma;
+        this.servicioItemTablero = servicioItemTablero;
+
     }
 
 
@@ -40,8 +45,9 @@ public class ControladorSintoma {
     @RequestMapping("/nuevoSintoma")
     public ModelAndView nuevoSintoma() {
         ModelAndView modelAndView = new ModelAndView("nuevo-sintoma");
-        List<String> opcionesItemTablero = Arrays.stream(ItemTablero.values())
-                .map(Enum::name)
+        List<ItemTablero> itemsTablero = servicioItemTablero.obtenerTodosLosItems();
+        List<String> opcionesItemTablero = itemsTablero.stream()
+                .map(ItemTablero::getNombre)
                 .collect(Collectors.toList());
         modelAndView.addObject("opcionesItemTablero", opcionesItemTablero);
         modelAndView.addObject("sintoma", new Sintoma());
@@ -62,8 +68,9 @@ public class ControladorSintoma {
     @RequestMapping("/mostrarSintomaPorItem")
     public ModelAndView mostrarSintoma() {
         ModelAndView modelAndView = new ModelAndView("item-tablero");
-        List<String> opcionesItemTablero = Arrays.stream(ItemTablero.values())
-                .map(ItemTablero::name)
+        List<ItemTablero> itemsTablero = servicioItemTablero.obtenerTodosLosItems();
+        List<String> opcionesItemTablero = itemsTablero.stream()
+                .map(ItemTablero::getNombre)
                 .collect(Collectors.toList());
         modelAndView.addObject("opcionesItemTablero", opcionesItemTablero);
         modelAndView.addObject("sintoma", new Sintoma());
@@ -73,9 +80,9 @@ public class ControladorSintoma {
     @RequestMapping("/mostrarSintomasPorItems")  //PROBLEM
     public ModelAndView mostrarSintomas() {
         ModelAndView modelAndView = new ModelAndView("items-tablero");
-
-        List<String> opcionesItemsTablero = Arrays.stream(ItemTablero.values())
-                .map(ItemTablero::name)
+        List<ItemTablero> itemsTablero = servicioItemTablero.obtenerTodosLosItems();
+        List<String> opcionesItemsTablero = itemsTablero.stream()
+                .map(ItemTablero::getNombre)
                 .collect(Collectors.toList());
 
 
@@ -95,20 +102,20 @@ public class ControladorSintoma {
 
         ModelMap modelo = new ModelMap();
        List<Sintoma> sintomas  = servicioSintoma.problemaEnTablero(itemTablero);
-
+        System.out.println(sintomas);
        obtenerSintomas(sintomas, modelo);
 
         return new ModelAndView("mostrar-sintoma", modelo);
 
 
     }
-    @RequestMapping(value = "/mostrarSintomasDependiendoItems", method = RequestMethod.POST )
+    /* @RequestMapping(value = "/mostrarSintomasDependiendoItems", method = RequestMethod.POST )
     public ModelAndView mostrarSintomasDependiendoItems(@RequestParam("itemsTablero[]") String[] itemsTablero){
         ModelMap modelo = new ModelMap();
 
 
         List<ItemTablero> items = Arrays.stream(itemsTablero)
-                .map(ItemTablero::valueOf)
+                .map(ItemTablero::getDescripcion)
                 .collect(Collectors.toList());
 
 
@@ -122,7 +129,7 @@ public class ControladorSintoma {
         return new ModelAndView("mostrar-sintoma", modelo);
 
 
-    }
+    } */
 
     private static void obtenerSintomas(List<Sintoma> sintomas, ModelMap modelo) {
         try {

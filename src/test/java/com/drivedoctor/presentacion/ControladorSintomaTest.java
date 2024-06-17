@@ -18,12 +18,14 @@ public class ControladorSintomaTest {
     private ControladorSintoma controladorSintoma;
     private ServicioSintoma servicioSintoma;
     private Sintoma sintomaMock;
+    private ServicioItemTablero servicioItemTableroMock;
 
     @BeforeEach
     public void init(){
 
         this.servicioSintoma = mock(ServicioSintoma.class);
-        this.controladorSintoma =  new ControladorSintoma(this.servicioSintoma);
+        this.servicioItemTableroMock = mock(ServicioItemTablero.class);
+        this.controladorSintoma =  new ControladorSintoma(this.servicioSintoma, this.servicioItemTableroMock);
         sintomaMock = mock(Sintoma.class);
 
     }
@@ -38,11 +40,12 @@ public class ControladorSintomaTest {
 
     @Test
     public void queSePuedaObtenerTodosLosSintomasDependiendoQueItemElijo() throws Exception{
-        ItemTablero item = ItemTablero.ItemFiltroGasolina;
-        when(servicioSintoma.problemaEnTablero(ItemTablero.ItemFiltroGasolina)).thenReturn(Arrays.asList(sintomaMock));
+        ItemTablero item = mock(ItemTablero.class);
+        item.setNombre("itemEmbrague");
+        when(servicioSintoma.problemaEnTablero(item)).thenReturn(Arrays.asList(sintomaMock));
         ModelAndView modelAndView = controladorSintoma.mostrarSintomaDependiendoItem(item);
 
-        verify(servicioSintoma).problemaEnTablero(ItemTablero.ItemFiltroGasolina);
+        verify(servicioSintoma).problemaEnTablero(item);
 
         List<Sintoma> sintomas = (List<Sintoma>) modelAndView.getModel().get("sintomas");
         assertThat(sintomas, hasSize(1));

@@ -12,7 +12,8 @@ public class Sintoma {
     private String nombre;
     private String descripcion;
 
-    @Enumerated(EnumType.STRING)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_tablero_id")
     private ItemTablero itemTablero;
 
     @ManyToOne
