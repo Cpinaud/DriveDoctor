@@ -42,9 +42,9 @@ public class RepositorioSintomaImpl implements RepositorioSintoma {
           Integer idItemTablero = itemTablero.getIdItemTablero();
           System.out.println(idItemTablero);
         try {
-            String sql = "From Sintoma s where s.itemTablero.idItemTablero = :itemTablero";
+            String sql = "From Sintoma s where s.itemTablero = :idItemTablero";
             Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
-            query.setParameter("itemTablero", itemTablero);
+            query.setParameter("idItemTablero", itemTablero);
             List<Sintoma> sintomas = query.getResultList();
             System.out.println("Cantidad de síntomas encontrados: " + sintomas.size());
             return sintomas;

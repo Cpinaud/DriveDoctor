@@ -39,17 +39,21 @@ public class ControladorSintomaTest {
     }
 
     @Test
-    public void queSePuedaObtenerTodosLosSintomasDependiendoQueItemElijo() throws Exception{
+    public void queSePuedaObtenerTodosLosSintomasDependiendoQueItemElijo() throws Exception {
+        Integer idItemTablero = 1; // Suponiendo que este es el ID del ítem que deseas probar
         ItemTablero item = mock(ItemTablero.class);
-        item.setNombre("itemEmbrague");
+        when(servicioItemTableroMock.findById(idItemTablero)).thenReturn(item);
         when(servicioSintoma.problemaEnTablero(item)).thenReturn(Arrays.asList(sintomaMock));
-        ModelAndView modelAndView = controladorSintoma.mostrarSintomaDependiendoItem(item);
 
+        ModelAndView modelAndView = controladorSintoma.mostrarSintomaDependiendoItem(idItemTablero);
+
+        verify(servicioItemTableroMock).findById(idItemTablero);
         verify(servicioSintoma).problemaEnTablero(item);
 
         List<Sintoma> sintomas = (List<Sintoma>) modelAndView.getModel().get("sintomas");
         assertThat(sintomas, hasSize(1));
     }
+
 
 
 

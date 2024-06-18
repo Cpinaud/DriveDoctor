@@ -23,8 +23,8 @@
           <div class="form-group">
             <label for="itemsTablero">Seleccione los items del tablero:</label>
             <select class="form-control" id="itemsTablero" name="itemsTablero[]" multiple required>
-              <option th:each="opcion : ${opcionesItemsTablero}" th:value="${opcion}" th:text
-                      ="${opcion}"></option>
+              <option th:each="opcion : ${opcionesItemsTablero}" th:value="${opcion.idItemTablero}" th:text
+                      ="${opcion.nombre}"></option>
             </select>
           </div>
           <!--<div class="form-group">
