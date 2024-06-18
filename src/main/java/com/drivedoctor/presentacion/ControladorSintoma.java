@@ -69,11 +69,8 @@ public class ControladorSintoma {
     public ModelAndView mostrarSintoma() {
         ModelAndView modelAndView = new ModelAndView("item-tablero");
         List<ItemTablero> itemsTablero = servicioItemTablero.obtenerTodosLosItems();
-        List<String> opcionesItemTablero = itemsTablero.stream()
-                .map(ItemTablero::getNombre)
-                .collect(Collectors.toList());
-        modelAndView.addObject("opcionesItemTablero", opcionesItemTablero);
-        modelAndView.addObject("sintoma", new Sintoma());
+
+        modelAndView.addObject("opcionesItemTablero", itemsTablero);
         return modelAndView;
     }
 
@@ -81,26 +78,23 @@ public class ControladorSintoma {
     public ModelAndView mostrarSintomas() {
         ModelAndView modelAndView = new ModelAndView("items-tablero");
         List<ItemTablero> itemsTablero = servicioItemTablero.obtenerTodosLosItems();
-        List<String> opcionesItemsTablero = itemsTablero.stream()
-                .map(ItemTablero::getNombre)
-                .collect(Collectors.toList());
+
 
 
         List<Sintoma> sintomas = servicioSintoma.findAll();
         System.out.println("sintomas = " + sintomas);
-        List<String> opcionesSintomas = sintomas.stream()
-                .map(Sintoma::getNombre)
-                .collect(Collectors.toList());
 
-        modelAndView.addObject("opcionesItemsTablero", opcionesItemsTablero);
-        modelAndView.addObject("opcionesSintomas", opcionesSintomas); // Agregar las opciones de los síntomas al modelo
-        modelAndView.addObject("sintoma", sintomas);
+
+        modelAndView.addObject("opcionesItemsTablero", itemsTablero);
+        modelAndView.addObject("opcionesSintomas", sintomas); // Agregar las opciones de los síntomas al modelo
+        modelAndView.addObject("sintoma", new Sintoma());
         return modelAndView;
     }
     @RequestMapping(value = "/mostrarSintomaDependiendoItem", method = RequestMethod.POST )
-    public ModelAndView mostrarSintomaDependiendoItem(ItemTablero itemTablero){
+    public ModelAndView mostrarSintomaDependiendoItem(@RequestParam("idItemTablero") Integer idItemTablero){
 
         ModelMap modelo = new ModelMap();
+        ItemTablero itemTablero = servicioItemTablero.findById(idItemTablero);
        List<Sintoma> sintomas  = servicioSintoma.problemaEnTablero(itemTablero);
         System.out.println(sintomas);
        obtenerSintomas(sintomas, modelo);
@@ -109,13 +103,13 @@ public class ControladorSintoma {
 
 
     }
-    /* @RequestMapping(value = "/mostrarSintomasDependiendoItems", method = RequestMethod.POST )
-    public ModelAndView mostrarSintomasDependiendoItems(@RequestParam("itemsTablero[]") String[] itemsTablero){
+     @RequestMapping(value = "/mostrarSintomasDependiendoItems", method = RequestMethod.POST )
+    public ModelAndView mostrarSintomasDependiendoItems(@RequestParam("itemsTablero[]") Integer[] itemsTablero){
         ModelMap modelo = new ModelMap();
 
 
         List<ItemTablero> items = Arrays.stream(itemsTablero)
-                .map(ItemTablero::getDescripcion)
+                .map(servicioItemTablero::findById)
                 .collect(Collectors.toList());
 
 
@@ -129,7 +123,7 @@ public class ControladorSintoma {
         return new ModelAndView("mostrar-sintoma", modelo);
 
 
-    } */
+    }
 
     private static void obtenerSintomas(List<Sintoma> sintomas, ModelMap modelo) {
         try {
