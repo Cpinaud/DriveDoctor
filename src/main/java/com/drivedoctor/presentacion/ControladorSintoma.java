@@ -103,13 +103,13 @@ public class ControladorSintoma {
 
 
     }
-    /* @RequestMapping(value = "/mostrarSintomasDependiendoItems", method = RequestMethod.POST )
-    public ModelAndView mostrarSintomasDependiendoItems(@RequestParam("itemsTablero[]") String[] itemsTablero){
+     @RequestMapping(value = "/mostrarSintomasDependiendoItems", method = RequestMethod.POST )
+    public ModelAndView mostrarSintomasDependiendoItems(@RequestParam("itemsTablero[]") Integer[] itemsTablero){
         ModelMap modelo = new ModelMap();
 
 
         List<ItemTablero> items = Arrays.stream(itemsTablero)
-                .map(ItemTablero::getDescripcion)
+                .map(servicioItemTablero::findById)
                 .collect(Collectors.toList());
 
 
@@ -123,7 +123,7 @@ public class ControladorSintoma {
         return new ModelAndView("mostrar-sintoma", modelo);
 
 
-    } */
+    }
 
     private static void obtenerSintomas(List<Sintoma> sintomas, ModelMap modelo) {
         try {
