@@ -37,11 +37,18 @@ public class ServicioSintomaImpl implements ServicioSintoma {
         return repositorioSintoma.getAll();
     }
 
+    @Override
+    public Sintoma findById(Integer idSintoma) {
+        return repositorioSintoma.findById(idSintoma);
+    }
+
     //TRAE DEL REPO TODOS LOS SINTOMAS QUE SE ASOCIAN AL ITEM
     @Override
     public List<Sintoma> problemasEnTablero(List<ItemTablero> items) {
         return repositorioSintoma.obtenerPorItemsTablero(items);
     }
+
+
 
 }
 

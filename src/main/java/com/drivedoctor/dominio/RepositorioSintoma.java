@@ -12,4 +12,6 @@ public interface RepositorioSintoma {
     Sintoma findById(Integer idSintoma);
     List<Sintoma> obtenerPorItemsTablero(List<ItemTablero> items);
     List<Sintoma> obtenerPorIds(List<Integer> idSintomas);
+    List<Sintoma> obtenerLosSintomasPorSusIds(List<Integer> idsSintomas);
+
 }

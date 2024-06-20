@@ -1,12 +1,10 @@
 package com.drivedoctor.presentacion;
 
-import com.drivedoctor.dominio.ItemTablero;
-import com.drivedoctor.dominio.ServicioItemTablero;
-import com.drivedoctor.dominio.ServicioSintoma;
-import com.drivedoctor.dominio.Sintoma;
+import com.drivedoctor.dominio.*;
 import com.drivedoctor.infraestructura.ServicioItemTableroImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -122,8 +120,22 @@ public class ControladorSintoma {
 
         return new ModelAndView("mostrar-sintoma", modelo);
 
-
     }
+
+  /*  @RequestMapping(value = "/diagnosticos/verDiagnosticos" , method = RequestMethod.POST)
+    public ModelAndView obtenerDiagnosticosDependiendoSintomasSelect(@RequestParam("sintomas[]") Integer[] idSintomas){
+        ModelMap modelo = new ModelMap();
+
+       List<Sintoma> sintomas = Arrays.stream(idSintomas)
+                .map(servicioSintoma::findById)
+               .collect(Collectors.toList());
+
+
+
+
+
+    } */
+
 
     private static void obtenerSintomas(List<Sintoma> sintomas, ModelMap modelo) {
         try {

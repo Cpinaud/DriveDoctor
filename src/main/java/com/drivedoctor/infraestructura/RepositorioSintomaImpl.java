@@ -1,5 +1,6 @@
 package com.drivedoctor.infraestructura;
 
+import com.drivedoctor.dominio.Diagnostico;
 import com.drivedoctor.dominio.ItemTablero;
 import com.drivedoctor.dominio.RepositorioSintoma;
 import com.drivedoctor.dominio.Sintoma;
@@ -85,6 +86,14 @@ public class RepositorioSintomaImpl implements RepositorioSintoma {
     @Override
     public List<Sintoma> obtenerPorIds(List<Integer> idSintomas) {
         return null;
+    }
+
+    @Override
+    public List<Sintoma> obtenerLosSintomasPorSusIds(List<Integer> idsSintomas) {
+        String sql = "SELECT s From Sintoma s where s.idSintoma IN (:idsSintomas)";
+        Query<Sintoma> query = this.sessionFactory.getCurrentSession().createQuery(sql, Sintoma.class);
+        query.setParameter("idsSintomas", idsSintomas);
+        return query.getResultList();
     }
 
 

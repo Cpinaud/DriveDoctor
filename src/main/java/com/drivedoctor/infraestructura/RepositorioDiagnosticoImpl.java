@@ -2,7 +2,6 @@ package com.drivedoctor.infraestructura;
 
 import com.drivedoctor.dominio.Diagnostico;
 import com.drivedoctor.dominio.RepositorioDiagnostico;
-import com.drivedoctor.dominio.Sintoma;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;

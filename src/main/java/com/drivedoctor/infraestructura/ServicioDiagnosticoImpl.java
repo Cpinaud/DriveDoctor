@@ -17,8 +17,9 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
 
 
     @Autowired
-    public ServicioDiagnosticoImpl(RepositorioDiagnostico repositorioDiagnostico){
+    public ServicioDiagnosticoImpl(RepositorioDiagnostico repositorioDiagnostico, RepositorioSintoma repositorioSintoma){
         this.repositorioDiagnostico = repositorioDiagnostico;
+        this.repositorioSintoma = repositorioSintoma;
     }
 
 
@@ -82,8 +83,14 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
     //OBTIENE LOS DIAGNOSTICOS POR EL IDs DE MAS SINTOMAS
     @Override
     public List<Diagnostico> findBySintomasIds(List<Integer> idsSintomas) {
+
         return repositorioDiagnostico.obtenerPorSintomasIds(idsSintomas);
     }
+
+
+
+
+
     @Override
     public double calcularRiesgoPorSintoma(List<Sintoma> sintomas) {
         if (sintomas == null || sintomas.isEmpty()) {
@@ -138,6 +145,33 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
         }
             // Asegura que el riesgo total no sea mayor que 100.0
         return Math.min(riesgoTotal, 100.0);
+    }
+
+    @Override
+    public String findDependingId(List<Integer> idsSintoma) {
+
+        if(idsSintoma == null || idsSintoma.isEmpty() ){
+            return null;
+        }
+
+        if(idsSintoma.size() == 1) {
+            return repositorioDiagnostico.obtenerPorSintomaId(idsSintoma.get(0)).getDescripcion();
+        }
+
+        List<Sintoma> sintomas = repositorioSintoma.obtenerLosSintomasPorSusIds(idsSintoma);
+
+        if(sintomas.size() == 2 ) {
+            ItemTablero item1 = sintomas.get(0).getItemTablero();
+            ItemTablero item2 = sintomas.get(1).getItemTablero();
+
+            if(item1.equals(item2)){
+                return item1.getDescripcion();
+            }
+
+        }
+
+
+        return null;
     }
 
 }

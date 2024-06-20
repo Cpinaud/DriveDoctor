@@ -33,30 +33,58 @@
             <table class="table">
                 <thead>
                 <tr>
+                    <th>Seleccionar</th>
                     <th>Nombre del Síntoma</th>
-                    <th>Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="sintoma : ${sintomas}">
+                    <td><input type="checkbox" class="sintoma-checkbox" th:data-id="${sintoma.getDiagnostico().getIdDiagnostico()}"></td>
                     <td th:text="${sintoma.nombre}"></td>
-                    <td>
-                        <a class="btn boton-principal btn-sm ml-2" th:href="@{'/diagnostico/' + ${sintoma.getDiagnostico().getIdDiagnostico()}}">
-                            Ver Diagnóstico
-                        </a>
-                        <a class="btn btn-primary btn-sm ml-2" th:href="@{/'obtenerPorcentajeRoto'}">
-                            Porcentaje de urgencia
-                        </a>
-                    </td>
                 </tr>
                 </tbody>
             </table>
         </div>
 
-        <div  class="mt-3">
+        <div class="mt-3">
             <p class="alert alert-warning" th:text="${mensaje}"></p>
         </div>
+
+        <div class="mt-3">
+            <span id="selected-count">0 síntomas seleccionados</span>
+            <div>
+                <a class="btn btn-primary btn-sm mt-2" id="view-diagnosis" href="#" onclick="viewDiagnosis()">Ver Diagnóstico</a>
+                <a class="btn btn-primary btn-sm mt-2" href="@{/'obtenerPorcentajeRoto'}">Porcentaje de urgencia</a>
+            </div>
+        </div>
     </div>
+
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkboxes = document.querySelectorAll('.sintoma-checkbox');
+        const selectedCount = document.getElementById('selected-count');
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                const selected = document.querySelectorAll('.sintoma-checkbox:checked').length;
+                selectedCount.textContent = `${selected} síntomas seleccionados`;
+            });
+        });
+    });
+
+    function viewDiagnosis() {
+        const selectedCheckboxes = document.querySelectorAll('.sintoma-checkbox:checked');
+        if (selectedCheckboxes.length > 0) {
+            const ids = Array.from(selectedCheckboxes).map(cb => cb.getAttribute('data-id')).join(',');
+            console.log(ids);
+            window.location.href = `/diagnostico/${ids}`;
+        } else {
+            alert('Por favor seleccione al menos un síntoma.');
+        }
+    }
+</script>
 
 </main>
 

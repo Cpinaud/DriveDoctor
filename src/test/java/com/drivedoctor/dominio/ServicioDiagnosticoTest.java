@@ -10,6 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,11 +22,15 @@ public class ServicioDiagnosticoTest {
 
     private ServicioDiagnostico servicioDiagnostico;
     private RepositorioDiagnostico repositorioDiagnostico;
+    private RepositorioSintoma repositorioSintoma;
 
     @BeforeEach
     public void init(){
         this.repositorioDiagnostico = mock(RepositorioDiagnostico.class);
-        this.servicioDiagnostico = new ServicioDiagnosticoImpl(this.repositorioDiagnostico);
+        this.repositorioSintoma = mock(RepositorioSintoma.class);
+        this.servicioDiagnostico = new ServicioDiagnosticoImpl(this.repositorioDiagnostico, this.repositorioSintoma);
+
+
     }
 
     @Test
@@ -195,6 +200,81 @@ public class ServicioDiagnosticoTest {
 
     //120 seria en caso de que se sume
         assertEquals(riesgoEsperado, riesgoCalculado);
+    }
+
+    @Test
+    public void queAlNoRecibirNadaMeDevuelvaNull(){
+        List<Integer> sintomaMock = new ArrayList<>();
+        String diagnosticoEsperado = servicioDiagnostico.findDependingId(sintomaMock);
+        assertNull(diagnosticoEsperado);
+
+    }
+
+    @Test
+    public void queAlRecibirUnSintomaConUnIdMeDevuelvaSuDescripcionDeDiagnostico() {
+        Integer idSintoma = 1;
+        String descripcionDiagnostico = "Descripción de prueba";
+
+        Diagnostico diagnostico1 = new Diagnostico();
+        diagnostico1.setDescripcion(descripcionDiagnostico);
+        diagnostico1.setIdDiagnostico(idSintoma);
+
+        Sintoma sintoma1 = createSintoma(idSintoma, diagnostico1);
+
+        List<Integer> sintomasMock = Arrays.asList(idSintoma);
+
+        when(repositorioDiagnostico.obtenerPorSintomaId(idSintoma)).thenReturn(diagnostico1);
+
+        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock);
+
+        assertEquals(descripcionDiagnostico, descripcionObtenida);
+        verify(repositorioDiagnostico, times(1)).obtenerPorSintomaId(idSintoma);
+    }
+
+
+    @Test
+    public void queAlRecibirDosElementosDelMismoElementoMeDevuelvaLaDescripcionDelItem() {
+        Integer idSintoma1 = 1;
+        Integer idSintoma2 = 2;
+        String descripcionEsperada = "prueba";
+
+        ItemTablero itemTableroMock = mock(ItemTablero.class);
+        when(itemTableroMock.getDescripcion()).thenReturn(descripcionEsperada);
+
+        Sintoma sintoma1 = crearSintomaConItem(idSintoma1, itemTableroMock);
+        Sintoma sintoma2 = crearSintomaConItem(idSintoma2, itemTableroMock);
+
+        when(repositorioSintoma.obtenerLosSintomasPorSusIds(Arrays.asList(idSintoma1, idSintoma2)))
+                .thenReturn(Arrays.asList(sintoma1, sintoma2));
+
+        List<Integer> sintomasMock = Arrays.asList(idSintoma1, idSintoma2);
+        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock);
+
+        assertEquals(descripcionEsperada, descripcionObtenida);
+    }
+
+
+    
+
+
+    private Sintoma createSintoma(Integer idSintoma, Diagnostico diagnostico) {
+        ItemTablero itemTableroMotorMock = mock(ItemTablero.class);
+        when(itemTableroMotorMock.getNombre()).thenReturn("ItemMotor");
+        when(itemTableroMotorMock.getDescripcion()).thenReturn("prueba");
+        Sintoma sintoma = new Sintoma(itemTableroMotorMock);
+        sintoma.setDiagnostico(diagnostico);
+
+        return sintoma;
+    }
+
+    private Sintoma crearSintomaConItem(Integer idSintoma, ItemTablero itemTablero) {
+        Sintoma sintoma = new Sintoma(itemTablero);
+        Diagnostico diagnostico = new Diagnostico();
+        diagnostico.setIdDiagnostico(idSintoma);
+        sintoma.setDiagnostico(diagnostico);
+        return sintoma;
+
+
     }
 
 }
