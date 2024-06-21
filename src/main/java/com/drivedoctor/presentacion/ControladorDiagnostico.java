@@ -7,14 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class ControladorDiagnostico {
@@ -45,13 +43,20 @@ public class ControladorDiagnostico {
     //MUESTRA EL DIAGNOSTICO ASOCIADO HASTA 3 SINTOMAS
     @GetMapping("/diagnosticos")
     public String obtenerDiagnosticoPorSintomas(@RequestParam("idsSintomas") List<Integer> idsSintomas, Model model) {
-        if(idsSintomas.size() <= 3) {
-            List<Diagnostico> diagnosticos = servicioDiagnostico.findBySintomasIds(idsSintomas);
-            if(diagnosticos.size() <= 3) {
-                model.addAttribute("diagnosticos", diagnosticos);
-            }
+        if(idsSintomas.isEmpty() || idsSintomas == null  ) {
+            model.addAttribute("mensaje", "No se han seleccionado síntomas.");
+            return "diagnostico";
         }
-        return "mostrarDiagnostico";
+            String devolucion= servicioDiagnostico.findDependingId(idsSintomas);
+                model.addAttribute("diagnosticos", devolucion);
+                model.addAttribute("idsSintomas", idsSintomas);
+
+        return "redirect:/diagnostico/" + idsSintomas.stream().map(String::valueOf).collect(Collectors.joining(","));
+    }
+    @GetMapping("/diagnostico/{ids}")
+    @ResponseBody
+    public String obtenerDiagnosticoPorIds(@RequestParam("ids") List<Integer> idsSintomas) {
+        return servicioDiagnostico.findDependingId(idsSintomas);
     }
 
 }

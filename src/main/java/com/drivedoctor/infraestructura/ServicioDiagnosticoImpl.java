@@ -160,18 +160,37 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
 
         List<Sintoma> sintomas = repositorioSintoma.obtenerLosSintomasPorSusIds(idsSintoma);
 
-        if(sintomas.size() == 2 ) {
-            ItemTablero item1 = sintomas.get(0).getItemTablero();
-            ItemTablero item2 = sintomas.get(1).getItemTablero();
 
-            if(item1.equals(item2)){
-                return item1.getDescripcion();
+            ItemTablero item1 = sintomas.get(0).getItemTablero();
+           boolean allItemsEqual = true;
+
+            for(Sintoma sintoma : sintomas) {
+                if (!item1.equals(sintoma.getItemTablero())) {
+                    allItemsEqual = false;
+                    break;
+                }
+            }
+
+                if(allItemsEqual){
+                    return item1.getDescripcion();
+
+            } else {
+                StringBuilder concatenar = new StringBuilder();
+                if(sintomas.size() <= 3 ) {
+                    for (Sintoma sintoma : sintomas) {
+                        if (concatenar.length() > 0) {
+                            concatenar.append(" ");
+                        }
+                        concatenar.append(sintoma.getDiagnostico().getDescripcion());
+                    }
+
+                    return concatenar.toString();
+
+                }
+                return "Demasiados sintomas acerquese a un taller";
             }
 
         }
 
-
-        return null;
-    }
 
 }

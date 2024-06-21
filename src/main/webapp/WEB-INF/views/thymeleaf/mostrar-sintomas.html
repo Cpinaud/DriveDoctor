@@ -1,42 +1,99 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Síntomas Relacionados</title>
-  <!-- Boostrap core css -->
-  <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Síntomas Relacionados</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
 
-  <!-- custom style -->
-  <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <!-- Custom style -->
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <style>
+        .table td,
+        .table th {
+            color: white; /* Cambia el color del texto a blanco */
+        }
+        .table-container {
+            max-height: 400px; /* Establece la altura máxima para la tabla */
+            overflow-y: auto; /* Agrega desplazamiento vertical */
+        }
+    </style>
 </head>
 <body>
 <main>
-  <!-- Incluir el fragmento del sidebar -->
-  <div th:include="templates/sidebar.html"></div>
 
-  <div class="container" style="margin-top:50px;">
-    <div class="col-md-6">
-      <h2>Síntomas Relacionados</h2>
-      <br>
-      <div th:if="${sintomas.size() > 0}">
-        <ul>
-          <th:block th:each="sintoma : ${sintomas}">
-            <li th:text="${sintoma.nombre}"></li>
-            <a th:href="@{/diagnostico/{id}(id=${sintoma.diagnostico.id})}">Ver diagnóstico</a>
-          </th:block>
-        </ul>
-      </div>
-  </div>
+    <!-- Incluir el fragmento del sidebar -->
+    <div th:include="templates/sidebar.html"></div>
 
-    <div th:if="${sintomas.size() == 0}">
-      <p th:text="${mensaje}"></p>
+    <div class="container" style="margin-top: 50px;">
+        <h2>Síntomas Relacionados</h2>
+        <br>
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Seleccionar</th>
+                    <th>Nombre del Síntoma</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Iterar sobre los síntomas y mostrar cada uno -->
+                <tr th:each="sintoma : ${sintomas}">
+                    <td><input type="checkbox" class="sintoma-checkbox" th:data-id="${sintoma.diagnostico.idDiagnostico}"></td>
+                    <td th:text="${sintoma.nombre}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Mostrar mensaje de advertencia si no se han seleccionado síntomas -->
+        <div class="mt-3">
+            <p class="alert alert-warning" th:text="${mensaje}"></p>
+        </div>
+
+        <!-- Mostrar el conteo de síntomas seleccionados -->
+        <div class="mt-3">
+            <span id="selected-count">0 síntomas seleccionados</span>
+            <div>
+                <!-- Botón para ver diagnóstico -->
+                <a class="btn btn-primary btn-sm mt-2" id="view-diagnosis" href="#" onclick="viewDiagnosis()">Ver Diagnóstico</a>
+                <!-- Enlace para el porcentaje de urgencia -->
+                <a class="btn btn-primary btn-sm mt-2" href="/obtenerPorcentajeRoto">Porcentaje de urgencia</a>
+            </div>
+        </div>
     </div>
-  </div>
 
 </main>
-<script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/sidebar.js}"></script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkboxes = document.querySelectorAll('.sintoma-checkbox');
+        const selectedCount = document.getElementById('selected-count');
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                const selected = document.querySelectorAll('.sintoma-checkbox:checked').length;
+                selectedCount.textContent = `${selected} síntomas seleccionados`;
+            });
+        });
+    });
+
+    function viewDiagnosis() {
+        const selectedCheckboxes = document.querySelectorAll('.sintoma-checkbox:checked');
+        if (selectedCheckboxes.length > 0) {
+            const ids = Array.from(selectedCheckboxes).map(cb => cb.getAttribute('data-id')).join(',');
+            console.log(ids);
+            window.location.href = `/diagnostico?ids=${ids}`; // Modificar la URL según tu configuración
+        } else {
+            alert('Por favor seleccione al menos un síntoma.');
+        }
+    }
+</script>
+
+<!-- Scripts de Bootstrap al final del body para mejorar el rendimiento -->
+<script type="text/javascript" th:src="@{/webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/sidebar.js}"></script>
 </body>
 </html>
+

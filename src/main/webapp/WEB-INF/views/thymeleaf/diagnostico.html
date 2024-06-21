@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnósticos Relacionados</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+
+    <!-- Custom style -->
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <style>
+        .diagnostico-container {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+<main>
+
+    <!-- Incluir el fragmento del sidebar -->
+    <div th:include="templates/sidebar.html"></div>
+
+    <div class="container diagnostico-container">
+        <h2>Diagnósticos Relacionados</h2>
+        <br>
+        <div>
+            <h3>Diagnósticos:</h3>
+            <ul>
+                <li th:each="diagnostico : ${diagnosticos}" th:text="${diagnostico}"></li>
+            </ul>
+        </div>
+
+        <div class="mt-3">
+            <a class="btn btn-primary btn-sm mt-2" href="/diagnosticos">Volver</a>
+        </div>
+    </div>
+
+</main>
+
+<!-- Scripts de Bootstrap al final del body para mejorar el rendimiento -->
+<script type="text/javascript" th:src="@{/webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/sidebar.js}"></script>
+</body>
+</html>
