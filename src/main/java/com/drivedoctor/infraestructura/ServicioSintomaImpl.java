@@ -48,6 +48,10 @@ public class ServicioSintomaImpl implements ServicioSintoma {
         return repositorioSintoma.obtenerPorItemsTablero(items);
     }
 
+    @Override
+    public List<Sintoma> obtenerSintomasPorSuId(List<Integer> sintomas) {
+        return repositorioSintoma.obtenerLosSintomasPorSusIds(sintomas);
+    }
 
 
 }

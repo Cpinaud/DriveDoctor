@@ -10,6 +10,7 @@ public interface ServicioSintoma {
     List<Sintoma> findAll();
     Sintoma findById(Integer idSintoma);
     List<Sintoma> problemasEnTablero(List<ItemTablero> items);
+    List<Sintoma> obtenerSintomasPorSuId(List<Integer> sintomas);
 
 
 }

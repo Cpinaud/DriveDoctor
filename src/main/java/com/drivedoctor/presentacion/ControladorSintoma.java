@@ -120,19 +120,7 @@ public class ControladorSintoma {
 
     }
 
-  /*  @RequestMapping(value = "/diagnosticos/verDiagnosticos" , method = RequestMethod.POST)
-    public ModelAndView obtenerDiagnosticosDependiendoSintomasSelect(@RequestParam("sintomas[]") Integer[] idSintomas){
-        ModelMap modelo = new ModelMap();
 
-       List<Sintoma> sintomas = Arrays.stream(idSintomas)
-                .map(servicioSintoma::findById)
-               .collect(Collectors.toList());
-
-
-
-
-
-    } */
 
 
     private static void obtenerSintomas(List<Sintoma> sintomas, ModelMap modelo) {

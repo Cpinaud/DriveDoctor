@@ -102,12 +102,16 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
 
             for(Sintoma sintoma : sintomas){
             ItemTablero itemTablero = sintoma.getItemTablero();
+            System.out.println(sintoma.getItemTablero());
 
             if(itemTablero != null && !itemsProcesados.contains(itemTablero)) {
                 String nombreItemTablero = itemTablero.getNombre();
+                System.out.println(nombreItemTablero);
+
                 switch (nombreItemTablero) {
                     case "ItemFreno":
-                        riesgoTotal+= 20.0;
+                        System.out.println("freno");
+                        riesgoTotal += 20.0;
                         break;
                     case "ItemMotor":
                         riesgoTotal += 60.0;
@@ -136,8 +140,7 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
                     case "ItemEPC":
                         riesgoTotal += 20.0;
                         break;
-                    default:
-                        return 0.0;
+
                 }
 
                 itemsProcesados.add(itemTablero);

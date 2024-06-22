@@ -22,7 +22,6 @@
 </head>
 <body>
 <main>
-
     <!-- Incluir el fragmento del sidebar -->
     <div th:include="templates/sidebar.html"></div>
 
@@ -47,23 +46,20 @@
             </table>
         </div>
 
-        <!-- Mostrar mensaje de advertencia si no se han seleccionado síntomas -->
         <div class="mt-3">
             <p class="alert alert-warning" th:text="${mensaje}"></p>
         </div>
 
-        <!-- Mostrar el conteo de síntomas seleccionados -->
         <div class="mt-3">
             <span id="selected-count">0 síntomas seleccionados</span>
             <div>
-                <!-- Botón para ver diagnóstico -->
+
                 <a class="btn btn-primary btn-sm mt-2" id="view-diagnosis" href="#" onclick="viewDiagnosis()">Ver Diagnóstico</a>
-                <!-- Enlace para el porcentaje de urgencia -->
-                <a class="btn btn-primary btn-sm mt-2" href="/obtenerPorcentajeRoto">Porcentaje de urgencia</a>
+                <a class="btn btn-primary btn-sm mt-2" id="view-porcentaje" href="#" onclick="viewPorcentaje()">Ver porcentaje</a>
+
             </div>
         </div>
     </div>
-
 </main>
 
 <script>
@@ -84,16 +80,54 @@
         if (selectedCheckboxes.length > 0) {
             const ids = Array.from(selectedCheckboxes).map(cb => cb.getAttribute('data-id')).join(',');
             console.log(ids);
-            window.location.href = `/diagnostico?ids=${ids}`; // Modificar la URL según tu configuración
+
+            // Crear un formulario y enviarlo
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/spring/diagnosticos';
+            form.style.display = 'none';
+
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'idsSintomas';
+            input.value = ids;
+            form.appendChild(input);
+
+            document.body.appendChild(form);
+            console.log('Formulario enviado', form);
+            form.submit();
         } else {
             alert('Por favor seleccione al menos un síntoma.');
         }
     }
-</script>
 
+    function viewPorcentaje(){
+        const selectedCheckboxes = document.querySelectorAll('.sintoma-checkbox:checked');
+        if (selectedCheckboxes.length > 0) {
+            const ids = Array.from(selectedCheckboxes).map(cb => cb.getAttribute('data-id')).join(',');
+            console.log(ids);
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/spring/mostrarPorcentajeDeDaniadoUnSintoma';
+            form.style.display = 'none';
+
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'idsSintomas';
+            input.value = ids;
+            form.appendChild(input);
+
+            document.body.appendChild(form);
+            console.log('Formulario enviado', form);
+            form.submit();
+        } else{
+                alert('Por favor seleccione al menos un síntoma.');
+            }
+    }
+</script>
 <!-- Scripts de Bootstrap al final del body para mejorar el rendimiento -->
 <script type="text/javascript" th:src="@{/webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/sidebar.js}"></script>
+
 </body>
 </html>
 

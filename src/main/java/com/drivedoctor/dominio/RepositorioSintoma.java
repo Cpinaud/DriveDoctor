@@ -14,4 +14,5 @@ public interface RepositorioSintoma {
     List<Sintoma> obtenerPorIds(List<Integer> idSintomas);
     List<Sintoma> obtenerLosSintomasPorSusIds(List<Integer> idsSintomas);
 
+
 }

@@ -22,17 +22,16 @@
     <div th:include="templates/sidebar.html"></div>
 
     <div class="container diagnostico-container">
-        <h2>Diagnósticos Relacionados</h2>
-        <br>
-        <div>
-            <h3>Diagnósticos:</h3>
-            <ul>
-                <li th:each="diagnostico : ${diagnosticos}" th:text="${diagnostico}"></li>
-            </ul>
+        <h2>Diagnósticos</h2>
+        <div th:if="${mensaje}">
+            <p class="alert alert-warning" th:text="${mensaje}"></p>
+        </div>
+        <div th:if="${diagnosticos}">
+            <p>Diagnóstico: <span th:text="${diagnosticos}"></span></p>
         </div>
 
         <div class="mt-3">
-            <a class="btn btn-primary btn-sm mt-2" href="/diagnosticos">Volver</a>
+            <a class="btn btn-primary btn-sm mt-2" href="/home">Volver</a>
         </div>
     </div>
 

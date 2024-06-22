@@ -2,12 +2,14 @@ package com.drivedoctor.presentacion;
 
 import com.drivedoctor.dominio.Diagnostico;
 import com.drivedoctor.dominio.ServicioDiagnostico;
+import com.drivedoctor.dominio.ServicioSintoma;
 import com.drivedoctor.dominio.Sintoma;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.Model;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -15,13 +17,15 @@ public class ControladorDiagnosticoTest {
 
     private ControladorDiagnostico controladorDiagnostico;
     private ServicioDiagnostico servicioDiagnostico;
+    private ServicioSintoma servicioSintoma;
     private Sintoma sintomaMock;
 
 
     @BeforeEach
     public void init(){
         this.servicioDiagnostico = mock(ServicioDiagnostico.class);
-        this.controladorDiagnostico = new ControladorDiagnostico(this.servicioDiagnostico);
+        this.servicioSintoma = mock(ServicioSintoma.class);
+        this.controladorDiagnostico = new ControladorDiagnostico(this.servicioDiagnostico, this.servicioSintoma);
         sintomaMock = mock(Sintoma.class);
     }
 
@@ -47,38 +51,27 @@ public class ControladorDiagnosticoTest {
     }
 
     @Test
-    public void mostrarVistaCuandoSeObtenganDosDiagnosticosAsociadosAdosSintomas(){ //sintomas con items diferentes
-        // Mock de Sintomas
-        Sintoma sintomaMock1 = mock(Sintoma.class);
-        Sintoma sintomaMock2 = mock(Sintoma.class);
-
+    public void mostrarVistaCuandoSeObtenganDosDiagnosticosAsociadosAdosSintomas() {
         int idSintoma1 = 1;
         int idSintoma2 = 2;
 
-        when(sintomaMock1.getIdSintoma()).thenReturn(idSintoma1);
-        when(sintomaMock2.getIdSintoma()).thenReturn(idSintoma2);
-
         List<Integer> idsSintomas = List.of(idSintoma1, idSintoma2);
+        String idsSintomasStr = "1,2";
 
-        // Diagnostico
-        Diagnostico diagnosticoEsperado1 = new Diagnostico();
-        diagnosticoEsperado1.setIdDiagnostico(1);
 
-        Diagnostico diagnosticoEsperado2 = new Diagnostico();
-        diagnosticoEsperado2.setIdDiagnostico(2);
-
-        when(servicioDiagnostico.findBySintomaId(idSintoma1)).thenReturn(diagnosticoEsperado1);
-        when(servicioDiagnostico.findBySintomaId(idSintoma2)).thenReturn(diagnosticoEsperado2);
+        String diagnosticosEsperados = "Diagnostico1, Diagnostico2";
+        when(servicioDiagnostico.findDependingId(idsSintomas)).thenReturn(diagnosticosEsperados);
 
         Model model = mock(Model.class);
+
         // Ejecución
-        String vista = controladorDiagnostico.obtenerDiagnosticoPorSintomas(idsSintomas, model);
+        String vista = controladorDiagnostico.obtenerDiagnosticoPorSintomas(idsSintomasStr, model);
 
         // Verificación
-        assertEquals("mostrarDiagnostico", vista, "La vista devuelta debe ser 'mostrarDiagnostico'");
-        verify(model).addAttribute(eq("diagnosticos"), anyList());
 
-
+        verify(model).addAttribute("diagnosticos", diagnosticosEsperados);
+        verify(model).addAttribute("idsSintomas", idsSintomas);
+        verify(servicioDiagnostico).findDependingId(idsSintomas);
     }
 
     @Test
@@ -95,20 +88,5 @@ public class ControladorDiagnosticoTest {
 
         verify(servicioDiagnostico).findById(diagnosticoId);
     }
-/*    @Test
-    public void queMuestreMensajeConDescripcionDelItemComoResultadoCuandoDosOmasSintomasCompartenMismoItem(){
 
-        Sintoma sintomaMock1 = mock(Sintoma.class);
-        Sintoma sintomaMock2 = mock(Sintoma.class);
-        Sintoma sintomaMock3 = mock(Sintoma.class);
-    }
-
-    @Test
-    public void queMuestreMensajeDeSugerenciaCuandoSeSeleccionanMasDeTresSintomas(){ //muchos sintomas
-
-    }
-    @Test
-    public void queMuestreMensajeDeSugerenciaCuandoSeObtienenTresOmasDiagnosticosAsociadoATresOmasSintomas(){ //muchos diagnosticos
-
-    }*/
 }

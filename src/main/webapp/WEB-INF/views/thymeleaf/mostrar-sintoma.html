@@ -23,9 +23,15 @@
         <ul>
           <th:block th:each="sintoma : ${sintomas}">
             <li th:text="${sintoma.nombre}"></li>
-            <a th:href="@{/diagnostico/{id}(id=${sintoma.diagnostico.idDiagnostico})}">Ver diagnóstico</a>
+            <a th:href="@{/diagnostico/{id}(id=${sintoma.diagnostico.idDiagnostico})}" class="btn btn-warning">Ver diagnóstico</a>
+            <form th:action="@{/mostrarPorcentajeDeDaniadoUnSintoma}" method="post">
+              <input type="hidden" name="idsSintomas" th:value="${sintoma.idSintoma}"/>
+              <button type="submit" class="btn btn-primary">Ver Porcentaje</button>
+            </form>
           </th:block>
         </ul>
+
+
       </div>
   </div>
 

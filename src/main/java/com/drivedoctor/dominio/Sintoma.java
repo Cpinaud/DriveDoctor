@@ -12,7 +12,7 @@ public class Sintoma {
     private String nombre;
     private String descripcion;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "item_tablero_id")
     private ItemTablero itemTablero;
 
