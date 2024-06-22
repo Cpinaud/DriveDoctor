@@ -1,5 +1,6 @@
 package com.drivedoctor.infraestructura;
 
+import com.drivedoctor.dominio.Marca;
 import com.drivedoctor.dominio.RepositorioUsuario;
 import com.drivedoctor.dominio.Usuario;
 import com.drivedoctor.dominio.Vehiculo;
@@ -63,10 +64,18 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
 
     @Override
     public List<Vehiculo> getMisVehiculos(Usuario usuario) {
-        Integer userid = usuario.getId();
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = session.createCriteria(Vehiculo.class);
         criteria.add(Restrictions.eq("usuario", usuario));
+        return criteria.list();
+    }
+
+    @Override
+    public List<Vehiculo> buscarVhPorMarca(Usuario usuario, Marca marca) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = session.createCriteria(Vehiculo.class);
+        criteria.add(Restrictions.eq("usuario", usuario));
+        criteria.add(Restrictions.eq("marca", marca));
         return criteria.list();
     }
 

@@ -67,4 +67,39 @@ public class ServicioVehiculoImpl implements ServicioVehiculo {
     public List<Vehiculo> getPorMarca(Marca marca) {
        return repositorioVehiculo.getPorMarca(marca);
     }
+
+    @Override
+    public Vehiculo buscarById(Integer idVehiculo) {
+        return repositorioVehiculo.getById(idVehiculo);
+    }
+
+    @Override
+    public void modificarVehiculo(Integer usuarioId, Integer idVehiculo, String patente, Integer anio) throws UsuarioInexistente, AnioInvalido, PatenteInvalida, PatenteExistente, VehiculoInexistente, vehiculoSinCambios {
+        Usuario usuario = repositorioUsuario.buscarPorId(usuarioId);
+        Vehiculo vehiculo = repositorioVehiculo.getById(idVehiculo);
+        if(usuario == null){
+            throw new UsuarioInexistente();
+        }
+        if(vehiculo == null){
+            throw new VehiculoInexistente();
+        }
+        if(anio<2000){
+            throw new AnioInvalido();
+        }
+        if (!patente.matches("^[a-zA-Z]{3}[0-9]{3}$|^[a-zA-Z]{2}[0-9]{3}[a-zA-Z]{2}$")) {
+            throw new PatenteInvalida();
+        }
+        Vehiculo vehiculoEncontrado = repositorioVehiculo.getByPatente(patente);
+        if(vehiculoEncontrado != null && !vehiculoEncontrado.getId().equals(vehiculo.getId())){
+            throw new PatenteExistente();
+        }
+
+        if(vehiculo.getAnoFabricacion().equals(anio) && vehiculo.getPatente().equals(patente)){
+            throw new vehiculoSinCambios();
+        }
+        vehiculo.setPatente(patente);
+        vehiculo.setAnoFabricacion(anio);
+
+        repositorioVehiculo.modificar(vehiculo);
+    }
 }

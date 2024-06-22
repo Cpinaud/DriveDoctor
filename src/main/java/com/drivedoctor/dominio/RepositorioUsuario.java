@@ -13,6 +13,8 @@ public interface RepositorioUsuario {
 
     List<Vehiculo> getMisVehiculos(Usuario usuario);
 
+    List<Vehiculo> buscarVhPorMarca(Usuario usuario, Marca marca);
+
     /*List<Vehiculo> verMisVehiculos(Usuario usuario);
     void agregarVehiculo(Usuario usuario,Vehiculo vehiculo);*/
 }

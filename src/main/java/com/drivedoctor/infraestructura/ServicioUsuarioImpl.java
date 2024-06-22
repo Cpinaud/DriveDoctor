@@ -1,9 +1,8 @@
 package com.drivedoctor.infraestructura;
-import com.drivedoctor.dominio.RepositorioUsuario;
-import com.drivedoctor.dominio.ServicioUsuario;
-import com.drivedoctor.dominio.Usuario;
-import com.drivedoctor.dominio.Vehiculo;
+import com.drivedoctor.dominio.*;
+import com.drivedoctor.dominio.excepcion.UserSinVhByMarca;
 import com.drivedoctor.dominio.excepcion.UsuarioExistente;
+import com.drivedoctor.dominio.excepcion.UsuarioInexistente;
 import com.drivedoctor.dominio.excepcion.UsuarioSinVehiculos;
 import org.springframework.stereotype.Service;
 
@@ -28,13 +27,23 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
         if(vehicDelUser.size()== 0){
             throw new UsuarioSinVehiculos();
         }
-        return repositorioUsuario.getMisVehiculos(usuario);
+
+        return vehicDelUser;
     }
 
     @Override
     public Usuario buscar(Integer usuarioId) {
 
         return repositorioUsuario.buscarPorId(usuarioId);
+    }
+
+    @Override
+    public List<Vehiculo> getVhPorMarca(Usuario usuario, Marca marca) throws UserSinVhByMarca {
+        List<Vehiculo> vehicDelUser = repositorioUsuario.buscarVhPorMarca(usuario,marca);
+        if(vehicDelUser.size()== 0){
+            throw new UserSinVhByMarca();
+        }
+        return vehicDelUser;
     }
 
     /*@Override

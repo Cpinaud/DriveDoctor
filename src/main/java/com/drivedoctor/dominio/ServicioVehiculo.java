@@ -12,4 +12,7 @@ public interface ServicioVehiculo {
     List<Vehiculo> getPorMarca(Marca marca);
 
 
+    Vehiculo buscarById(Integer idVehiculo);
+
+    void modificarVehiculo(Integer usuarioId, Integer idVehiculo, String patente, Integer anio) throws UsuarioInexistente, AnioInvalido, PatenteInvalida, PatenteExistente, VehiculoInexistente, vehiculoSinCambios;
 }

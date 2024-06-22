@@ -55,4 +55,18 @@ public class RepositorioVehiculoImpl implements RepositorioVehiculo {
                 .add(Restrictions.eq("patente", patente))
                 .uniqueResult();
     }
+
+    @Override
+    public Vehiculo getById(Integer idVehiculo) {
+        return (Vehiculo) sessionFactory.getCurrentSession().createCriteria(Vehiculo.class)
+                .add(Restrictions.eq("id", idVehiculo))
+                .uniqueResult();
+    }
+
+    @Override
+    public void modificar(Vehiculo vehiculo) {
+        sessionFactory.getCurrentSession().update(vehiculo);
+    }
+
+
 }

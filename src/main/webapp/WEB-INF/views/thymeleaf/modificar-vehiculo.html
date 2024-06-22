@@ -23,25 +23,28 @@
     <div class="container" style="margin-top:50px;">
         <div class="col-md-6">
 
-            <form action="#" th:action="@{/agregarVehiculo}" method="POST" th:object="${vehiculo}">
-                <h2>Agregar Vehículo</h2>
+            <form action="#" th:action="@{/editarVehiculo}" method="POST" th:object="${vehiculo}">
+                <h2>Modificar Vehículo</h2>
                 <br>
-                <label for="marca">Marca: </label>
-                <select  id="marca" class="form-control" onchange="cargarModelos()" required>
-                    <option th:each="marca : ${marcas}" th:value="${marca.id}" th:text="${marca.nombre}"></option>
-                </select>
+                <input type="hidden" id="id" name="id" th:value="${vehiculo.id}" />
+                <div class="inpt-dsbl">
+                    <div >
+                        <label for="marca">Marca: </label>
+                        <input type="text" id="marca" th:value="${vehiculo.marca.nombre}" disabled readonly>
+                    </div>
+                    <div>
+                        <label for="modelo">Modelo: </label>
+                        <input type="text" id="modelo" th:value="${vehiculo.modelo.nombre}" disabled readonly>
+                    </div>
+                </div>
 
-                <label for="modeloId">Modelo: </label>
-                <select name="modeloId" id="modeloId" class="form-control" required>
-                    <option th:each="modelo : ${modelos}" th:value="${modelo.id}" th:text="${modelo.nombre}"></option>
-                </select>
-                <label for="anoFabricacion">Año: </label>
+                <label for="anoFabricacion">Modificar Año: </label>
                 <input type="number" id="anoFabricacion" th:field="*{anoFabricacion}" class="form-control" value="2000" required/>
-
-                <label for="patente">Patente: </label>
+                <label for="patente">Modificar Patente: </label>
                 <input type="text" th:field="*{patente}" class="form-control" id="patente" required/>
+
                 <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}"></p>
-                <button id="btn-registrarme" class="btn boton-principal" Type="Submit">Agregar Vehiculo</button>
+                <button id="btn-registrarme" class="btn boton-principal" Type="Submit">Modificar Vehiculo</button>
             </form>
         </div>
     </div>
@@ -52,7 +55,5 @@
 <!-- Boostrap core js -->
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/sidebar.js}"></script>
-<script type="text/javascript" th:src="@{/js/modelByMarca.js}"></script>
-
 </body>
 </html>

@@ -1,16 +1,12 @@
 
 <div class="d-flex flex-column flex-shrink-0 p-3 text-white colorOscuro-2 h-100" style="width: 280px;">
     <a th:href="@{/home}"  class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-        <span class="fs-4">DriveDoctor</span>
+        <span class="fs-4">Drive Doctor</span>
     </a>
+    <span class="fs-8" th:if="${name != null}" th:text="'Hola, ' + ${name}"></span>
     <hr>
+    <div th:if="${id != null}">
     <ul class="nav nav-pills flex-column mb-auto">
-
-        <li class="nav-item">
-            <a th:href="@{/home}" class="nav-link text-white">
-                Inicio
-            </a>
-        </li >
         <li  class="nav-item">
             <a th:href="@{/verMisVehiculos}" class="nav-link text-white">
                 Mis vehículos
@@ -28,9 +24,20 @@
         </li>
         <li  class="nav-item" style="align-self: end">
             <a th:href="@{/logout}" id="logout"  class="nav-link text-white">
-                LogOut
+                Cerrar Sesión
             </a>
         </li>
     </ul>
+    </div>
+    <div th:if="${id == null}">
+        <ul class="nav nav-pills flex-column mb-auto">
+        <li  class="nav-item" style="align-self: end">
+            <a th:href="@{/login}" id="login"  class="nav-link text-white">
+                LogIn
+            </a>
+        </li>
+        </ul>
+    </div>
     <hr>
 </div>
+

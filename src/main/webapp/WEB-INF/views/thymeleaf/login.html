@@ -17,10 +17,10 @@
 <body>
 <main role="main" class="container">
 
-    <div class = "container d-flex justify-content-center">
+    <div class = "container d-flex justify-content-center login">
         <div id="loginbox" style="margin-top:80px; width:30%;" class="mainbox col-md-6 col-sm-8">
             <form action="#" th:action="@{/validar-login}" method="POST" th:object="${datosLogin}">
-                <h3 class="form-signin-heading">LogIn</h3>
+                <h3 class="form-signin-heading">Login</h3>
                 <hr class="color graph"><br>
 
                 <label>Email: </label>
@@ -45,5 +45,6 @@
 <!-- Boostrap core js -->
 <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+
 </body>
 </html>

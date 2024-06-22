@@ -9,4 +9,8 @@ public interface RepositorioVehiculo {
     List<Vehiculo> getPorMarca(Marca marca);
 
     Vehiculo getByPatente(String patente);
+
+    Vehiculo getById(Integer idVehiculo);
+
+    void modificar(Vehiculo vehiculo);
 }

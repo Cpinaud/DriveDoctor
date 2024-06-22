@@ -15,7 +15,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.mockito.Mockito.*;
 
@@ -53,12 +57,12 @@ public class ControladorVehiculoTest {
         // Ejecutar el método agregarVehiculo
         ModelAndView modelAndView = this.controladorVehiculo.agregarVehiculo(vehiculo, request, vehiculo.getId(), redirectAttributes);
 
-        // Verificar la vista y el modelo
+        // Verificar la vista
         assertThat(modelAndView.getViewName(), IsEqualIgnoringCase.equalToIgnoringCase("redirect:/verMisVehiculos"));
     }
 
     @Test
-    public void errorEnAnioFabricacionDeberiaVolverAFormularioYMostrarError() throws UsuarioInexistente, AnioInvalido, PatenteInvalida, PatenteExistente {
+    public void errorEnAnioFabricacionAlCrearVehiculoDeberiaVolverAFormularioYMostrarError() throws UsuarioInexistente, AnioInvalido, PatenteInvalida, PatenteExistente {
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpSession session = mock(HttpSession.class);
         when(request.getSession()).thenReturn(session);
@@ -77,7 +81,7 @@ public class ControladorVehiculoTest {
     }
 
     @Test
-    public void errorEnPatenteDeberiaVolverAFormularioYMostrarError() throws UsuarioInexistente, AnioInvalido, PatenteInvalida, PatenteExistente {
+    public void errorEnPatenteAlCrearVehiculoDeberiaVolverAFormularioYMostrarError() throws UsuarioInexistente, AnioInvalido, PatenteInvalida, PatenteExistente {
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpSession session = mock(HttpSession.class);
         when(request.getSession()).thenReturn(session);
@@ -95,21 +99,8 @@ public class ControladorVehiculoTest {
         assertThat(redirectAttributes.getFlashAttributes().get("error").toString(), equalToIgnoringCase("El formato de la patente es inválido"));
     }
 
-
-    private Vehiculo mockeoVehiculo() {
-        Vehiculo vehiculo = mock(Vehiculo.class);
-        Modelo modelo = mock(Modelo.class);
-        Marca marca = mock(Marca.class);
-        when(servicioModelo.getById(anyInt())).thenReturn(modelo);
-        when(modelo.getMarca()).thenReturn(marca);
-        when(vehiculo.getId()).thenReturn(1);
-        when(vehiculo.getModelo()).thenReturn(modelo);
-        when(vehiculo.getAnoFabricacion()).thenReturn(2000);
-        when(vehiculo.getPatente()).thenReturn("AA111AA");
-        return vehiculo;
-    }
     @Test
-    public void patenteExistenteDebeVolverAFormularioYMostrarError() throws UsuarioInexistente, AnioInvalido,PatenteInvalida,PatenteExistente {
+    public void patenteExistenteAlCrearVehiculoDebeVolverAFormularioYMostrarError() throws UsuarioInexistente, AnioInvalido,PatenteInvalida,PatenteExistente {
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpSession session = mock(HttpSession.class);
         when(request.getSession()).thenReturn(session);
@@ -126,6 +117,42 @@ public class ControladorVehiculoTest {
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/nuevo-vehiculo"));
         assertThat(redirectAttributes.getFlashAttributes().get("error").toString(), equalToIgnoringCase("Ya se ingresó un vehiculo con esa patente"));
     }
+
+    /*@Test
+    public void patenteExistenteAlEditarVehiculoDebeVolverAFormularioYMostrarError() throws UsuarioInexistente, AnioInvalido,PatenteInvalida,PatenteExistente {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpSession session = mock(HttpSession.class);
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("ID")).thenReturn(1);
+
+        Vehiculo vehiculo = mockeoVehiculo();
+        RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
+        Integer userId = (Integer) request.getSession().getAttribute("ID");
+
+        doThrow(PatenteExistente.class).when(servicioVehiculo).editarVehiculo(userId, vehiculoId,atributo,valor);
+
+        ModelAndView modelAndView = controladorVehiculo.editarVehiculo(vehiculo, request, userId, redirectAttributes,atributo, valor);
+
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/nuevo-vehiculo"));
+        assertThat(redirectAttributes.getFlashAttributes().get("error").toString(), equalToIgnoringCase("Ya se ingresó un vehiculo con esa patente"));
+    }*/
+
+
+
+    private Vehiculo mockeoVehiculo() {
+        Vehiculo vehiculo = mock(Vehiculo.class);
+        Modelo modelo = mock(Modelo.class);
+        Marca marca = mock(Marca.class);
+        when(servicioModelo.getById(anyInt())).thenReturn(modelo);
+        when(modelo.getMarca()).thenReturn(marca);
+        when(vehiculo.getId()).thenReturn(1);
+        when(vehiculo.getModelo()).thenReturn(modelo);
+        when(vehiculo.getAnoFabricacion()).thenReturn(2000);
+        when(vehiculo.getPatente()).thenReturn("AA111AA");
+        return vehiculo;
+    }
+
+
 
     /*@Test
     public void queInformeErrorSiSeNavegaAVerVehiculosSinSerAdministrador(){

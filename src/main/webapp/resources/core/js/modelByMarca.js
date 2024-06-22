@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 function cargarModelos() {
     var marcaId = document.getElementById("marca").value;
-    var modelosSelect = document.getElementById("modelo");
+    var modelosSelect = document.getElementById("modeloId");
 
     // Limpiar el select de modelos
     modelosSelect.innerHTML = '';
@@ -14,7 +14,7 @@ function cargarModelos() {
 
 
     // Inicializar una solicitud GET asíncrona al servidor para obtener los modelos
-    xhr.open('GET', 'http://localhost:8080/spring/obtenerModelos?idMarca=' + marcaId, true);
+    xhr.open('GET', 'http://localhost:8080/drivedoctor/obtenerModelos?idMarca=' + marcaId, true);
 
 
     // Configurar el manejador de eventos onreadystatechange

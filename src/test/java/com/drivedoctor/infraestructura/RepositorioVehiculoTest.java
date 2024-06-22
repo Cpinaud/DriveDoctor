@@ -64,7 +64,20 @@ public class RepositorioVehiculoTest {
         assertThat(itemObtenido.getPatente(), equalTo("AAA123"));
     }
 
+    @Test
+    @Transactional
+    @Rollback
+    public void queSePuedaBuscarUnVehiculoPorId(){
+        Marca marca = this.crearMarca("Renault");
+        Modelo modelo = this.crearModelo("Clio",marca);
+        Vehiculo vehiculo = this.crearVehiculo(marca, modelo, 2013, "AAA123");
+        vehiculo.setId(1);
+        this.sessionFactory.getCurrentSession().save(vehiculo);
 
+        Vehiculo vehiculoObtenido = this.repositorioVehiculo.getById(1);
+
+        assertThat(vehiculo, equalTo(vehiculoObtenido));
+    }
 
     @Test
     @Transactional

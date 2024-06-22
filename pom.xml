@@ -207,7 +207,7 @@
                         <port>8080</port>
                     </httpConnector>
                     <webApp>
-                        <contextPath>/spring</contextPath>
+                        <contextPath>/drivedoctor</contextPath>
                     </webApp>
                 </configuration>
             </plugin>

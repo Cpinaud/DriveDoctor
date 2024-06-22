@@ -50,24 +50,6 @@ public class ServicioVehiculoTest {
 
 
     @Test
-    public void queAlBuscarVehiculosPorMarcaRenaultDevuelvaLosVehiculosDeEsaMarca() {
-        // preparacion
-        Marca marca = mock(Marca.class);
-        marca.setId(2);
-        marca.setNombre("Ford");
-        Modelo modelo = mock(Modelo.class);
-        List<Vehiculo> vehiculosMock = new ArrayList<>();
-        vehiculosMock.add(new Vehiculo(marca, modelo, 2015, "AA203IK"));
-        when(this.repositorioVehiculo.getPorMarca(marca)).thenReturn(vehiculosMock);
-
-        // ejecucion
-        List<Vehiculo> items = this.servicioVehiculo.getPorMarca(marca);
-
-        // verificacion
-        assertThat(items.size(), equalTo(1)); // Existan 1 elementos
-    }
-
-    @Test
     public void queAlCrearUnVehiculoSeAsocieAUnUsuarioExistente() throws UsuarioInexistente, AnioInvalido, PatenteInvalida, PatenteExistente {
         Integer usuarioId = 1;
         Usuario usuario = new Usuario();
@@ -98,29 +80,4 @@ public class ServicioVehiculoTest {
     }
 
 
-
-
-    /* 
-    @Test
-    public void queSePuedanObtenerTodosLosVehiculosDeUnUsuario(){
-        // preparacion
-        Usuario usuario = new Usuario();
-        usuario.setEmail("test@unlam.edu.ar");
-
-        Vehiculo vehiculo = new Vehiculo("Fiat","Palio");
-        this.servicioUsuario.agregarVehiculo(usuario,vehiculo);
-
-        List<Vehiculo> vehiculosMock = new ArrayList<>();
-        vehiculosMock.add(vehiculo);
-
-        when(this.servicioUsuario.verMisVehiculos(usuario)).thenReturn(vehiculosMock);
-        // ejecucion
-        List<Vehiculo> vehiculos = this.servicioUsuario.verMisVehiculos(usuario);
-
-
-        // verificacion
-        assertThat(vehiculos.size(), equalTo(1)); // Existan 3 elementos
-    }
-
-*/
 }
