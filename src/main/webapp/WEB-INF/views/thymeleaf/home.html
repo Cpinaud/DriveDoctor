@@ -8,15 +8,20 @@
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
   <!-- Custom style -->
   <link rel="stylesheet" th:href="@{/css/main.css}"/>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+  </style>
 </head>
 <body>
 <main >
   <!-- Incluir el fragmento del sidebar -->
   <div th:include="templates/sidebar.html"></div>
-
-  <div class="container" style="margin-top:50px;">
-    <h1><span th:text="'Hola, ' + ${name}"></span></h1>
+  <div class="home-page" >
+    <img src="/drivedoctor/static/DD1.png ">
+    <h1>DRIVE DOCTOR</h1>
+    <h3>Tu aliado de confianza para el cuidado del vehiculo</h3>
   </div>
+
 </main>
 
 <!-- js -->
