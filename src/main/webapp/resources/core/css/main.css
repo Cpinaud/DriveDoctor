@@ -176,3 +176,8 @@ width: 90%;
 .confirmaDlt{
     z-index: 9000;
 }
+
+.cancel-modif{
+    text-decoration: none;
+    color:white !important;
+}

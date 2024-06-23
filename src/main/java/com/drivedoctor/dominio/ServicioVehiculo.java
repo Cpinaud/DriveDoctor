@@ -15,4 +15,10 @@ public interface ServicioVehiculo {
     Vehiculo buscarById(Integer idVehiculo);
 
     void modificarVehiculo(Integer usuarioId, Integer idVehiculo, String patente, Integer anio) throws UsuarioInexistente, AnioInvalido, PatenteInvalida, PatenteExistente, VehiculoInexistente, vehiculoSinCambios;
+
+    Vehiculo buscarByPatente(String patente) throws VehiculoInexistente;
+
+    void validarVehiculoUser(Integer idVehiculo, Integer idVehiculoPorPatente, Integer userId) throws VehiculoInvalido;
+
+    void eliminarVehiculo(Vehiculo vehiculo);
 }

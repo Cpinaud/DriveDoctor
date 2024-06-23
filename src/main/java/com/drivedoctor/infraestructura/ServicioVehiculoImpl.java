@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.drivedoctor.dominio.RepositorioUsuario;
 import com.drivedoctor.dominio.Usuario;
@@ -101,5 +102,34 @@ public class ServicioVehiculoImpl implements ServicioVehiculo {
         vehiculo.setAnoFabricacion(anio);
 
         repositorioVehiculo.modificar(vehiculo);
+    }
+
+    @Override
+    public Vehiculo buscarByPatente(String patente) throws VehiculoInexistente {
+        Vehiculo vehiculo = repositorioVehiculo.getByPatente(patente);
+
+        if(vehiculo == null){
+            throw new VehiculoInexistente();
+        }
+        return vehiculo;
+    }
+
+    @Override
+    public void validarVehiculoUser(Integer idVehiculo, Integer idVehiculoPorPatente, Integer userId) throws VehiculoInvalido {
+
+        if(!Objects.equals(idVehiculo, idVehiculoPorPatente)){
+            throw new VehiculoInvalido();
+        }else{
+            Vehiculo vehiculo = repositorioVehiculo.getById(idVehiculo);
+            Integer usuarioVehiculo = vehiculo.getUsuario().getId();
+            if(!Objects.equals(usuarioVehiculo, userId)){
+                throw new VehiculoInvalido();
+            }
+        }
+    }
+
+    @Override
+    public void eliminarVehiculo(Vehiculo vehiculo) {
+        repositorioVehiculo.eliminar(vehiculo);
     }
 }

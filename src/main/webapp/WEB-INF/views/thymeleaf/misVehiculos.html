@@ -22,23 +22,28 @@
     <!-- Incluir el fragmento del sidebar -->
     <div th:include="templates/sidebar.html"></div>
 
-    <!--<div th:if="${confirmaDelete != null}" >
+
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Eliminar vehiculo</h5>
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p th:text="${confirmaDelete}"></p>
+                    <form id="deleteForm" th:action="@{/eliminar-vehiculo}" method="post">
+                        <input type="number" id="vehiculoId" name="idVehiculo" hidden>
+                        <input type="text" id="patente" name="patente" hidden>
+                        <p class="modal-content-p"></p>
                 </div>
                 <div class="modal-footer">
-                    <a th:href="@{/delete-vehiculo/{id}(id=${vehiculoId})}">SI</a>
-                    <a th:href="@{/verMisVehiculos}">CANCELAR</a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="confirmDeleteButton" >Confirmar</button>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>-->
+    </div>
 
     <div class="container" style="margin-top:50px;">
         <div class="col-md-6">
@@ -73,7 +78,11 @@
                             <td th:text="${vehiculo.patente}"></td>
                             <td>
                                 <a th:href="@{/modificar-vehiculo/{id}(id=${vehiculo.id})}">Modificar</a> |
-                                <a th:href="@{/eliminar-vehiculo/{id}(id=${vehiculo.id})}">Eliminar</a> |
+                                <!--<a th:href="@{/eliminar-vehiculo/{id}(id=${vehiculo.id})}">Eliminar</a> |-->
+                                <a data-bs-toggle="modal" data-bs-target="#staticBackdrop" th:attr="data-id=${vehiculo.id},
+                    data-marca=${vehiculo.marca.nombre},
+                    data-modelo=${vehiculo.modelo.nombre},
+                    data-patente=${vehiculo.patente}">Eliminar</a> |
                                 <a th:href="@{/diagnosticar-vehiculo/{id}(id=${vehiculo.id})}">Diagnosticar</a> |
                                 <a th:href="@{/historial-vehiculo/{id}(id=${vehiculo.id})}">Historial</a>
                             </td>
@@ -91,5 +100,6 @@
 <!-- Scripts JavaScript -->
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/sidebar.js}"></script>
+<script type="text/javascript" th:src="@{/js/modalDeleteVh.js}"></script>
 </body>
 </html>

@@ -13,4 +13,6 @@ public interface RepositorioVehiculo {
     Vehiculo getById(Integer idVehiculo);
 
     void modificar(Vehiculo vehiculo);
+
+    void eliminar(Vehiculo vehiculo);
 }

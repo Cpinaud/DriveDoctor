@@ -25,17 +25,33 @@ public class ControladorVehiculo {
         this.servicioMarca = servicioMarca;
     }
 
-    @GetMapping("/eliminar-vehiculo/{id}")
-    public ModelAndView eliminarVehiculo(ModelMap model,HttpServletRequest request,@PathVariable("id") Integer idVehiculo) {
-        Vehiculo vehiculo = servicioVehiculo.buscarById(idVehiculo);
+    @RequestMapping(path = "/eliminar-vehiculo", method = RequestMethod.POST)
+    public ModelAndView eliminarVehiculo(ModelMap model,HttpServletRequest request,
+                                         @RequestParam("idVehiculo") Integer idVehiculo,
+                                         @RequestParam("patente") String patente,
+                                         RedirectAttributes redirectAttributes) {
+
         if (request.getSession().getAttribute("ID")==null){
             return new ModelAndView("redirect:/login");
         }
-        model.put("id",request.getSession().getAttribute("ID"));
-        model.put("vehiculoId",vehiculo.getId());
-        model.put("confirmaDelete","Confirma que desea eliminar el vehiculo" + vehiculo.getMarca().getNombre() + " " + vehiculo.getModelo().getNombre() + " - Patente " + vehiculo.getPatente() + " ? ");
+        Integer idVehiculoPorPatente = 0;
+        try{
+            idVehiculoPorPatente = servicioVehiculo.buscarByPatente(patente).getId();
+        } catch (VehiculoInexistente e){
 
-        return new ModelAndView("misVehiculos", model);
+            return new ModelAndView("redirect:/verMisVehiculos");
+        }
+        Integer userId = (Integer) request.getSession().getAttribute("ID");
+
+        try{
+            servicioVehiculo.validarVehiculoUser(idVehiculo,idVehiculoPorPatente,userId);
+        } catch (VehiculoInvalido e){
+            return new ModelAndView("redirect:/verMisVehiculos");
+        }
+        Vehiculo vehiculo = servicioVehiculo.buscarById(idVehiculo);
+        servicioVehiculo.eliminarVehiculo(vehiculo);
+
+        return new ModelAndView("redirect:/verMisVehiculos");
     }
 
     @GetMapping("/modificar-vehiculo/{id}")
