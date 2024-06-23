@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Talleres en Google Maps</title>
+    <!-- Agrega los enlaces a Bootstrap o estilos necesarios -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <div class="container">
+        <h2>Buscar Talleres en Google Maps</h2>
+        <div id="map"></div>
+    </div>
+</main>
+<!-- Scripts al final del body para mejorar el rendimiento -->
+
+<script type="text/javascript" th:src="@{/webjars/bootstrap/5.2.0/js/bootstrap.bundle.min.js}"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRUoZVbMCB_sZ_o5ajz7ZYZ8DYT-JFh78&libraries=places&callback=initMap"></script>
+<script>
+    if(navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+        const coords = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+        };
+        console.log(coords);
+
+        }, () => {
+            alert("Tu navegador esta bien, pero ocurrio un error ")
+        })
+    } else {
+        alert("no se pudo obtener")
+    }
+
+
+
+
+    function initMap() {
+        const argCoords = {lat: -33.61, lng: -63.61}
+        const map = new google.maps.Map(document.getElementById('map'), {
+            center: argCoords,
+            zoom: 12
+        });
+        const marker = new google.maps.Marker({
+            position:  argCoords,
+            map: map
+        })
+    }
+
+
+
+    /*    var talleres = [
+            { name: 'Taller mecanico el garage', location: { lat: -34.7349657768178, lng: -58.57712552262566 } },
+            { name: 'Taller B', location: { lat: -34.7327193, lng: -58.5820849 } }
+            // Puedes agregar más talleres según sea necesario
+        ];
+
+        talleres.forEach(function(taller) {
+            var marker = new google.maps.Marker.AdavancedMarkerElement({
+                position: taller.location,
+                map: map,
+                title: taller.name,
+                markerElementArgs: {
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        fillColor: '#FF0000',
+                        fillOpacity: 0.7,
+                        strokeColor: '#FFFFFF',
+                        strokeWeight: 1,
+                        scale: 10
+                    },
+                    label: {
+                        text: taller.name,
+                        color: '#000000',
+                        fontSize: '12px',
+                        fontWeight: 'bold'
+                    }
+                }
+            });
+
+            var infowindow = new google.maps.InfoWindow({
+                content: '<h5>' + taller.name + '</h5>'
+            });
+
+            marker.addListener('click', function() {
+                infowindow.open(map, marker);
+            });
+        });
+    } */
+</script>
+
+
+
+</body>
+</html>
