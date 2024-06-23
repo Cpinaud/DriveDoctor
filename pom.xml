@@ -153,6 +153,12 @@
             <artifactId>hibernate-validator</artifactId>
             <version>6.1.5.Final</version>
         </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>24.0.1</version>
+            <scope>compile</scope>
+        </dependency>
 
         <!-- compile only, deployed container will provide this -->
         <!--
