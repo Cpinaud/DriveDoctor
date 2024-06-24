@@ -1,5 +1,6 @@
 package com.drivedoctor.dominio;
 
+import com.drivedoctor.dominio.excepcion.MarcaNoEncontrada;
 import com.drivedoctor.infraestructura.ServicioMarcaImpl;
 import com.drivedoctor.infraestructura.ServicioSintomaImpl;
 import com.drivedoctor.integracion.config.HibernateTestConfig;
@@ -14,8 +15,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {HibernateTestConfig.class})
@@ -41,5 +41,19 @@ public class ServicioMarcaTest {
         List<Marca> marcas = this.servicioMarca.obtenerMarcasAll();
 
         assertThat(marcas.size(), equalTo(3)); // Existan 1 elementos
+    }
+
+    @Test
+    public void queSePuedaObtenerUnaMarcaPorId() throws MarcaNoEncontrada {
+        Integer idbucada = 1;
+        Integer id = 1;
+        Marca marca = new Marca("Renault");
+        marca.setId(id);
+
+        when(this.repositorioMarca.getById(idbucada)).thenReturn(marca);
+       Marca marcaObtenida = this.servicioMarca.obtenerMarcaPorId(idbucada);
+
+       assertThat(marcaObtenida.getId(), equalTo(idbucada));
+        verify(this.repositorioMarca,times(1)).getById(idbucada);
     }
 }

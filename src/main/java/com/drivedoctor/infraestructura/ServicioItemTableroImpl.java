@@ -3,6 +3,8 @@ package com.drivedoctor.infraestructura;
 import com.drivedoctor.dominio.ItemTablero;
 
 import com.drivedoctor.dominio.ServicioItemTablero;
+import com.drivedoctor.dominio.excepcion.ItemNoEncontrado;
+import com.drivedoctor.dominio.excepcion.ItemsNoEncontrados;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,12 +23,20 @@ public class ServicioItemTableroImpl implements ServicioItemTablero {
     }
 
     @Override
-    public List<ItemTablero> obtenerTodosLosItems() {
-        return repositorioItemTablero.findAll();
+    public List<ItemTablero> obtenerTodosLosItems() throws ItemsNoEncontrados {
+        List<ItemTablero> itemsObtenidos = repositorioItemTablero.findAll();
+        if(itemsObtenidos.isEmpty()){
+            throw new ItemsNoEncontrados();
+        }
+        return itemsObtenidos;
     }
 
     @Override
-    public ItemTablero findById(Integer idItemTablero) {
-        return repositorioItemTablero.findById(idItemTablero);
+    public ItemTablero findById(Integer idItemTablero) throws ItemNoEncontrado {
+        ItemTablero itemTablero = repositorioItemTablero.findById(idItemTablero);
+        if (itemTablero == null) {
+            throw new ItemNoEncontrado();
+        }
+        return itemTablero;
     }
 }

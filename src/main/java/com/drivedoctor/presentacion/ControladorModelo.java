@@ -1,6 +1,7 @@
 package com.drivedoctor.presentacion;
 
 import com.drivedoctor.dominio.*;
+import com.drivedoctor.dominio.excepcion.MarcaNoEncontrada;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,7 +28,7 @@ public class ControladorModelo {
 
     @GetMapping("/obtenerModelos")
     @ResponseBody
-    public ResponseEntity<List<Modelo>> obtenerModelosPorMarca(@RequestParam("idMarca") Integer idMarca) {
+    public ResponseEntity<List<Modelo>> obtenerModelosPorMarca(@RequestParam("idMarca") Integer idMarca) throws MarcaNoEncontrada {
         Marca marca = servicioMarca.obtenerMarcaPorId(idMarca);
         List<Modelo> modelos =  servicioModelo.obtenerModeloPorMarca(marca);
         return ResponseEntity.ok(modelos);

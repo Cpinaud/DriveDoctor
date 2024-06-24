@@ -1,6 +1,9 @@
 package com.drivedoctor.presentacion;
 
 import com.drivedoctor.dominio.*;
+import com.drivedoctor.dominio.excepcion.ItemNoEncontrado;
+import com.drivedoctor.dominio.excepcion.ItemsNoEncontrados;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -39,7 +42,7 @@ public class ControladorSintoma {
     }
 
     @RequestMapping("/nuevoSintoma")
-    public ModelAndView nuevoSintoma() {
+    public ModelAndView nuevoSintoma() throws ItemsNoEncontrados {
         ModelAndView modelAndView = new ModelAndView("nuevo-sintoma");
         List<ItemTablero> itemsTablero = servicioItemTablero.obtenerTodosLosItems();
         List<String> opcionesItemTablero = itemsTablero.stream()
@@ -62,7 +65,7 @@ public class ControladorSintoma {
     }
 
     @RequestMapping("/mostrarSintomaPorItem")
-    public ModelAndView mostrarSintoma() {
+    public ModelAndView mostrarSintoma() throws ItemsNoEncontrados {
         ModelAndView modelAndView = new ModelAndView("item-tablero");
         List<ItemTablero> itemsTablero = servicioItemTablero.obtenerTodosLosItems();
 
@@ -71,7 +74,7 @@ public class ControladorSintoma {
     }
 
     @RequestMapping("/mostrarSintomasPorItems")  //PROBLEM
-    public ModelAndView mostrarSintomas() {
+    public ModelAndView mostrarSintomas() throws ItemsNoEncontrados {
         ModelAndView modelAndView = new ModelAndView("items-tablero");
         List<ItemTablero> itemsTablero = servicioItemTablero.obtenerTodosLosItems();
 
@@ -87,7 +90,7 @@ public class ControladorSintoma {
         return modelAndView;
     }
     @RequestMapping(value = "/mostrarSintomaDependiendoItem", method = RequestMethod.POST )
-    public ModelAndView mostrarSintomaDependiendoItem(@RequestParam("idItemTablero") Integer idItemTablero){
+    public ModelAndView mostrarSintomaDependiendoItem(@RequestParam("idItemTablero") Integer idItemTablero) throws ItemNoEncontrado {
 
         ModelMap modelo = new ModelMap();
         ItemTablero itemTablero = servicioItemTablero.findById(idItemTablero);
@@ -99,17 +102,25 @@ public class ControladorSintoma {
 
 
     }
-     @RequestMapping(value = "/mostrarSintomasDependiendoItems", method = RequestMethod.POST )
-    public ModelAndView mostrarSintomasDependiendoItems(@RequestParam("itemsTablero[]") Integer[] itemsTablero){
+
+    @RequestMapping(value = "/mostrarSintomasDependiendoItems", method = RequestMethod.POST )
+    public ModelAndView mostrarSintomasDependiendoItems(@RequestParam("itemsTablero[]") Integer[] itemsTablero) throws ItemNoEncontrado {
         ModelMap modelo = new ModelMap();
 
 
-        List<ItemTablero> items = Arrays.stream(itemsTablero)
-                .map(servicioItemTablero::findById)
-                .collect(Collectors.toList());
+         List<ItemTablero> items = Arrays.stream(itemsTablero)
+                 .map(id -> {
+                     try {
+                         return servicioItemTablero.findById(id);
+                     } catch (ItemNoEncontrado e) {
+                         throw new RuntimeException(e);
+                     }
+                 })
+                 .collect(Collectors.toList());
 
 
-        List<Sintoma> sintomas= servicioSintoma.problemasEnTablero(items);
+
+         List<Sintoma> sintomas= servicioSintoma.problemasEnTablero(items);
 
         modelo.addAttribute("sintomas", sintomas);
 

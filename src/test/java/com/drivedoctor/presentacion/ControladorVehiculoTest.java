@@ -1,10 +1,7 @@
 package com.drivedoctor.presentacion;
 
 import com.drivedoctor.dominio.*;
-import com.drivedoctor.dominio.excepcion.AnioInvalido;
-import com.drivedoctor.dominio.excepcion.PatenteExistente;
-import com.drivedoctor.dominio.excepcion.PatenteInvalida;
-import com.drivedoctor.dominio.excepcion.UsuarioInexistente;
+import com.drivedoctor.dominio.excepcion.*;
 import org.hamcrest.text.IsEqualIgnoringCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,7 +38,7 @@ public class ControladorVehiculoTest {
     }
 
     @Test
-    public void queDevuelvaLaVistaDeVehiculosCuandoSeAgregaUnVehiculo() throws UsuarioInexistente, AnioInvalido, PatenteInvalida, PatenteExistente {
+    public void queDevuelvaLaVistaDeVehiculosCuandoSeAgregaUnVehiculo() throws UsuarioInexistente, AnioInvalido, PatenteInvalida, PatenteExistente, ModeloNoEncontrado {
         // Preparar los datos de prueba
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpSession session = mock(HttpSession.class);
@@ -62,7 +59,7 @@ public class ControladorVehiculoTest {
     }
 
     @Test
-    public void errorEnAnioFabricacionAlCrearVehiculoDeberiaVolverAFormularioYMostrarError() throws UsuarioInexistente, AnioInvalido, PatenteInvalida, PatenteExistente {
+    public void errorEnAnioFabricacionAlCrearVehiculoDeberiaVolverAFormularioYMostrarError() throws UsuarioInexistente, AnioInvalido, PatenteInvalida, PatenteExistente, ModeloNoEncontrado {
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpSession session = mock(HttpSession.class);
         when(request.getSession()).thenReturn(session);
@@ -81,7 +78,7 @@ public class ControladorVehiculoTest {
     }
 
     @Test
-    public void errorEnPatenteAlCrearVehiculoDeberiaVolverAFormularioYMostrarError() throws UsuarioInexistente, AnioInvalido, PatenteInvalida, PatenteExistente {
+    public void errorEnPatenteAlCrearVehiculoDeberiaVolverAFormularioYMostrarError() throws UsuarioInexistente, AnioInvalido, PatenteInvalida, PatenteExistente, ModeloNoEncontrado {
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpSession session = mock(HttpSession.class);
         when(request.getSession()).thenReturn(session);
@@ -100,7 +97,7 @@ public class ControladorVehiculoTest {
     }
 
     @Test
-    public void patenteExistenteAlCrearVehiculoDebeVolverAFormularioYMostrarError() throws UsuarioInexistente, AnioInvalido,PatenteInvalida,PatenteExistente {
+    public void patenteExistenteAlCrearVehiculoDebeVolverAFormularioYMostrarError() throws UsuarioInexistente, AnioInvalido, PatenteInvalida, PatenteExistente, ModeloNoEncontrado {
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpSession session = mock(HttpSession.class);
         when(request.getSession()).thenReturn(session);
@@ -139,7 +136,7 @@ public class ControladorVehiculoTest {
 
 
 
-    private Vehiculo mockeoVehiculo() {
+    private Vehiculo mockeoVehiculo() throws ModeloNoEncontrado {
         Vehiculo vehiculo = mock(Vehiculo.class);
         Modelo modelo = mock(Modelo.class);
         Marca marca = mock(Marca.class);

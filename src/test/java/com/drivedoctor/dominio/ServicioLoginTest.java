@@ -12,8 +12,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {HibernateTestConfig.class})
@@ -40,4 +40,45 @@ public class ServicioLoginTest {
 
 
     }*/
+
+    @Test
+    public void queSePuedaObtenerUnUsuarioAPartirDeEmailYPassword(){
+        String email = "test@test.com";
+        String password = "test";
+
+        Usuario usuario = new Usuario();
+        usuario.setEmail("test@test.com");
+        usuario.setPassword("test");
+
+        when(this.repositorioUsuario.buscarUsuario(email,password)).thenReturn(usuario);
+        Usuario usuarioObtenido = this.servicioLogin.consultarUsuario(email,password);
+
+        assertThat(usuarioObtenido.getEmail(), equalTo(email));
+        assertThat(usuarioObtenido.getPassword(), equalTo(password));
+        verify(this.repositorioUsuario, times(1)).buscarUsuario(email,password);
+    }
+
+    @Test
+    public void queSePuedaRegistrarUnUsuarioNuevo() throws UsuarioExistente {
+        Usuario usuario = new Usuario();
+        usuario.setEmail("test@test.com");
+        usuario.setPassword("test");
+
+        when(this.repositorioUsuario.buscar("test@test.com")).thenReturn(null);
+        this.servicioLogin.registrar(usuario);
+
+        verify(this.repositorioUsuario,times(1)).buscar("test@test.com");
+        verify(this.repositorioUsuario,times(1)).guardar(usuario);
+    }
+
+    @Test
+    public void queSeLanceUnaExeptionCuandoSeQuieraRegistrarUnUsurioExistente() throws UsuarioExistente {
+        Usuario usuario = new Usuario();
+        usuario.setEmail("test@test.com");
+        usuario.setPassword("test");
+
+        when(this.repositorioUsuario.buscar("test@test.com")).thenReturn(usuario);
+
+        assertThrows(UsuarioExistente.class,() -> this.servicioLogin.registrar(usuario));
+    }
 }

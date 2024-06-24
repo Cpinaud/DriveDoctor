@@ -1,6 +1,7 @@
 package com.drivedoctor.presentacion;
 
 import com.drivedoctor.dominio.*;
+import com.drivedoctor.dominio.excepcion.MarcaNoEncontrada;
 import com.drivedoctor.dominio.excepcion.PatenteExistente;
 import com.drivedoctor.dominio.excepcion.UserSinVhByMarca;
 import com.drivedoctor.dominio.excepcion.UsuarioSinVehiculos;
@@ -63,7 +64,7 @@ public class ControladorUsuarioTest {
 
 
     @Test
-    public void queAlBuscarVehiculosRenaultDevuelvaVehiculosDeEsaMarcaSiElUserLosPosee() throws UserSinVhByMarca {
+    public void queAlBuscarVehiculosRenaultDevuelvaVehiculosDeEsaMarcaSiElUserLosPosee() throws UserSinVhByMarca, MarcaNoEncontrada {
         HttpServletRequest request = this.mockeoSessionUser();
         Integer userId = (Integer) request.getSession().getAttribute("ID");
         Usuario usuario = new Usuario();
@@ -89,7 +90,7 @@ public class ControladorUsuarioTest {
     }
 
     @Test
-    public void queAlBuscarVehiculosRenaultDevuelvaMensajeDeNoExistentesSiElUserNoLosPosee() throws UserSinVhByMarca {
+    public void queAlBuscarVehiculosRenaultDevuelvaMensajeDeNoExistentesSiElUserNoLosPosee() throws UserSinVhByMarca, MarcaNoEncontrada {
         HttpServletRequest request = this.mockeoSessionUser();
         Integer userId = (Integer) request.getSession().getAttribute("ID");
         Usuario usuario = new Usuario();

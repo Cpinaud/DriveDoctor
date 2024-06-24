@@ -1,10 +1,7 @@
 package com.drivedoctor.presentacion;
 
 import com.drivedoctor.dominio.*;
-import com.drivedoctor.dominio.excepcion.UserSinVhByMarca;
-import com.drivedoctor.dominio.excepcion.UsuarioExistente;
-import com.drivedoctor.dominio.excepcion.UsuarioInexistente;
-import com.drivedoctor.dominio.excepcion.UsuarioSinVehiculos;
+import com.drivedoctor.dominio.excepcion.*;
 import com.drivedoctor.infraestructura.ServicioMarcaImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -70,7 +67,7 @@ public class ControladorUsuario {
     @RequestMapping(path = "/buscarPorMarca",method = RequestMethod.POST)
     public ModelAndView verMisVhPorMarca(HttpServletRequest request,
                                          @RequestParam("marca") Integer marcaid,
-                                         RedirectAttributes redirectAttributes) {
+                                         RedirectAttributes redirectAttributes) throws MarcaNoEncontrada {
         String viewName = "misVehiculos";
         ModelMap model = new ModelMap();
         Integer usuarioId= (Integer) request.getSession().getAttribute("ID");

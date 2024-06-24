@@ -1,6 +1,7 @@
 package com.drivedoctor.infraestructura;
 
 import com.drivedoctor.dominio.*;
+import com.drivedoctor.dominio.excepcion.MarcaNoEncontrada;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -24,8 +25,12 @@ public class ServicioMarcaImpl implements ServicioMarca {
     }
 
     @Override
-    public Marca obtenerMarcaPorId(Integer idMarca) {
-        return this.repositorioMarca.getById(idMarca);
+    public Marca obtenerMarcaPorId(Integer idMarca) throws MarcaNoEncontrada {
+        Marca marcaBuscada = this.repositorioMarca.getById(idMarca);
+        if (marcaBuscada == null) {
+            throw new MarcaNoEncontrada();
+        }
+        return marcaBuscada;
     }
 
 

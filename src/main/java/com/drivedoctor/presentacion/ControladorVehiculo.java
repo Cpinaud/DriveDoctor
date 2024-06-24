@@ -118,7 +118,7 @@ public class ControladorVehiculo {
     public ModelAndView agregarVehiculo(@ModelAttribute("vehiculo") Vehiculo vehiculo,
                                         HttpServletRequest request,
                                         @RequestParam("modeloId") Integer modeloId,
-                                        RedirectAttributes redirectAttributes) {
+                                        RedirectAttributes redirectAttributes) throws ModeloNoEncontrado {
 
         Modelo modelo = servicioModelo.getById(modeloId);
         vehiculo.setModelo(modelo);
