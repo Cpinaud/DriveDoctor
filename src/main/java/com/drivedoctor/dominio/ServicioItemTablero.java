@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface ServicioItemTablero {
 
-    List<ItemTablero> obtenerTodosLosItems() throws ItemsNoEncontrados;
+    List<ItemTablero> obtenerTodosLosItems() ;
     ItemTablero findById(Integer idItemTablero) throws ItemNoEncontrado;
 }

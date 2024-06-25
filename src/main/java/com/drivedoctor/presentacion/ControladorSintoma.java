@@ -65,7 +65,7 @@ public class ControladorSintoma {
     }
 
     @RequestMapping("/mostrarSintomaPorItem")
-    public ModelAndView mostrarSintoma() throws ItemsNoEncontrados {
+    public ModelAndView mostrarSintoma()  {
         ModelAndView modelAndView = new ModelAndView("item-tablero");
         List<ItemTablero> itemsTablero = servicioItemTablero.obtenerTodosLosItems();
 

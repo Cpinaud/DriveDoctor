@@ -23,12 +23,9 @@ public class ServicioItemTableroImpl implements ServicioItemTablero {
     }
 
     @Override
-    public List<ItemTablero> obtenerTodosLosItems() throws ItemsNoEncontrados {
-        List<ItemTablero> itemsObtenidos = repositorioItemTablero.findAll();
-        if(itemsObtenidos.isEmpty()){
-            throw new ItemsNoEncontrados();
-        }
-        return itemsObtenidos;
+    public List<ItemTablero> obtenerTodosLosItems()  {
+        return repositorioItemTablero.findAll();
+
     }
 
     @Override
