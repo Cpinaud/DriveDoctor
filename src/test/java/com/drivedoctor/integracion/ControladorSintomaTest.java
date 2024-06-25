@@ -1,5 +1,6 @@
 package com.drivedoctor.integracion;
 
+import com.drivedoctor.config.GoogleMapsConfig;
 import com.drivedoctor.dominio.Sintoma;
 import com.drivedoctor.integracion.config.HibernateTestConfig;
 import com.drivedoctor.integracion.config.SpringWebTestConfig;
@@ -17,10 +18,9 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {HibernateTestConfig.class, SpringWebTestConfig.class})
+@ContextConfiguration(classes = {HibernateTestConfig.class, SpringWebTestConfig.class, GoogleMapsConfig.class})
 public class ControladorSintomaTest {
 
     private Sintoma sitomaMock;

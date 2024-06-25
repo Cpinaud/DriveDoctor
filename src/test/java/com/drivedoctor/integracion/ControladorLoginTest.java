@@ -1,5 +1,6 @@
 package com.drivedoctor.integracion;
 
+import com.drivedoctor.config.GoogleMapsConfig;
 import com.drivedoctor.integracion.config.HibernateTestConfig;
 import com.drivedoctor.integracion.config.SpringWebTestConfig;
 import com.drivedoctor.dominio.Usuario;
@@ -28,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {SpringWebTestConfig.class, HibernateTestConfig.class})
+@ContextConfiguration(classes = {SpringWebTestConfig.class, HibernateTestConfig.class, GoogleMapsConfig.class})
 public class ControladorLoginTest {
 
 	private Usuario usuarioMock;
