@@ -25,21 +25,6 @@
 <script type="text/javascript" th:src="@{/webjars/bootstrap/5.2.0/js/bootstrap.bundle.min.js}"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRUoZVbMCB_sZ_o5ajz7ZYZ8DYT-JFh78&libraries=places&callback=initMap"></script>
 <script>
-    if(navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
-        const coords = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-        };
-        console.log(coords);
-
-        }, () => {
-            alert("Tu navegador esta bien, pero ocurrio un error ")
-        })
-    } else {
-        alert("no se pudo obtener")
-    }
-
 
 
 
@@ -47,13 +32,55 @@
         const argCoords = { lat: -33.61, lng: -63.61 };
         const map = new google.maps.Map(document.getElementById('map'), {
             center: argCoords,
-            zoom: 7
+            zoom: 12
         });
+        if(navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                const userCoords = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                map.setCenter(userCoords);
+
+                const userMarker = new google.maps.Marker({
+                    position:userCoords,
+                    map: map,
+                    title: 'Mi ubicacion'
+                });
+
+                const infowindow = new google.maps.InfoWindow({
+                    content: '<h5>Mi ubicacion actual </h5>'
+                })
+
+                userMarker.addListener('click', function (){
+                    infowindow.open(map, userMarker);
+                })
+
+            }, () => {
+                alert("Tu navegador esta bien, pero ocurrio un error ")
+            })
+        } else {
+            alert("no se pudo obtener")
+        }
+
+
     $.ajax({
         url: '/spring/api/talleres',
         method: 'GET',
         success: function(talleres) {
-            talleres.forEach(function(taller) {
+            //Hago esta funcion para verificar que me traiga los talleres que esten en el rango de 50 km
+            const maxDistancia = 50;
+            const filtrarTalleres = talleres.filter(function(taller){
+                const tallerCoords = { lat:taller.latitud, lng: taller.longitud};
+               //El metodo compara la distancia entre dos puntos geograficos
+                const distancia = google.maps.geometry.spherical.computeDistanceBetween(
+                    new google.maps.LatLng(userCoords.lat, userCoords.lng),
+                    new google.maps.LatLng(tallerCoords.lat, tallerCoords.lng)
+                );
+                const distanciaEnKm = distancia / 1000;
+                return ditanciaEnKm < maxDistancia;
+            })
+            filtrarTalleres.forEach(function(taller) {
                 const marker = new google.maps.Marker({
                     position: { lat: taller.latitud, lng: taller.longitud },
                     map: map,
@@ -66,6 +93,7 @@
 
                 marker.addListener('click', function() {
                     infowindow.open(map, marker);
+                    calcularYMostrarDistancia(userCoords, { lat: taller.latitud, lng: taller.longitud})
                 });
             });
         },
@@ -73,6 +101,30 @@
             console.error('Error fetching talleres:', error);
         }
     });
+    }
+
+    function calcularYMostrarDistancia(origen, destino) {
+        const direccionService = new google.maps.DirectionsService();
+
+        const request = {
+            origin: new google.maps.LatLng(origen.lat, origen.lng),
+            destination: new google.maps.LatLng(destino.lat, destino.lng),
+            travelMode: google.maps.TravelMode.DRIVING
+        };
+        direccionService.route(request, function(response, status){
+            if(status === google.maps.DirectionsStatus.OK) {
+                const route = response.routes[0];
+                const distance = route.legs[0].distance.text;
+                const duration = route.legs[0].duration.text;
+
+                const infowindow = new google.maps.InfoWindow({
+                    content: '<h5>Distancia:</h5>' + distance + '<br><h5>Tiempo estimado:</h5>' + duration
+                });
+                infowindow.open(map, marker);
+            } else {
+                console.error('error al obtener direcciones', status);
+            }
+        })
     }
 
 
