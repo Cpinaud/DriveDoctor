@@ -2,6 +2,7 @@ package com.drivedoctor.dominio;
 
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Sintoma {
@@ -20,12 +21,23 @@ public class Sintoma {
     @JoinColumn(name = "id_diagnostico")
     private Diagnostico diagnostico;
 
+    @ManyToMany(mappedBy = "sintomas")
+    private List<Historial> historiales;
+
     public Sintoma() {
     }
 
     public Sintoma(ItemTablero itemTablero) {
         this.itemTablero = itemTablero;
 
+    }
+
+    public List<Historial> getHistoriales() {
+        return historiales;
+    }
+
+    public void setHistoriales(List<Historial> historiales) {
+        this.historiales = historiales;
     }
 
 

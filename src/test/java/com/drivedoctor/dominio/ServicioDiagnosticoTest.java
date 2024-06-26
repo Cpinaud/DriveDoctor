@@ -206,7 +206,7 @@ public class ServicioDiagnosticoTest {
     @Test
     public void queAlNoRecibirNadaMeDevuelvaNull(){
         List<Integer> sintomaMock = new ArrayList<>();
-        String diagnosticoEsperado = servicioDiagnostico.findDependingId(sintomaMock);
+        String diagnosticoEsperado = servicioDiagnostico.findDependingId(sintomaMock).toString();
         assertNull(diagnosticoEsperado);
 
     }
@@ -226,7 +226,7 @@ public class ServicioDiagnosticoTest {
 
         when(repositorioDiagnostico.obtenerPorSintomaId(idSintoma)).thenReturn(diagnostico1);
 
-        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock);
+        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock).toString();
 
         assertEquals(descripcionDiagnostico, descripcionObtenida);
         verify(repositorioDiagnostico, times(1)).obtenerPorSintomaId(idSintoma);
@@ -249,7 +249,7 @@ public class ServicioDiagnosticoTest {
                 .thenReturn(Arrays.asList(sintoma1, sintoma2));
 
         List<Integer> sintomasMock = Arrays.asList(idSintoma1, idSintoma2);
-        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock);
+        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock).toString();
 
         assertEquals(descripcionEsperada, descripcionObtenida);
     }
@@ -281,7 +281,7 @@ public class ServicioDiagnosticoTest {
 
         List<Integer> sintomasMock = Arrays.asList(idSintoma, idSintoma2);
 
-        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock);
+        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock).toString();
         String descripcionEsperada = descripcionDiagnostico + " " + descripcionDiagnostico2;
 
         assertEquals(descripcionEsperada, descripcionObtenida);
@@ -308,7 +308,7 @@ public class ServicioDiagnosticoTest {
                 .thenReturn(Arrays.asList(sintoma1, sintoma2, sintoma3));
 
         List<Integer> sintomasMock = Arrays.asList(idSintoma1, idSintoma2, idSintoma3);
-        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock);
+        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock).toString();
 
         assertEquals(descripcionEsperada, descripcionObtenida);
     }
@@ -337,7 +337,7 @@ public class ServicioDiagnosticoTest {
                 .thenReturn(Arrays.asList(sintoma1, sintoma2, sintoma3, sintoma4));
 
         List<Integer> sintomasMock = Arrays.asList(idSintoma1, idSintoma2, idSintoma3, idSintoma4);
-        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock);
+        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock).toString();
 
         assertNotEquals(descripcionEsperada, descripcionObtenida);
     }
@@ -364,7 +364,7 @@ public class ServicioDiagnosticoTest {
                 .thenReturn(Arrays.asList(sintoma1, sintoma2, sintoma3, sintoma4));
 
         List<Integer> sintomasMock = Arrays.asList(idSintoma1, idSintoma2, idSintoma3, idSintoma4);
-        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock);
+        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock).toString();
 
         assertEquals(descripcionEsperada, descripcionObtenida);
     }
@@ -393,7 +393,7 @@ public class ServicioDiagnosticoTest {
                 .thenReturn(Arrays.asList(sintoma1, sintoma2, sintoma3, sintoma4));
 
         List<Integer> sintomasMock = Arrays.asList(idSintoma1, idSintoma2, idSintoma3, idSintoma4);
-        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock);
+        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock).toString();
 
         assertNotEquals(descripcionEsperada, descripcionObtenida);
         assertEquals(mensajeEsperado, descripcionObtenida);

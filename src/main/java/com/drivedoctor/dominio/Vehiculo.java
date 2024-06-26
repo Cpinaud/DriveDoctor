@@ -3,6 +3,9 @@ package com.drivedoctor.dominio;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Vehiculo {
 
@@ -26,6 +29,9 @@ public class Vehiculo {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+
+    @OneToMany(mappedBy = "vehiculo", cascade = CascadeType.ALL)
+    private List<Historial> historiales;
     public Vehiculo() {
 
     }
@@ -37,7 +43,13 @@ public class Vehiculo {
         this.patente = patente;
     }
 
+    public List<Historial> getHistoriales() {
+        return historiales;
+    }
 
+    public void setHistoriales(List<Historial> historiales) {
+        this.historiales = historiales;
+    }
     public Marca getMarca() {
         return marca;
     }

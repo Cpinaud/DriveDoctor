@@ -1,14 +1,15 @@
 package com.drivedoctor.presentacion;
 
 import com.drivedoctor.dominio.*;
+import com.drivedoctor.dominio.excepcion.VehiculoInvalido;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,11 +19,13 @@ public class ControladorSintoma {
 
     private ServicioSintoma servicioSintoma;
     private ServicioItemTablero servicioItemTablero;
+    private ServicioVehiculo servicioVehiculo;
 
 
     @Autowired
-    public ControladorSintoma(ServicioSintoma servicioSintoma, ServicioItemTablero servicioItemTablero) {
+    public ControladorSintoma(ServicioSintoma servicioSintoma, ServicioItemTablero servicioItemTablero,ServicioVehiculo servicioVehiculo) {
         this.servicioSintoma = servicioSintoma;
+        this.servicioVehiculo = servicioVehiculo;
         this.servicioItemTablero = servicioItemTablero;
 
     }
@@ -30,8 +33,32 @@ public class ControladorSintoma {
 
 
 
-    @RequestMapping("/sintoma")
-    public ModelAndView irASintoma(){
+    @GetMapping("/sintoma/{id}")
+    public ModelAndView irASintoma(@PathVariable("id") Integer idVehiculo, HttpServletRequest request, RedirectAttributes redirectAttributes){
+
+        Integer userId = (Integer) request.getSession().getAttribute("ID");
+        try{
+            this.servicioVehiculo.validarVehiculoUser(userId,idVehiculo);
+        } catch (VehiculoInvalido e) {
+            redirectAttributes.addFlashAttribute("mensaje", "No puede diagnosticar un vehiculo que no posee");
+            return new ModelAndView("redirect:/verMisVehiculos");
+
+        }
+        ModelMap modelo = new ModelMap();
+        modelo.put("sintoma", new Sintoma());
+
+        modelo.put("patente", servicioVehiculo.buscarById(idVehiculo).getPatente());
+        modelo.put("idVh", idVehiculo);
+        return new ModelAndView("sintoma", modelo);
+
+    }
+
+    @GetMapping("/sintoma")
+    public ModelAndView irASintoma(HttpServletRequest request, RedirectAttributes redirectAttributes){
+        String rolU = "ADMIN";
+        if(!request.getSession().getAttribute("rol").equals(rolU)){
+            return new ModelAndView("home");
+        }
         ModelMap modelo = new ModelMap();
         modelo.put("sintoma", new Sintoma());
         return new ModelAndView("sintoma", modelo);
@@ -61,13 +88,15 @@ public class ControladorSintoma {
         return new ModelAndView("redirect:/sintoma");
     }
 
-    @RequestMapping("/mostrarSintomaPorItem")
-    public ModelAndView mostrarSintoma() {
-        ModelAndView modelAndView = new ModelAndView("item-tablero");
-        List<ItemTablero> itemsTablero = servicioItemTablero.obtenerTodosLosItems();
 
-        modelAndView.addObject("opcionesItemTablero", itemsTablero);
-        return modelAndView;
+    @GetMapping("/mostrarSintomaPorItem/{idVehiculo}")
+    public ModelAndView mostrarSintoma(@PathVariable("idVehiculo") Integer idVehiculo) {
+        ModelMap modelo = new ModelMap();
+
+        List<ItemTablero> itemsTablero = servicioItemTablero.obtenerTodosLosItems();
+        modelo.put("opcionesItemTablero",itemsTablero);
+        modelo.put("idVehiculo",idVehiculo);
+        return new ModelAndView("item-tablero",modelo);
     }
 
     @RequestMapping("/mostrarSintomasPorItems")  //PROBLEM
@@ -87,14 +116,15 @@ public class ControladorSintoma {
         return modelAndView;
     }
     @RequestMapping(value = "/mostrarSintomaDependiendoItem", method = RequestMethod.POST )
-    public ModelAndView mostrarSintomaDependiendoItem(@RequestParam("idItemTablero") Integer idItemTablero){
+    public ModelAndView mostrarSintomaDependiendoItem(@RequestParam("idItemTablero") Integer idItemTablero,
+                                                      @RequestParam("idVehiculo") Integer idVehiculo){
 
         ModelMap modelo = new ModelMap();
         ItemTablero itemTablero = servicioItemTablero.findById(idItemTablero);
        List<Sintoma> sintomas  = servicioSintoma.problemaEnTablero(itemTablero);
         System.out.println(sintomas);
        obtenerSintomas(sintomas, modelo);
-
+        modelo.put("idVehiculo",idVehiculo);
         return new ModelAndView("mostrar-sintoma", modelo);
 
 

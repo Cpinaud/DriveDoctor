@@ -14,7 +14,7 @@ public interface ServicioDiagnostico {
 
     double calcularRiesgoPorSintoma(List<Sintoma> sintomas);
 
-    String findDependingId (List<Integer> idsSintoma);
+    List<String> findDependingId (List<Integer> idsSintoma);
     //DIAGNOSTICO EN RELACION CON EL SINTOMA
     Diagnostico findBySintoma(Sintoma sintoma);
     List<Diagnostico> findBySintomas(List<Sintoma> sintomas);

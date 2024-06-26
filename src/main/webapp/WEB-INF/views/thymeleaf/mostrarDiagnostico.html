@@ -17,15 +17,26 @@
     <div class="container" style="margin-top:50px;">
         <h2>Diagnóstico</h2>
         <br>
-        <div th:if="${sintoma != null}">
+        <!--<div th:if="${sintoma != null}">
             <p>Nombre del síntoma: <span th:text="${sintoma.nombre}"></span></p>
             <p>Descripción del síntoma: <span th:text="${sintoma.descripcion}"></span></p>
-        </div>
+        </div>-->
 
         <div th:if="${diagnostico != null}">
-
-
-            <p>Descripción del diagnóstico: <span th:text="${diagnostico.descripcion}"></span></p>
+                <h2>Recomendaciones: </h2>
+            <div th:each="diagnostico : ${diagnostico}">
+                <p><span th:text="${diagnostico.descripcion}"></span></p>
+            </div>
+            <form action="#" th:action="@{/guardarDiagnostico}" method="POST" >
+                <input type="hidden" id="idVehiculo" name="idVehiculo" th:value="${idVehiculo}" >
+                <div th:each="diagnostico : ${diagnostico}">
+                    <input type="hidden" name="idDiagnostico" id="idDiagnostico" th:value="${diagnostico.idDiagnostico}">
+                </div>
+                <div th:each="sintoma : ${sintoma}">
+                    <input type="hidden" name="idSintoma" id="idSintoma" th:value="${sintoma.idSintoma}">
+                </div>
+                <button type="submit" class="btn boton-principal">Guardar diagnóstico</button>
+            </form>
         </div>
 
         <div th:if="${diagnostico == null}">

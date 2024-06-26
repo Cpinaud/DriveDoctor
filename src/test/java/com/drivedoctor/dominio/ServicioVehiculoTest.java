@@ -37,14 +37,20 @@ public class ServicioVehiculoTest {
     private ServicioVehiculo servicioVehiculo;
     private RepositorioVehiculo repositorioVehiculo;
     private RepositorioUsuario repositorioUsuario;
+    private RepositorioDiagnostico repositorioDiagnostico;
+    private RepositorioSintoma repositorioSintoma;
     private ServicioModelo servicioModelo;
+
+
 
 
     @BeforeEach
     public void init() {
         this.repositorioVehiculo = mock(RepositorioVehiculo.class);
         this.repositorioUsuario = mock(RepositorioUsuario.class);
-        this.servicioVehiculo = new ServicioVehiculoImpl(this.repositorioVehiculo, this.repositorioUsuario);
+        this.repositorioSintoma = mock(RepositorioSintoma.class);
+        this.repositorioDiagnostico = mock(RepositorioDiagnostico.class);
+        this.servicioVehiculo = new ServicioVehiculoImpl(this.repositorioVehiculo, this.repositorioUsuario,this.repositorioSintoma,this.repositorioDiagnostico);
 
     }
 

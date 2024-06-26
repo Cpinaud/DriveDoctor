@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DriveDoctor - Historial</title>
+
+    <!-- Boostrap core css -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+
+    <!-- custom style -->
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+<body>
+<div class="historial">
+<h1 th:text="'Historial ' + ${vehiculo.patente} + ' ' + ${vehiculo.marca.nombre} + ' ' + ${vehiculo.modelo.nombre}"></h1>
+<hr>
+    <div th:each="historial : ${historial}" class="item-historial">
+        <h5 th:text="'Fecha del diagnóstico:  ' +${historial.fecha}"></h5>
+        <p class="item-historial-subtitle">Sintomas seleccionados:</p>
+        <div th:each="sintoma : ${historial.sintomas}">
+            <p th:text="${sintoma.nombre} + '( '+${sintoma.itemTablero.nombre}+' )'"></p>
+        </div>
+        <p class="item-historial-subtitle">Diagnósticos recibidos:</p>
+        <div th:each="diagnostico : ${historial.diagnosticos}">
+            <p th:text="${diagnostico.descripcion}"></p>
+        </div>
+        <br>
+        <hr style="color:white;">
+        <br>
+    </div>
+</div>
+</body>
+</html>

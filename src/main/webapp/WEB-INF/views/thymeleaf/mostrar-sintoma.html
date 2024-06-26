@@ -23,10 +23,16 @@
         <ul>
           <th:block th:each="sintoma : ${sintomas}">
             <li th:text="${sintoma.nombre}"></li>
-            <a th:href="@{/diagnostico/{id}(id=${sintoma.diagnostico.idDiagnostico})}" class="btn btn-warning">Ver diagnóstico</a>
+            <form th:action="@{/diagnostico}" method="post">
+              <input type="hidden" id="idVehiculo" name="idVehiculo" th:value="${idVehiculo}" />
+              <input type="hidden" id="idsSintomas" name="idsSintomas" th:value="${sintoma.idSintoma}"/>
+              <input type="hidden" name="id" id="id" th:value="${sintoma.diagnostico.idDiagnostico}"/>
+              <button type="submit" class="btn btn-primary">Ver diagnóstico</button>
+            </form>
             <form th:action="@{/mostrarPorcentajeDeDaniadoUnSintoma}" method="post">
               <input type="hidden" name="idsSintomas" th:value="${sintoma.idSintoma}"/>
               <button type="submit" class="btn btn-primary">Ver Porcentaje</button>
+
             </form>
           </th:block>
         </ul>

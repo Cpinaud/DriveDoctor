@@ -1,10 +1,8 @@
 package com.drivedoctor.presentacion;
 
-import com.drivedoctor.dominio.Diagnostico;
-import com.drivedoctor.dominio.ServicioDiagnostico;
-import com.drivedoctor.dominio.ServicioSintoma;
-import com.drivedoctor.dominio.Sintoma;
+import com.drivedoctor.dominio.*;
 import com.drivedoctor.dominio.excepcion.DiagnosticoNotFoundException;
+import com.drivedoctor.dominio.excepcion.VehiculoInvalido;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,16 +31,24 @@ public class ControladorDiagnostico {
     }
 
     //MUESTRA EL DIAGNOSTICO ASOCIADO A UN SINTOMA
-    @GetMapping("/diagnostico/{id}")
-    public String obtenerDiagnostico(@PathVariable("id") Integer id, Model model) {
+    @RequestMapping(value = "/diagnostico", method = RequestMethod.POST )
+    public String obtenerDiagnostico(@RequestParam("id") Integer id,
+                                     @RequestParam("idVehiculo") Integer idVehiculo,
+                                     @RequestParam("idsSintomas") Integer idsSintomas,
+                                     HttpServletRequest request,
+                                     Model model) throws VehiculoInvalido {
         try {
-            Diagnostico diagnostico = servicioDiagnostico.findById(id);
+            List<Diagnostico> diagnostico = new ArrayList<>();
+            diagnostico.add(servicioDiagnostico.findById(id));
             if(diagnostico == null){
                 throw new DiagnosticoNotFoundException("No se encuentra ningun diagnostico asociado a este id");
             }
             model.addAttribute("diagnostico", diagnostico);
+            model.addAttribute("idVehiculo", idVehiculo);
+            List<Sintoma> sintoma = new ArrayList<>();
+            sintoma.add(servicioSintoma.findById(idsSintomas));
+            model.addAttribute("sintoma", sintoma);
         } catch (DiagnosticoNotFoundException | IllegalArgumentException e) {
-            model.addAttribute("mensaje", e.getMessage());
             return "error";
         }
         return "mostrarDiagnostico";
@@ -59,7 +67,7 @@ public class ControladorDiagnostico {
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
 
-        String devolucion = servicioDiagnostico.findDependingId(idsSintomas);
+        List<String> devolucion = servicioDiagnostico.findDependingId(idsSintomas);
         model.addAttribute("diagnosticos", devolucion);
         model.addAttribute("idsSintomas", idsSintomas);
 
@@ -85,5 +93,7 @@ public class ControladorDiagnostico {
         }
 
     }
+
+
 
 }

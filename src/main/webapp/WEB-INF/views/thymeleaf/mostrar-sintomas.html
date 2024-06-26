@@ -40,7 +40,7 @@
                 <!-- Iterar sobre los síntomas y mostrar cada uno -->
                 <tr th:each="sintoma : ${sintomas}">
                     <td><input type="checkbox" class="sintoma-checkbox" th:data-id="${sintoma.diagnostico.idDiagnostico}"></td>
-                    <td th:text="${sintoma.nombre}"></td>
+                    <td th:text="${sintoma.descripcion}"></td>
                 </tr>
                 </tbody>
             </table>
@@ -84,7 +84,7 @@
             // Crear un formulario y enviarlo
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = '/spring/diagnosticos';
+            form.action = '/drivedoctor/diagnosticos';
             form.style.display = 'none';
 
             const input = document.createElement('input');
@@ -108,7 +108,7 @@
             console.log(ids);
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = '/spring/mostrarPorcentajeDeDaniadoUnSintoma';
+            form.action = '/drivedoctor/mostrarPorcentajeDeDaniadoUnSintoma';
             form.style.display = 'none';
 
             const input = document.createElement('input');

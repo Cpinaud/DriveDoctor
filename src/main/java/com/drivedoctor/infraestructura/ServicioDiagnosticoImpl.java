@@ -151,14 +151,17 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
     }
 
     @Override
-    public String findDependingId(List<Integer> idsSintoma) {
+    public List<String> findDependingId(List<Integer> idsSintoma) {
+        List<String> diagnosticosList = new ArrayList<>();
+
 
         if(idsSintoma == null || idsSintoma.isEmpty() ){
             return null;
         }
 
         if(idsSintoma.size() == 1) {
-            return repositorioDiagnostico.obtenerPorSintomaId(idsSintoma.get(0)).getDescripcion();
+            diagnosticosList.add(repositorioDiagnostico.obtenerPorSintomaId(idsSintoma.get(0)).getDescripcion());
+            return diagnosticosList;
         }
 
         List<Sintoma> sintomas = repositorioSintoma.obtenerLosSintomasPorSusIds(idsSintoma);
@@ -175,22 +178,22 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
             }
 
                 if(allItemsEqual){
-                    return item1.getDescripcion();
+                    diagnosticosList.add(item1.getDescripcion());
+                    return diagnosticosList;
 
             } else {
-                StringBuilder concatenar = new StringBuilder();
                 if(sintomas.size() <= 3 ) {
-                    for (Sintoma sintoma : sintomas) {
-                        if (concatenar.length() > 0) {
-                            concatenar.append(" ");
-                        }
-                        concatenar.append(sintoma.getDiagnostico().getDescripcion());
-                    }
+                        for (Sintoma sintoma : sintomas) {
 
-                    return concatenar.toString();
+                            diagnosticosList.add(sintoma.getDiagnostico().getDescripcion());
+                        }
+
+                        return diagnosticosList;
+
 
                 }
-                return "Demasiados sintomas acerquese a un taller";
+                    diagnosticosList.add("Demasiados sintomas acerquese a un taller");
+                return diagnosticosList;
             }
 
         }

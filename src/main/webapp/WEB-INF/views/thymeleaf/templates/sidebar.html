@@ -3,23 +3,23 @@
     <a th:href="@{/home}"  class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
         <span class="fs-4">Drive Doctor</span>
     </a>
-    <span class="fs-8" th:if="${name != null}" th:text="'Hola, ' + ${name}"></span>
+    <span class="fs-8" th:if="${session.ID!=null}" th:text="'Hola, ' + ${session.name}"></span>
     <hr>
-    <div th:if="${id != null}">
+    <div th:if="${session.ID!=null}">
     <ul class="nav nav-pills flex-column mb-auto">
         <li  class="nav-item">
-            <a th:href="@{/verMisVehiculos}" class="nav-link text-white">
+            <a th:if="${session.rol!='ADMIN'}" th:href="@{/verMisVehiculos}" class="nav-link text-white">
                 Mis vehículos
             </a>
         </li>
         <li  class="nav-item">
-            <a th:href="@{/nuevo-vehiculo}" class="nav-link text-white">
+            <a th:if="${session.rol!='ADMIN'}" th:href="@{/nuevo-vehiculo}" class="nav-link text-white">
                 Agregar Vehículos
             </a>
         </li>
         <li  class="nav-item">
-            <a th:href="@{/sintoma}" id="irSintoma"  class="nav-link text-white">
-                Diagnosticar
+            <a th:if="${session.rol=='ADMIN'}" th:href="@{/sintoma}" id="irSintoma"  class="nav-link text-white">
+                Administrar Diagnosticos
             </a>
         </li>
         <li  class="nav-item" style="align-self: end">
@@ -29,7 +29,7 @@
         </li>
     </ul>
     </div>
-    <div th:if="${id == null}">
+    <div th:if="${session.ID == null}">
         <ul class="nav nav-pills flex-column mb-auto">
         <li  class="nav-item" style="align-self: end">
             <a th:href="@{/login}" id="login"  class="nav-link text-white">

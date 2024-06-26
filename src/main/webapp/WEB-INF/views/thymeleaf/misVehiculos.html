@@ -12,7 +12,7 @@
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
     <style>
         .table-container {
-            max-height: 300px; /* Puedes ajustar este valor según lo que necesites */
+            max-height: 300px;
             overflow-y: auto;
         }
     </style>
@@ -83,8 +83,8 @@
                     data-marca=${vehiculo.marca.nombre},
                     data-modelo=${vehiculo.modelo.nombre},
                     data-patente=${vehiculo.patente}">Eliminar</a> |
-                                <a th:href="@{/diagnosticar-vehiculo/{id}(id=${vehiculo.id})}">Diagnosticar</a> |
-                                <a th:href="@{/historial-vehiculo/{id}(id=${vehiculo.id})}">Historial</a>
+                                <a th:href="@{/sintoma/{id}(id=${vehiculo.id})}">Diagnosticar</a> |
+                                <a th:href="@{/historial/{idVh}(idVh=${vehiculo.id})}">Historial</a>
                             </td>
                         </tr>
                         </tbody>

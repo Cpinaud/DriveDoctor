@@ -19,13 +19,15 @@ public class ControladorSintomaTest {
     private ServicioSintoma servicioSintoma;
     private Sintoma sintomaMock;
     private ServicioItemTablero servicioItemTableroMock;
+    private ServicioVehiculo servicioVehiculoMock;
 
     @BeforeEach
     public void init(){
 
         this.servicioSintoma = mock(ServicioSintoma.class);
         this.servicioItemTableroMock = mock(ServicioItemTablero.class);
-        this.controladorSintoma =  new ControladorSintoma(this.servicioSintoma, this.servicioItemTableroMock);
+        this.servicioVehiculoMock = mock(ServicioVehiculo.class);
+        this.controladorSintoma =  new ControladorSintoma(this.servicioSintoma, this.servicioItemTableroMock,this.servicioVehiculoMock);
         sintomaMock = mock(Sintoma.class);
 
     }
@@ -44,8 +46,8 @@ public class ControladorSintomaTest {
         ItemTablero item = mock(ItemTablero.class);
         when(servicioItemTableroMock.findById(idItemTablero)).thenReturn(item);
         when(servicioSintoma.problemaEnTablero(item)).thenReturn(Arrays.asList(sintomaMock));
-
-        ModelAndView modelAndView = controladorSintoma.mostrarSintomaDependiendoItem(idItemTablero);
+        Integer idVehiculo=1;
+        ModelAndView modelAndView = controladorSintoma.mostrarSintomaDependiendoItem(idItemTablero,idVehiculo);
 
         verify(servicioItemTableroMock).findById(idItemTablero);
         verify(servicioSintoma).problemaEnTablero(item);

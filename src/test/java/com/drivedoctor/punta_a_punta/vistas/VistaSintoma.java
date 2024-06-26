@@ -6,7 +6,7 @@ public class VistaSintoma  extends VistaWeb {
 
     public VistaSintoma(Page page) {
         super(page);
-        page.navigate("localhost:8080/spring/sintoma");
+        page.navigate("localhost:8080/drivedoctor/sintoma");
     }
 
 
