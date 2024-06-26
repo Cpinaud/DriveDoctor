@@ -4,6 +4,7 @@ import com.drivedoctor.dominio.Marca;
 import com.drivedoctor.dominio.RepositorioUsuario;
 import com.drivedoctor.dominio.Usuario;
 import com.drivedoctor.dominio.Vehiculo;
+import com.drivedoctor.dominio.excepcion.UsuarioExistente;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -37,8 +38,13 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
     }
 
     @Override
-    public void guardar(Usuario usuario) {
-        sessionFactory.getCurrentSession().save(usuario);
+    public void guardar(Usuario usuario) throws UsuarioExistente {
+           Usuario intentoBuscar =  this.buscarUsuario(usuario.getEmail(), usuario.getPassword());
+           if (intentoBuscar == null) {
+               sessionFactory.getCurrentSession().save(usuario);
+           }else{
+               throw new UsuarioExistente();
+           }
     }
 
 

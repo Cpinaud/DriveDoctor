@@ -1,10 +1,12 @@
 package com.drivedoctor.dominio;
+import com.drivedoctor.dominio.excepcion.UsuarioExistente;
+
 import java.util.List;
 
 public interface RepositorioUsuario {
 
     Usuario buscarUsuario(String email, String password);
-    void guardar(Usuario usuario);
+    void guardar(Usuario usuario) throws UsuarioExistente;
 
     Usuario buscar(String email);
     void modificar(Usuario usuario);
