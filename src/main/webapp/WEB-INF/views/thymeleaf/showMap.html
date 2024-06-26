@@ -100,12 +100,13 @@
                         });
 
                         const infowindowTaller = new google.maps.InfoWindow({
-                            content: '<h5>' + taller.nombre + '</h5>' +
-                                '<button onclick="calcularYMostrarDistancia(' + userCoords.lat + ', ' + userCoords.lng + ', ' + taller.latitud + ', ' + taller.longitud + ')">Obtener Direcciones</button>'
+                            content: '<h5>' + taller.nombre + '</h5>'
+
                         });
 
                         marker.addListener('click', function() {
                             infowindowTaller.open(map, marker);
+                            calcularYMostrarDistancia(userCoords.lat, userCoords.lng, taller.latitud, taller.longitud)
                         });
                     });
                 },
