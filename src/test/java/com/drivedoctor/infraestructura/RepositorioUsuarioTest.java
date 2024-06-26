@@ -31,7 +31,6 @@ import java.util.List;
 public class RepositorioUsuarioTest {
     @Autowired
     private SessionFactory sessionFactory;
-
     private RepositorioUsuarioImpl repositorioUsuario;
 
     @BeforeEach
