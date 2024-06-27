@@ -59,9 +59,18 @@ public class ControladorDiagnostico {
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
 
+
+
         String devolucion = servicioDiagnostico.findDependingId(idsSintomas);
+        String mapaDiagnostico = "Demasiados sintomas acerquese a un taller";
+
+        System.out.println(devolucion);
         model.addAttribute("diagnosticos", devolucion);
         model.addAttribute("idsSintomas", idsSintomas);
+
+        if(devolucion.equals(mapaDiagnostico)){
+            return "diagnosticoConMapa";
+        }
 
         return "diagnosticos";
     }

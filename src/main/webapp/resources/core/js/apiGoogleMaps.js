@@ -6,7 +6,7 @@ function initMap() {
         zoom: 12
     });
 
-    let userCoords; // Variable para almacenar las coordenadas del usuario
+    let userCoords;
 
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -30,7 +30,6 @@ function initMap() {
                 infowindowUser.open(map, userMarker);
             });
 
-            // Llamar función para cargar y filtrar talleres
             cargarYFiltrarTalleres(userCoords);
 
         }, () => {
@@ -45,21 +44,20 @@ function initMap() {
             url: '/spring/api/talleres',
             method: 'GET',
             success: function(talleres) {
-                const maxDistancia = 50 * 1000; // Convertir 50 km a metros
+                const maxDistancia = 30 * 1000;
 
                 const filtrarTalleres = talleres.filter(function(taller) {
                     const tallerCoords = { lat: taller.latitud, lng: taller.longitud };
 
-                    // Calcular la distancia entre el usuario y el taller
+
                     const distancia = google.maps.geometry.spherical.computeDistanceBetween(
                         new google.maps.LatLng(userCoords.lat, userCoords.lng),
                         new google.maps.LatLng(tallerCoords.lat, tallerCoords.lng)
                     );
 
-                    // Convertir la distancia a kilómetros
-                    const distanciaEnKm = distancia / 1000;
 
-                    // Filtrar talleres dentro del rango máximo
+                    const distanciaEnKm = distancia / 1000;
+                    
                     return distanciaEnKm < maxDistancia;
                 });
 
@@ -78,7 +76,7 @@ function initMap() {
 
                     marker.addListener('click', function() {
                         infowindowTaller.open(map, marker);
-                        calcularYMostrarDistancia(userCoords.lat, userCoords.lng, taller.latitud, taller.longitud)
+
                     });
                 });
             },

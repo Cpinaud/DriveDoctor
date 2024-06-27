@@ -89,4 +89,26 @@ public class ControladorDiagnosticoTest {
         verify(servicioDiagnostico).findById(diagnosticoId);
     }
 
+    @Test
+    public void mostrarMapaAlCargarLaPaginaSiLoMandoAlTaller(){
+        Integer idSintoma1 = 1;
+        Integer idSintoma2 = 2;
+        Integer idSintoma3 = 3;
+
+        List<Integer> idsSintomas = List.of(idSintoma1, idSintoma2, idSintoma3);
+        String idsSintomasStr = "1,2,3";
+
+        String diagnosticoEsperado = "Demasiados sintomas acequese a un taller";
+        when(servicioDiagnostico.findDependingId(idsSintomas)).thenReturn(diagnosticoEsperado);
+
+        Model model = mock(Model.class);
+
+        String vista = controladorDiagnostico.obtenerDiagnosticoPorSintomas(idsSintomasStr, model);
+        verify(model).addAttribute("diagnosticoConMapa", diagnosticoEsperado);
+        assertEquals("diagnosticoConMapa", vista);
+
+
+
+    }
+
 }
