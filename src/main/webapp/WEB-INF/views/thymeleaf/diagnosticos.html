@@ -26,8 +26,21 @@
         <div th:if="${mensaje}">
             <p class="alert alert-warning" th:text="${mensaje}"></p>
         </div>
-        <div th:if="${diagnosticos}">
-            <p>Diagnóstico: <span th:text="${diagnosticos}"></span></p>
+        <div >
+            <h2>Recomendaciones: </h2>
+            <div th:each="diagnosticos : ${diagnosticos}">
+                <p><span th:text="${diagnosticos.descripcion}"></span></p>
+            </div>
+            <form action="#" th:action="@{/guardarDiagnostico}" method="POST" th:if="${mensaje == null}">
+                <input type="hidden" id="idVehiculo" name="idVehiculo" th:value="${idVh}" >
+                <div th:each="diagnosticos : ${diagnosticos}">
+                    <input type="hidden" name="idDiagnostico" id="idDiagnostico" th:value="${flagItem} ? ${diagnosticos.idItemTablero} : ${diagnosticos.idDiagnostico}">
+                </div>
+                <div th:each="sintoma : ${sintoma}">
+                    <input type="hidden" name="idSintoma" id="idSintoma" th:value="${sintoma.idSintoma}">
+                </div>
+                <button type="submit" class="btn boton-principal">Guardar diagnóstico</button>
+            </form>
         </div>
         <div class="mt-3">
             <a class="btn btn-primary btn-sm mt-2" href="/buscar-talleres-maps">Buscar Talleres en Google Maps</a>

@@ -2,10 +2,13 @@ package com.drivedoctor.infraestructura;
 
 import com.drivedoctor.dominio.*;
 import com.drivedoctor.dominio.excepcion.*;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -20,10 +23,14 @@ import com.drivedoctor.dominio.Vehiculo;
 public class ServicioVehiculoImpl implements ServicioVehiculo {
     private RepositorioVehiculo repositorioVehiculo;
     private RepositorioUsuario repositorioUsuario;
+    private RepositorioSintoma repositorioSintoma;
+    private RepositorioDiagnostico repositorioDiagnostico;
 
-    public ServicioVehiculoImpl(RepositorioVehiculo repositorioVehiculo,RepositorioUsuario repositorioUsuario) {
+    public ServicioVehiculoImpl(RepositorioVehiculo repositorioVehiculo,RepositorioUsuario repositorioUsuario,RepositorioSintoma repositorioSintoma,RepositorioDiagnostico repositorioDiagnostico) {
         this.repositorioVehiculo = repositorioVehiculo;
         this.repositorioUsuario = repositorioUsuario;
+        this.repositorioSintoma = repositorioSintoma;
+        this.repositorioDiagnostico =repositorioDiagnostico;
     }
 
     @Override
@@ -47,7 +54,7 @@ public class ServicioVehiculoImpl implements ServicioVehiculo {
         if (usuario.getVehiculos() == null) {
             usuario.setVehiculos(new ArrayList<>());
         }
-        usuario.getVehiculos().add(vehiculo);
+
         repositorioVehiculo.guardar(vehiculo);
 
 
@@ -132,4 +139,26 @@ public class ServicioVehiculoImpl implements ServicioVehiculo {
     public void eliminarVehiculo(Vehiculo vehiculo) {
         repositorioVehiculo.eliminar(vehiculo);
     }
+
+    @Override
+    public void validarVehiculoUser(Integer userId, Integer idVehiculo) throws VehiculoInvalido {
+        Vehiculo vehiculo = repositorioVehiculo.getById(idVehiculo);
+        Integer usuarioVehiculo = vehiculo.getUsuario().getId();
+        if(!Objects.equals(usuarioVehiculo, userId)){
+            throw new VehiculoInvalido();
+        }
+    }
+
+    @Override
+    public List<Historial> getHistoriales(Integer idVehiculo) {
+        Vehiculo vehiculo = this.buscarById(idVehiculo);
+        List<Historial> historial = repositorioVehiculo.obtenerHistorial(vehiculo);
+        for (Historial historiales : historial) {
+            Hibernate.initialize(historiales.getSintomas());
+            Hibernate.initialize(historiales.getDiagnosticos());
+        }
+        return historial;
+    }
+
+
 }

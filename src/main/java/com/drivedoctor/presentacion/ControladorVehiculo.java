@@ -31,6 +31,7 @@ public class ControladorVehiculo {
                                          @RequestParam("patente") String patente,
                                          RedirectAttributes redirectAttributes) {
 
+
         if (request.getSession().getAttribute("ID")==null){
             return new ModelAndView("redirect:/login");
         }

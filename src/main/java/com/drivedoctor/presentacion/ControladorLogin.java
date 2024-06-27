@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 @Controller
 public class ControladorLogin {
@@ -37,7 +38,13 @@ public class ControladorLogin {
 
         Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLogin.getEmail(), datosLogin.getPassword());
         if (usuarioBuscado != null) {
-            request.getSession().setAttribute("ROL", usuarioBuscado.getRol());
+            String rolAdmin= "ADMIN";
+            if(Objects.equals(usuarioBuscado.getRol(), rolAdmin)){
+                request.getSession().setAttribute("rol", usuarioBuscado.getRol());
+            }else{
+                request.getSession().setAttribute("rol", "USER");
+            }
+
             request.getSession().setAttribute("ID", usuarioBuscado.getId());
             request.getSession().setAttribute("name", usuarioBuscado.getNombre());
             model.put("name",usuarioBuscado.getNombre());

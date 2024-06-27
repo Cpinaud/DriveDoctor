@@ -185,3 +185,18 @@ width: 90%;
 .home-page{
     width: 70%;
 }
+
+.historial{
+    display:flex;
+    flex-direction: column;
+}
+
+.item-historial{
+    background-color: rgba(0,0,0,0.4) !important;
+    padding:0.1rem !important;
+    color:white !important;
+}
+
+.item-historial-subtitle{
+    text-decoration:underline;
+}

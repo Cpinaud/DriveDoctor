@@ -15,4 +15,6 @@ public interface RepositorioVehiculo {
     void modificar(Vehiculo vehiculo);
 
     void eliminar(Vehiculo vehiculo);
+
+    List<Historial> obtenerHistorial(Vehiculo vehiculo);
 }

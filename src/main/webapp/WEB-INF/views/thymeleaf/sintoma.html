@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menú de Opciones</title>
+    <title>Diagnosticar</title>
     <!-- Boostrap core css -->
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
 
@@ -16,15 +16,18 @@
     <div th:include="templates/sidebar.html"></div>
 
         <div class="container" style="margin-top:50px;">
-            <h2 class="tituloE2E">Diagnosticar</h2>
-            <br>
+            <h2 th:if="${session.rol!='ADMIN'}" th:text="'Diagnosticar unidad ' + ${patente}"></h2>
             <h3 class="tituloE2E">Opciones</h3>
             <br>
-            <a th:href="@{/nuevoSintoma}" class="btn boton-principal mr-2 nuevoSintoma">Nuevo Síntoma</a>
+            <a th:if="${session.rol=='ADMIN'}" th:href="@{/nuevoSintoma}" class="btn boton-principal mr-2">Nuevo Síntoma</a>
+            <a th:if="${session.rol=='ADMIN'}" th:href="@{/nuevoDiagnostico}" class="btn boton-principal mr-2">Nuevo Diagnóstico</a>
+            <a th:if="${session.rol=='ADMIN'}" th:href="@{/nuevoItemTablero}" class="btn boton-principal mr-2">Nuevo Item Tablero</a>
 
-            <a th:href="@{/mostrarSintomaPorItem}" class="btn boton-principal ItemEnTablero">Tengo un item en mi tablero...</a>
+            <a th:if="${session.rol!='ADMIN'}" th:href="@{/mostrarSintomaPorItem/{id}(id=${idVh})}" class="btn boton-principal">Seleccionar área del problema...</a>
 
-            <a th:href="@{/mostrarSintomasPorItems}" class="btn boton-principal">Tengo varios items en mi tablero...</a>
+            <a th:if="${session.rol!='ADMIN'}" th:href="@{/mostrarSintomasPorItems/{id}(id=${idVh})}" class="btn boton-principal">Tengo varios problemas con mi vehículo...</a>
+
+            <span th:if="${mensaje!=null}" th:text="${mensaje}"></span>
         </div>
 
 </main>

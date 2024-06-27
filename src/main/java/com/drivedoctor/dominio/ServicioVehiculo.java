@@ -21,4 +21,9 @@ public interface ServicioVehiculo {
     void validarVehiculoUser(Integer idVehiculo, Integer idVehiculoPorPatente, Integer userId) throws VehiculoInvalido;
 
     void eliminarVehiculo(Vehiculo vehiculo);
+
+    void validarVehiculoUser(Integer userId, Integer idVehiculo) throws VehiculoInvalido;
+
+
+    List<Historial> getHistoriales(Integer idVehiculo);
 }

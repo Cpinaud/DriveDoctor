@@ -46,9 +46,9 @@ public class VistaSintomaE2E {
     @Test
     void deberiaEscribirDiagnosticarComoTitulo() {
         // busca elemento y devuelve el texto que contiene
-        String titulo = vistaSintoma.obtenerTextoDeElemento("div h2.tituloE2E");
+        String titulo = vistaSintoma.obtenerTextoDeElemento("div h3.tituloE2E");
 
-        assertThat("Diagnosticar",equalToIgnoringCase(titulo));
+        assertThat("Opciones",equalToIgnoringCase(titulo));
     }
     @Test
     void hacerClickEnSintomaEnTablaroRedigireAMostrarSintomaPorItem() {

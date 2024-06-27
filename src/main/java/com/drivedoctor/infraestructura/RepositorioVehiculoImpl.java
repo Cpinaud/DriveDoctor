@@ -1,9 +1,8 @@
 package com.drivedoctor.infraestructura;
 
-import com.drivedoctor.dominio.Marca;
-import com.drivedoctor.dominio.RepositorioVehiculo;
-import com.drivedoctor.dominio.Usuario;
-import com.drivedoctor.dominio.Vehiculo;
+import com.drivedoctor.dominio.*;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +70,14 @@ public class RepositorioVehiculoImpl implements RepositorioVehiculo {
     @Override
     public void eliminar(Vehiculo vehiculo) {
         sessionFactory.getCurrentSession().delete(vehiculo);
+    }
+
+    @Override
+    public List<Historial> obtenerHistorial(Vehiculo vehiculo) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = session.createCriteria(Historial.class);
+        criteria.add(Restrictions.eq("vehiculo", vehiculo));
+        return criteria.list();
     }
 
 
