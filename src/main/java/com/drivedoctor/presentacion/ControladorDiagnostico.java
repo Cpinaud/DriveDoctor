@@ -74,9 +74,9 @@ public class ControladorDiagnostico {
         List<Integer> idsSintomas = Arrays.stream(idsSintomasStr.split(","))
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
-
+        List<Diagnostico> devolucion = new ArrayList<>();
         try{
-            List<Diagnostico> devolucion = servicioDiagnostico.findDependingId(idsSintomas);
+            devolucion = this.servicioDiagnostico.findDependingId(idsSintomas);
             model.addAttribute("diagnosticos", devolucion);
             if(devolucion.size() == 0){
                 //throw new DiagnosticoNotFoundException("No se encuentra ningun diagnostico asociado a este id");
@@ -85,9 +85,9 @@ public class ControladorDiagnostico {
             }
 
         } catch (AllItemsEqual e) {
-            List<ItemTablero> devolucion = new ArrayList<>();
-            devolucion.add(servicioItemTablero.findById(servicioSintoma.findById(idsSintomas.get(0)).getItemTablero().getIdItemTablero()));
-            model.addAttribute("diagnosticos", devolucion);
+            List<ItemTablero> devolucion1 = new ArrayList<>();
+            devolucion1.add(servicioItemTablero.findById(servicioSintoma.findById(idsSintomas.get(0)).getItemTablero().getIdItemTablero()));
+            model.addAttribute("diagnosticos", devolucion1);
 
             return "diagnosticos";
         } catch (DemasiadosSintomas e) {
@@ -96,7 +96,7 @@ public class ControladorDiagnostico {
             return "diagnosticos";
         }
         ////armar lista de sintomas dependiendo idsSintomas
-        model.addAttribute("idsSintomas", idsSintomas);
+        model.addAttribute("sintoma", idsSintomas);
         model.addAttribute("idVh", idVehiculo);
 
         return "diagnosticos";

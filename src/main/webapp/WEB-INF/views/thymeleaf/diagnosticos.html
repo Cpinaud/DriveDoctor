@@ -36,8 +36,8 @@
                 <div th:each="diagnosticos : ${diagnosticos}">
                     <input type="hidden" name="idDiagnostico" id="idDiagnostico" th:value="${diagnosticos.idDiagnostico}">
                 </div>
-                <div th:each="sintoma : ${sintoma}" th:if="${sintoma == null}">
-                    <input type="hidden" name="idSintoma" id="idSintoma" th:value="${sintoma.idSintoma}">
+                <div th:each="sintoma : ${sintoma}" >
+                    <input type="hidden" name="idSintoma" id="idSintoma" th:value="${sintoma}">
                 </div>
                 <button type="submit" class="btn boton-principal">Guardar diagnóstico</button>
             </form>
