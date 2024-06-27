@@ -6,7 +6,15 @@ public class VistaSintoma  extends VistaWeb {
 
     public VistaSintoma(Page page) {
         super(page);
-        page.navigate("localhost:8080/spring/sintoma");
+        page.navigate("http://localhost:8080/drivedoctor/sintoma");
+    }
+
+
+    public String obtenerTextoDeElemento(String elemento) {
+        return this.obtenerTextoDelElemento(elemento);
+    }
+    public void darClickEnUnElemento(String elemento) {
+        this.darClickEnElElemento(elemento);
     }
 
 
