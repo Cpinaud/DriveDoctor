@@ -34,10 +34,10 @@
             <form action="#" th:action="@{/guardarDiagnostico}" method="POST" th:if="${mensaje == null}">
                 <input type="hidden" id="idVehiculo" name="idVehiculo" th:value="${idVh}" >
                 <div th:each="diagnosticos : ${diagnosticos}">
-                    <input type="hidden" name="idDiagnostico" id="idDiagnostico" th:value="${diagnosticos.idDiagnostico}">
+                    <input type="hidden" name="idDiagnostico" id="idDiagnostico" th:value="${flagItem} ? ${diagnosticos.idItemTablero} : ${diagnosticos.idDiagnostico}">
                 </div>
-                <div th:each="sintoma : ${sintoma}" >
-                    <input type="hidden" name="idSintoma" id="idSintoma" th:value="${sintoma}">
+                <div th:each="sintoma : ${sintoma}">
+                    <input type="hidden" name="idSintoma" id="idSintoma" th:value="${sintoma.idSintoma}">
                 </div>
                 <button type="submit" class="btn boton-principal">Guardar diagnóstico</button>
             </form>

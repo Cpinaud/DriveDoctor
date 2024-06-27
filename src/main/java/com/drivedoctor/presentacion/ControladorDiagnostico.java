@@ -64,8 +64,8 @@ public class ControladorDiagnostico {
                                                 @RequestParam("idVh") Integer idVehiculo,
                                                 Model model) {
         logger.info("Llamada a /diagnosticos con idsSintomas: {}", idsSintomasStr);
-
-
+        Boolean flagItem = false;
+        model.addAttribute("idVh", idVehiculo);
         if (idsSintomasStr == null || idsSintomasStr.isEmpty()) {
             model.addAttribute("mensaje", "No se han seleccionado síntomas.");
             return "diagnosticos";
@@ -74,6 +74,11 @@ public class ControladorDiagnostico {
         List<Integer> idsSintomas = Arrays.stream(idsSintomasStr.split(","))
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
+
+        List<Sintoma> sintomas = idsSintomas.stream()
+                .map(id -> servicioSintoma.findById(id))
+                .collect(Collectors.toList());
+
         List<Diagnostico> devolucion = new ArrayList<>();
         try{
             devolucion = this.servicioDiagnostico.findDependingId(idsSintomas);
@@ -87,6 +92,9 @@ public class ControladorDiagnostico {
         } catch (AllItemsEqual e) {
             List<ItemTablero> devolucion1 = new ArrayList<>();
             devolucion1.add(servicioItemTablero.findById(servicioSintoma.findById(idsSintomas.get(0)).getItemTablero().getIdItemTablero()));
+            model.addAttribute("sintoma", sintomas);
+            flagItem = true;
+            model.addAttribute("flagItem", flagItem);
             model.addAttribute("diagnosticos", devolucion1);
 
             return "diagnosticos";
@@ -96,9 +104,9 @@ public class ControladorDiagnostico {
             return "diagnosticos";
         }
         ////armar lista de sintomas dependiendo idsSintomas
-        model.addAttribute("sintoma", idsSintomas);
-        model.addAttribute("idVh", idVehiculo);
+        model.addAttribute("sintoma", sintomas);
 
+        model.addAttribute("flagItem", flagItem);
         return "diagnosticos";
     }
 
