@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 @Controller
 public class ControladorLogin {
@@ -26,7 +27,6 @@ public class ControladorLogin {
 
     @RequestMapping("/login")
     public ModelAndView irALogin() {
-
         ModelMap modelo = new ModelMap();
         modelo.put("datosLogin", new DatosLogin());
         return new ModelAndView("login", modelo);
@@ -38,11 +38,18 @@ public class ControladorLogin {
 
         Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLogin.getEmail(), datosLogin.getPassword());
         if (usuarioBuscado != null) {
-            request.getSession().setAttribute("ROL", usuarioBuscado.getRol());
+            String rolAdmin= "ADMIN";
+            if(Objects.equals(usuarioBuscado.getRol(), rolAdmin)){
+                request.getSession().setAttribute("rol", usuarioBuscado.getRol());
+            }else{
+                request.getSession().setAttribute("rol", "USER");
+            }
+
             request.getSession().setAttribute("ID", usuarioBuscado.getId());
             request.getSession().setAttribute("name", usuarioBuscado.getNombre());
             model.put("name",usuarioBuscado.getNombre());
-            return new ModelAndView("home",model);
+            //return new ModelAndView("home",model);
+            return new ModelAndView("redirect:/home",model);
         } else {
             model.put("error", "Usuario o clave incorrecta");
         }
@@ -79,11 +86,23 @@ public class ControladorLogin {
     {
         ModelMap model = new ModelMap();
         model.put("name",request.getSession().getAttribute("name"));
+        model.put("id",request.getSession().getAttribute("ID"));
         return new ModelAndView("home",model);
     }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public ModelAndView inicio() {
+        return new ModelAndView("redirect:/home");
+    }
+
+
+    @RequestMapping("/logout")
+    public ModelAndView cerrarSesion(HttpServletRequest request) {
+
+        if (request.getSession() != null) {
+            request.getSession().invalidate(); // Invalida la sesión si existe
+        }
+
         return new ModelAndView("redirect:/login");
     }
 }

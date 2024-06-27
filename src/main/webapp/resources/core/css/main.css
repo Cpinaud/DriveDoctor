@@ -1,6 +1,9 @@
+
+
 :root {
     --color-fondo: #1F2128;
-    --color-principal: #A162F7;
+    --color-principal1: #255e3c;
+    --color-principal: #304136;
     --color-secundario: rgb(217, 170, 31);
     --color-oscuro-2: #242731;
     --color-blanco: #FFFFFF;
@@ -10,17 +13,40 @@
 html {
     height: -webkit-fill-available;
     height: 100%;
+    font-family: "Josefin Sans", sans-serif;
 }
 
 body {
     display: flex;
-    color: var(--color-blanco)!important;
-    background-color: var(--color-fondo)!important;
+    color: var(--color-principal)!important;
     height: 100%;
     height: -webkit-fill-available;
     margin: 0;
+    background-image: url("/drivedoctor/static/background.jpg")!important;
+    background-size: cover;
+
+
 }
 
+.home-page{
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+    align-self: center;
+    color:white;
+    text-shadow:
+            1px 1px 0px black,
+            -1px 1px 0px black,
+            1px -1px 0px black,
+            -1px -1px 0px black;
+    align-items: self-end;
+    position: absolute;
+    top: 25%;
+    right: 10%;
+}
 main {
     flex: 1;
     display: flex;
@@ -31,6 +57,8 @@ main {
     overflow-x: auto;
     overflow-y: hidden;
 }
+
+
 
 .bi {
     vertical-align: -.125em;
@@ -48,9 +76,19 @@ a {
     color: var(--color-negro);
 }
 
+tbody a{
+    text-decoration: none;
+    color:white !important;
+}
+
 img {
     width: 30%;
     height: 35%;
+}
+
+.login a{
+    text-decoration: none;
+    color:white !important;
 }
 
 #links {
@@ -82,7 +120,7 @@ img {
 }
 
 .colorOscuro-2 {
-    background-color: var(--color-oscuro-2);
+    background-color: var(--color-principal);
 }
 
 .btn-outline-dark {
@@ -114,4 +152,51 @@ img {
 }
 .table.table-striped.custom-table tbody tr:nth-child(odd){
     background-color: var(--color-fondo);
+}
+
+.form-signin-heading{
+    justify-content: center;
+}
+.inpt-dsbl{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.inpt-dsbl div{
+    display:flex;
+    flex-direction: column;
+
+    margin:0.5%;
+}
+
+.inpt-dsbl input{
+width: 90%;
+}
+
+.confirmaDlt{
+    z-index: 9000;
+}
+
+.cancel-modif{
+    text-decoration: none;
+    color:white !important;
+}
+
+.home-page{
+    width: 70%;
+}
+
+.historial{
+    display:flex;
+    flex-direction: column;
+}
+
+.item-historial{
+    background-color: rgba(0,0,0,0.4) !important;
+    padding:0.1rem !important;
+    color:white !important;
+}
+
+.item-historial-subtitle{
+    text-decoration:underline;
 }

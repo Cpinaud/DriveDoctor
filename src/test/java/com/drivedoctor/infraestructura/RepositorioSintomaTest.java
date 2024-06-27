@@ -130,11 +130,11 @@ public class RepositorioSintomaTest {
     }
 
     private ItemTablero crearItemTableroFiltroGasolinaMock(){
-        ItemTablero itemTableroMock = new ItemTablero("itemFiltroGasolina");
+        ItemTablero itemTableroMock = new ItemTablero("FiltroGasolina");
         return itemTableroMock;
     }
     private ItemTablero crearItemTableroEmbragueMock(){
-        ItemTablero itemTableroMock = new ItemTablero("itemEmbrague");
+        ItemTablero itemTableroMock = new ItemTablero("Embrague");
         return itemTableroMock;
     }
 

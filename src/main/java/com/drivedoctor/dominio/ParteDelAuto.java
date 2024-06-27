@@ -2,7 +2,7 @@ package com.drivedoctor.dominio;
 
 import javax.persistence.*;
 
-
+@Entity
 public class ParteDelAuto {
 
     @Id

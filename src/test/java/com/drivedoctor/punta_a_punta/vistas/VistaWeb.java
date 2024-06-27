@@ -25,7 +25,7 @@ public class VistaWeb {
     protected void escribirEnElElemento(String selectorCSS, String texto){
         this.obtenerElemento(selectorCSS).type(texto);
     }
-
+// Locator --> elemento que fue buscado y encontrado dentro de la pagina
     private Locator obtenerElemento(String selectorCSS){
         return page.locator(selectorCSS);
     }

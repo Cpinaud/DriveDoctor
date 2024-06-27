@@ -1,10 +1,15 @@
 package com.drivedoctor.presentacion;
 
 import com.drivedoctor.dominio.*;
+import com.drivedoctor.dominio.excepcion.MarcaNoEncontrada;
+import com.drivedoctor.dominio.excepcion.PatenteExistente;
+import com.drivedoctor.dominio.excepcion.UserSinVhByMarca;
 import com.drivedoctor.dominio.excepcion.UsuarioSinVehiculos;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,10 +28,12 @@ public class ControladorUsuarioTest {
     private ControladorUsuario controladorUsuario;
     private ServicioUsuario servicioUsuario;
 
+    private ServicioMarca servicioMarca;
     @BeforeEach
     public void init(){
         this.servicioUsuario = mock(ServicioUsuario.class);
-        this.controladorUsuario = new ControladorUsuario(this.servicioUsuario);
+        this.servicioMarca = mock(ServicioMarca.class);
+        this.controladorUsuario = new ControladorUsuario(this.servicioUsuario,this.servicioMarca);
     }
     @Test
     public void queIndiqueNoTenerVehiculosCuandoSeConsultenLosVehiculosDeUnUsuarioQueNoTieneNinguno() throws UsuarioSinVehiculos{
@@ -43,7 +50,6 @@ public class ControladorUsuarioTest {
     }
 
 
-
     @Test
     public void queAlSolicitarLaPantallaDeMisVehiculosSeMuestreLaVistaMisVehiculos(){
         // preparacion
@@ -56,15 +62,68 @@ public class ControladorUsuarioTest {
         assertThat(mav.getViewName(),equalToIgnoringCase("misVehiculos"));
     }
 
+
+    @Test
+    public void queAlBuscarVehiculosRenaultDevuelvaVehiculosDeEsaMarcaSiElUserLosPosee() throws UserSinVhByMarca, MarcaNoEncontrada {
+        HttpServletRequest request = this.mockeoSessionUser();
+        Integer userId = (Integer) request.getSession().getAttribute("ID");
+        Usuario usuario = new Usuario();
+        usuario.setId(userId);
+
+        Vehiculo vehiculo = new Vehiculo();
+        vehiculo.setId(1);
+        List<Vehiculo> vehiculosMock = new ArrayList<>();
+        vehiculosMock.add(vehiculo);
+        Marca marca = new Marca("Renault");
+        marca.setId(1);
+        Integer marcaId = marca.getId();
+        when(servicioUsuario.buscar(userId)).thenReturn(usuario);
+        when(servicioMarca.obtenerMarcaPorId(marcaId)).thenReturn(marca);
+        when(servicioUsuario.getVhPorMarca(usuario,marca)).thenReturn(vehiculosMock);
+        RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
+        ModelAndView mav = this.controladorUsuario.verMisVhPorMarca(request,marcaId,redirectAttributes);
+
+        //verificacion
+        List<Vehiculo> vehiculosObtenidos =  (List<Vehiculo>) mav.getModel().get("vehiculos");
+        assertThat(mav.getViewName(), equalToIgnoringCase("misVehiculos"));
+        assertThat(vehiculosObtenidos.size(), equalTo(1));
+    }
+
+    @Test
+    public void queAlBuscarVehiculosRenaultDevuelvaMensajeDeNoExistentesSiElUserNoLosPosee() throws UserSinVhByMarca, MarcaNoEncontrada {
+        HttpServletRequest request = this.mockeoSessionUser();
+        Integer userId = (Integer) request.getSession().getAttribute("ID");
+        Usuario usuario = new Usuario();
+        usuario.setId(userId);
+        RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
+
+        Marca marca = new Marca("Renault");
+        marca.setId(1);
+        Integer marcaId = marca.getId();
+        when(servicioUsuario.buscar(userId)).thenReturn(usuario);
+        when(servicioMarca.obtenerMarcaPorId(marcaId)).thenReturn(marca);
+
+        when(servicioUsuario.getVhPorMarca(any(Usuario.class),any(Marca.class))).thenThrow(UserSinVhByMarca.class);
+
+        ModelAndView mav = this.controladorUsuario.verMisVhPorMarca(request,marcaId,redirectAttributes);
+
+        //verificacion
+
+        assertThat(mav.getViewName(), equalToIgnoringCase("redirect:/verMisVehiculos"));
+        assertThat(mav.getModel().get("mensaje").toString(), equalToIgnoringCase("El usuario no posee vehiculos de la marca solicitada"));
+    }
+
+
+
     private HttpServletRequest mockeoSessionUser() {
-        Usuario usuario = mock(Usuario.class);
-        when(usuario.getId()).thenReturn(123L);
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpSession session = mock(HttpSession.class);
         when(request.getSession()).thenReturn(session);
-        when(session.getAttribute("ID")).thenReturn(123L);
+        when(session.getAttribute("ID")).thenReturn(123);
         return request;
     }
+
+
 
 
 /*

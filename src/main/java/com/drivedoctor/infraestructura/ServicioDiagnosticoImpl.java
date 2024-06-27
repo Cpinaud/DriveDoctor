@@ -1,7 +1,10 @@
 package com.drivedoctor.infraestructura;
 
 import com.drivedoctor.dominio.*;
+import com.drivedoctor.dominio.excepcion.AllItemsEqual;
+import com.drivedoctor.dominio.excepcion.DemasiadosSintomas;
 import com.drivedoctor.dominio.excepcion.DiagnosticoNotFoundException;
+import com.drivedoctor.dominio.excepcion.UsuarioExistente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -109,35 +112,35 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
                 System.out.println(nombreItemTablero);
 
                 switch (nombreItemTablero) {
-                    case "ItemFreno":
+                    case "Freno":
                         System.out.println("freno");
                         riesgoTotal += 20.0;
                         break;
-                    case "ItemMotor":
+                    case "Motor":
                         riesgoTotal += 60.0;
                         break;
-                    case "ItemFiltroGasolina":
+                    case "FiltroGasolina":
                         riesgoTotal += 40.0;
                         break;
-                    case "ItemSuspension":
+                    case "Suspension":
                         riesgoTotal += 10.0;
                         break;
-                    case "ItemAirbag":
+                    case "Airbag":
                         riesgoTotal += 40.0;
                         break;
-                    case "ItemEmbrague":
+                    case "Embrague":
                         riesgoTotal += 50.0;
                         break;
-                    case "ItemDireccion":
+                    case "Direccion":
                         riesgoTotal += 20.0;
                         break;
-                    case "ItemEstabilidad":
+                    case "Estabilidad":
                         riesgoTotal += 5.0;
                         break;
-                    case "ItemService":
+                    case "Service":
                         riesgoTotal += 40.0;
                         break;
-                    case "ItemEPC":
+                    case "EPC":
                         riesgoTotal += 20.0;
                         break;
 
@@ -151,20 +154,23 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
     }
 
     @Override
-    public String findDependingId(List<Integer> idsSintoma) {
+    public List<Diagnostico> findDependingId(List<Integer> idsSintoma) throws AllItemsEqual, DemasiadosSintomas {
+        List<Diagnostico> diagnosticosList = new ArrayList<>();
+
 
         if(idsSintoma == null || idsSintoma.isEmpty() ){
             return null;
         }
 
         if(idsSintoma.size() == 1) {
-            return repositorioDiagnostico.obtenerPorSintomaId(idsSintoma.get(0)).getDescripcion();
+            diagnosticosList.add(repositorioDiagnostico.obtenerPorSintomaId(idsSintoma.get(0)));
+            return diagnosticosList;
         }
 
         List<Sintoma> sintomas = repositorioSintoma.obtenerLosSintomasPorSusIds(idsSintoma);
 
 
-            ItemTablero item1 = sintomas.get(0).getItemTablero();
+           ItemTablero item1 = sintomas.get(0).getItemTablero();
            boolean allItemsEqual = true;
 
             for(Sintoma sintoma : sintomas) {
@@ -175,22 +181,21 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
             }
 
                 if(allItemsEqual){
-                    return item1.getDescripcion();
+                    throw new AllItemsEqual();
+                    //Devuelvo la descripcion del item en otro método
 
             } else {
-                StringBuilder concatenar = new StringBuilder();
                 if(sintomas.size() <= 3 ) {
-                    for (Sintoma sintoma : sintomas) {
-                        if (concatenar.length() > 0) {
-                            concatenar.append(" ");
-                        }
-                        concatenar.append(sintoma.getDiagnostico().getDescripcion());
-                    }
+                        for (Sintoma sintoma : sintomas) {
 
-                    return concatenar.toString();
+                            diagnosticosList.add(sintoma.getDiagnostico());
+                        }
+
+                        return diagnosticosList;
+
 
                 }
-                return "Demasiados sintomas acerquese a un taller";
+                    throw new DemasiadosSintomas("Demasiados sintomas acerquese a un taller");
             }
 
         }

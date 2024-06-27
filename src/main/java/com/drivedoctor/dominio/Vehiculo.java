@@ -1,35 +1,55 @@
 package com.drivedoctor.dominio;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Vehiculo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "id_marca")
     private Marca marca;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "id_modelo")
     private Modelo modelo;
-    private int anoFabricacion;
+    @Min(value = 2000, message = "El año de fabricación debe ser mayor a 2000")
+    private Integer anoFabricacion;
 
     @Column(unique = true)
+    @Pattern(regexp = "^[a-zA-Z]{3}[0-9]{3}$|^[a-zA-Z]{2}[0-9]{3}[a-zA-Z]{2}$", message = "El formato del dominio es incorrecto.")
     private String patente;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+
+    @OneToMany(mappedBy = "vehiculo", cascade = CascadeType.ALL)
+    private List<Historial> historiales;
     public Vehiculo() {
 
     }
 
-    public Vehiculo(Marca marca, Modelo modelo,int anoFabricacion,String patente) {
+    public Vehiculo(Marca marca, Modelo modelo,Integer anoFabricacion,String patente) {
         this.marca=marca;
         this.modelo = modelo;
         this.anoFabricacion = anoFabricacion;
         this.patente = patente;
     }
 
+    public List<Historial> getHistoriales() {
+        return historiales;
+    }
 
+    public void setHistoriales(List<Historial> historiales) {
+        this.historiales = historiales;
+    }
     public Marca getMarca() {
         return marca;
     }
@@ -47,11 +67,11 @@ public class Vehiculo {
         this.modelo = modelo;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -63,11 +83,11 @@ public class Vehiculo {
         this.usuario = usuario;
     }
 
-    public int getAnoFabricacion() {
+    public Integer getAnoFabricacion() {
         return this.anoFabricacion;
     }
 
-    public void setAnoFabricacion(int anoFabricacion) {
+    public void setAnoFabricacion(Integer anoFabricacion) {
         this.anoFabricacion = anoFabricacion;
     }
 

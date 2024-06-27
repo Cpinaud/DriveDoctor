@@ -51,7 +51,7 @@ public class VistaLoginE2E {
 
     @Test
     void deberiaDarUnErrorAlNoCompletarElLoginYTocarElBoton() {
-        vistaLogin.escribirEMAIL("damian@unlam.edu.ar");
+        vistaLogin.escribirEMAIL("drivedoctor@unlam.edu.ar");
         vistaLogin.escribirClave("unlam");
         vistaLogin.darClickEnIniciarSesion();
         String texto = vistaLogin.obtenerMensajeDeError();
@@ -64,6 +64,6 @@ public class VistaLoginE2E {
         vistaLogin.escribirClave("test");
         vistaLogin.darClickEnIniciarSesion();
         String url = vistaLogin.obtenerURLActual();
-        assertThat(url, containsStringIgnoringCase("/spring/home"));
+        assertThat(url, containsStringIgnoringCase("/drivedoctor/home"));
     }
 }

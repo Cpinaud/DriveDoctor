@@ -1,7 +1,9 @@
 package com.drivedoctor.dominio;
 
+import com.drivedoctor.dominio.excepcion.AllItemsEqual;
 import com.drivedoctor.dominio.excepcion.DiagnosticoNotFoundException;
 import com.drivedoctor.infraestructura.ServicioDiagnosticoImpl;
+import com.drivedoctor.infraestructura.config.HibernateTestInfraestructuraConfig;
 import com.drivedoctor.integracion.config.HibernateTestConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {HibernateTestConfig.class})
+@ContextConfiguration(classes = {HibernateTestInfraestructuraConfig.class})
 public class ServicioDiagnosticoTest {
 
     private ServicioDiagnostico servicioDiagnostico;
@@ -65,7 +67,7 @@ public class ServicioDiagnosticoTest {
     public void queSePuedaSaberElRiesgoDelCocheCuandoUnAutoTieneUnItemDeTipoMotor(){
         List<Sintoma> sintomasMock = new ArrayList<>();
         ItemTablero itemTableroMock = mock(ItemTablero.class);
-        when(itemTableroMock.getNombre()).thenReturn("ItemMotor");
+        when(itemTableroMock.getNombre()).thenReturn("Motor");
         sintomasMock.add(new Sintoma(itemTableroMock));
 
         double riesgoCalculado = servicioDiagnostico.calcularRiesgoPorSintoma(sintomasMock);
@@ -78,7 +80,7 @@ public class ServicioDiagnosticoTest {
     public void queSePuedaSaberElRiesgoDelCocheCuandoUnAutoTieneUnItemDeTipoFrenos(){
         List<Sintoma> sintomasMock = new ArrayList<>();
         ItemTablero itemTableroMock = mock(ItemTablero.class);
-        when(itemTableroMock.getNombre()).thenReturn("ItemFreno");
+        when(itemTableroMock.getNombre()).thenReturn("Freno");
         sintomasMock.add(new Sintoma(itemTableroMock));
 
         double riesgoCalculado = servicioDiagnostico.calcularRiesgoPorSintoma(sintomasMock);
@@ -91,7 +93,7 @@ public class ServicioDiagnosticoTest {
     public void queSePuedaSaberElRiesgoDelCocheCuandoUnAutoTieneUnItemDeTipoFiltroGasolina(){
         List<Sintoma> sintomasMock = new ArrayList<>();
         ItemTablero itemTableroMock = mock(ItemTablero.class);
-        when(itemTableroMock.getNombre()).thenReturn("ItemFiltroGasolina");
+        when(itemTableroMock.getNombre()).thenReturn("FiltroGasolina");
         sintomasMock.add(new Sintoma(itemTableroMock));
 
         double riesgoCalculado = servicioDiagnostico.calcularRiesgoPorSintoma(sintomasMock);
@@ -115,10 +117,10 @@ public class ServicioDiagnosticoTest {
     public void queSePuedaTenerMasDeUnItemEnElTablero(){
         List<Sintoma> sintomasMock = new ArrayList<>();
         ItemTablero itemTableroMock = mock(ItemTablero.class);
-        when(itemTableroMock.getNombre()).thenReturn("ItemMotor");
+        when(itemTableroMock.getNombre()).thenReturn("Motor");
         ItemTablero itemTableroMock2 = mock(ItemTablero.class);
 
-        when(itemTableroMock2.getNombre()).thenReturn("ItemFreno");
+        when(itemTableroMock2.getNombre()).thenReturn("Freno");
         sintomasMock.add(new Sintoma(itemTableroMock));
         sintomasMock.add(new Sintoma(itemTableroMock2));
 
@@ -132,11 +134,11 @@ public class ServicioDiagnosticoTest {
     public void queSePuedaTenerMasDeDosItemEnElTablero(){
         List<Sintoma> sintomasMock = new ArrayList<>();
         ItemTablero itemTableroFrenoMock = mock(ItemTablero.class);
-        when(itemTableroFrenoMock.getNombre()).thenReturn("ItemFreno");
+        when(itemTableroFrenoMock.getNombre()).thenReturn("Freno");
         ItemTablero itemTableroGasolinaMock = mock(ItemTablero.class);
-        when(itemTableroGasolinaMock.getNombre()).thenReturn("ItemFiltroGasolina");
+        when(itemTableroGasolinaMock.getNombre()).thenReturn("FiltroGasolina");
         ItemTablero itemTableroEpcMock = mock(ItemTablero.class);
-        when(itemTableroEpcMock.getNombre()).thenReturn("ItemEPC");
+        when(itemTableroEpcMock.getNombre()).thenReturn("EPC");
 
         sintomasMock.add(new Sintoma(itemTableroEpcMock));
         sintomasMock.add(new Sintoma(itemTableroFrenoMock));
@@ -153,7 +155,7 @@ public class ServicioDiagnosticoTest {
     public void queEnCasoDeQueSeIngresenDosSintomasConElMismoItemNoSeSumen(){
         List<Sintoma> sintomasMock = new ArrayList<>();
         ItemTablero itemTableroFrenoMock = mock(ItemTablero.class);
-        when(itemTableroFrenoMock.getNombre()).thenReturn("ItemFreno");
+        when(itemTableroFrenoMock.getNombre()).thenReturn("Freno");
         sintomasMock.add(new Sintoma(itemTableroFrenoMock));
         sintomasMock.add(new Sintoma(itemTableroFrenoMock));
 
@@ -168,9 +170,9 @@ public class ServicioDiagnosticoTest {
     public void queEnCasoDeQueSeIngresenDosSintomasConElMismoItemNoSeSumenYAgregandoOtroItemAsiVerificamosQueSigaSumandoSiEsDiferente(){
         List<Sintoma> sintomasMock = new ArrayList<>();
         ItemTablero itemTableroFrenoMock = mock(ItemTablero.class);
-        when(itemTableroFrenoMock.getNombre()).thenReturn("ItemFreno");
+        when(itemTableroFrenoMock.getNombre()).thenReturn("Freno");
         ItemTablero itemTableroMotorMock = mock(ItemTablero.class);
-        when(itemTableroMotorMock.getNombre()).thenReturn("ItemMotor");
+        when(itemTableroMotorMock.getNombre()).thenReturn("Motor");
         sintomasMock.add(new Sintoma(itemTableroFrenoMock));
         sintomasMock.add(new Sintoma(itemTableroFrenoMock));
         sintomasMock.add(new Sintoma(itemTableroMotorMock));
@@ -185,11 +187,11 @@ public class ServicioDiagnosticoTest {
     public void queEnCasoDeQueHallaVariosItemsYSupereEl100PorcientMuestreComoMaximoEseValor(){
         List<Sintoma> sintomasMock = new ArrayList<>();
         ItemTablero itemTableroFrenoMock = mock(ItemTablero.class);
-        when(itemTableroFrenoMock.getNombre()).thenReturn("ItemFreno");
+        when(itemTableroFrenoMock.getNombre()).thenReturn("Freno");
         ItemTablero itemTableroAirbagMock = mock(ItemTablero.class);
-        when(itemTableroAirbagMock.getNombre()).thenReturn("ItemAirbag");
+        when(itemTableroAirbagMock.getNombre()).thenReturn("Airbag");
         ItemTablero itemTableroMotorMock = mock(ItemTablero.class);
-        when(itemTableroMotorMock.getNombre()).thenReturn("ItemMotor");
+        when(itemTableroMotorMock.getNombre()).thenReturn("Motor");
         sintomasMock.add(new Sintoma(itemTableroAirbagMock));
         sintomasMock.add(new Sintoma(itemTableroFrenoMock));
         sintomasMock.add(new Sintoma(itemTableroMotorMock));
@@ -203,15 +205,15 @@ public class ServicioDiagnosticoTest {
     }
 
     @Test
-    public void queAlNoRecibirNadaMeDevuelvaNull(){
+    public void queAlNoRecibirNadaMeDevuelvaNull() throws AllItemsEqual {
         List<Integer> sintomaMock = new ArrayList<>();
-        String diagnosticoEsperado = servicioDiagnostico.findDependingId(sintomaMock);
+        String diagnosticoEsperado = servicioDiagnostico.findDependingId(sintomaMock).toString();
         assertNull(diagnosticoEsperado);
 
     }
 
     @Test
-    public void queAlRecibirUnSintomaConUnIdMeDevuelvaSuDescripcionDeDiagnostico() {
+    public void queAlRecibirUnSintomaConUnIdMeDevuelvaSuDescripcionDeDiagnostico() throws AllItemsEqual {
         Integer idSintoma = 1;
         String descripcionDiagnostico = "Descripción de prueba";
 
@@ -225,7 +227,7 @@ public class ServicioDiagnosticoTest {
 
         when(repositorioDiagnostico.obtenerPorSintomaId(idSintoma)).thenReturn(diagnostico1);
 
-        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock);
+        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock).toString();
 
         assertEquals(descripcionDiagnostico, descripcionObtenida);
         verify(repositorioDiagnostico, times(1)).obtenerPorSintomaId(idSintoma);
@@ -233,7 +235,7 @@ public class ServicioDiagnosticoTest {
 
 
     @Test
-    public void queAlRecibirDosElementosDelMismoElementoMeDevuelvaLaDescripcionDelItem() {
+    public void queAlRecibirDosElementosDelMismoElementoMeDevuelvaLaDescripcionDelItem() throws AllItemsEqual {
         Integer idSintoma1 = 1;
         Integer idSintoma2 = 2;
         String descripcionEsperada = "prueba";
@@ -248,13 +250,13 @@ public class ServicioDiagnosticoTest {
                 .thenReturn(Arrays.asList(sintoma1, sintoma2));
 
         List<Integer> sintomasMock = Arrays.asList(idSintoma1, idSintoma2);
-        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock);
+        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock).toString();
 
         assertEquals(descripcionEsperada, descripcionObtenida);
     }
 
     @Test
-    public void queAlRecibirDosElementosDeDiferenteItemMuestreElDiagnosticoDeCadaUno() {
+    public void queAlRecibirDosElementosDeDiferenteItemMuestreElDiagnosticoDeCadaUno() throws AllItemsEqual {
         Integer idSintoma = 1;
         Integer idSintoma2 = 2;
 
@@ -280,7 +282,7 @@ public class ServicioDiagnosticoTest {
 
         List<Integer> sintomasMock = Arrays.asList(idSintoma, idSintoma2);
 
-        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock);
+        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock).toString();
         String descripcionEsperada = descripcionDiagnostico + " " + descripcionDiagnostico2;
 
         assertEquals(descripcionEsperada, descripcionObtenida);
@@ -289,8 +291,7 @@ public class ServicioDiagnosticoTest {
     }
 
     @Test
-    public void queAlRecibirTresElementosDelMismoItemMuestreSuDescripcion()
-    {
+    public void queAlRecibirTresElementosDelMismoItemMuestreSuDescripcion() throws AllItemsEqual {
         Integer idSintoma1 = 1;
         Integer idSintoma2 = 2;
         Integer idSintoma3 = 3;
@@ -307,14 +308,13 @@ public class ServicioDiagnosticoTest {
                 .thenReturn(Arrays.asList(sintoma1, sintoma2, sintoma3));
 
         List<Integer> sintomasMock = Arrays.asList(idSintoma1, idSintoma2, idSintoma3);
-        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock);
+        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock).toString();
 
         assertEquals(descripcionEsperada, descripcionObtenida);
     }
 
     @Test
-    public void queAlRecibirTresElementosDelMismoItemYUnoDiferenteNoMuestreSuDescripcion()
-    {
+    public void queAlRecibirTresElementosDelMismoItemYUnoDiferenteNoMuestreSuDescripcion() throws AllItemsEqual {
         Integer idSintoma1 = 1;
         Integer idSintoma2 = 2;
         Integer idSintoma3 = 3;
@@ -336,13 +336,13 @@ public class ServicioDiagnosticoTest {
                 .thenReturn(Arrays.asList(sintoma1, sintoma2, sintoma3, sintoma4));
 
         List<Integer> sintomasMock = Arrays.asList(idSintoma1, idSintoma2, idSintoma3, idSintoma4);
-        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock);
+        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock).toString();
 
         assertNotEquals(descripcionEsperada, descripcionObtenida);
     }
 
     @Test
-    public void siRecibe3OMasSintomasDelMismoTipoMuestreElMensajeDeDescripcionDelItem(){
+    public void siRecibe3OMasSintomasDelMismoTipoMuestreElMensajeDeDescripcionDelItem() throws AllItemsEqual {
         Integer idSintoma1 = 1;
         Integer idSintoma2 = 2;
         Integer idSintoma3 = 3;
@@ -363,13 +363,13 @@ public class ServicioDiagnosticoTest {
                 .thenReturn(Arrays.asList(sintoma1, sintoma2, sintoma3, sintoma4));
 
         List<Integer> sintomasMock = Arrays.asList(idSintoma1, idSintoma2, idSintoma3, idSintoma4);
-        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock);
+        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock).toString();
 
         assertEquals(descripcionEsperada, descripcionObtenida);
     }
 
     @Test
-    public void queAlRecibir3SintomasYNoSonDelMismoItemMuestreElMensajeDemasiadosSintomasAcerqueseAUnTaller(){
+    public void queAlRecibir3SintomasYNoSonDelMismoItemMuestreElMensajeDemasiadosSintomasAcerqueseAUnTaller() throws AllItemsEqual {
         Integer idSintoma1 = 1;
         Integer idSintoma2 = 2;
         Integer idSintoma3 = 3;
@@ -392,7 +392,7 @@ public class ServicioDiagnosticoTest {
                 .thenReturn(Arrays.asList(sintoma1, sintoma2, sintoma3, sintoma4));
 
         List<Integer> sintomasMock = Arrays.asList(idSintoma1, idSintoma2, idSintoma3, idSintoma4);
-        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock);
+        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock).toString();
 
         assertNotEquals(descripcionEsperada, descripcionObtenida);
         assertEquals(mensajeEsperado, descripcionObtenida);
@@ -406,7 +406,7 @@ public class ServicioDiagnosticoTest {
 
     private Sintoma createSintoma(Integer idSintoma, Diagnostico diagnostico) {
         ItemTablero itemTableroMotorMock = mock(ItemTablero.class);
-        when(itemTableroMotorMock.getNombre()).thenReturn("ItemMotor");
+        when(itemTableroMotorMock.getNombre()).thenReturn("Motor");
         when(itemTableroMotorMock.getDescripcion()).thenReturn("prueba");
         Sintoma sintoma = new Sintoma(itemTableroMotorMock);
         sintoma.setDiagnostico(diagnostico);

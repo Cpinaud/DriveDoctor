@@ -6,7 +6,7 @@ public class VistaHome extends VistaWeb{
 
     public VistaHome(Page page) {
         super(page);
-        page.navigate("localhost:8080/spring/home");
+        page.navigate("localhost:8080/drivedoctor/home");
     }
 
         public void irASintoma() { this.darClickEnElElemento("#irSintoma");}

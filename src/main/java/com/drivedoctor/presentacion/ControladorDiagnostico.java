@@ -1,10 +1,8 @@
 package com.drivedoctor.presentacion;
 
-import com.drivedoctor.dominio.Diagnostico;
-import com.drivedoctor.dominio.ServicioDiagnostico;
-import com.drivedoctor.dominio.ServicioSintoma;
-import com.drivedoctor.dominio.Sintoma;
-import com.drivedoctor.dominio.excepcion.DiagnosticoNotFoundException;
+import com.drivedoctor.dominio.*;
+import com.drivedoctor.dominio.excepcion.*;
+import com.drivedoctor.infraestructura.ServicioDiagnosticoImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,34 +22,47 @@ public class ControladorDiagnostico {
     private ServicioDiagnostico servicioDiagnostico;
     private static final Logger logger = LoggerFactory.getLogger(ControladorDiagnostico.class);
     private ServicioSintoma servicioSintoma;
+    private ServicioItemTablero servicioItemTablero;
 
     @Autowired
-    public ControladorDiagnostico(ServicioDiagnostico servicioDiagnostico, ServicioSintoma servicioSintoma)
+    public ControladorDiagnostico(ServicioDiagnostico servicioDiagnostico, ServicioSintoma servicioSintoma,ServicioItemTablero servicioItemTablero)
     {
         this.servicioDiagnostico = servicioDiagnostico;
         this.servicioSintoma = servicioSintoma;
+        this.servicioItemTablero = servicioItemTablero;
     }
 
     //MUESTRA EL DIAGNOSTICO ASOCIADO A UN SINTOMA
-    @GetMapping("/diagnostico/{id}")
-    public String obtenerDiagnostico(@PathVariable("id") Integer id, Model model) {
+    @RequestMapping(value = "/diagnostico", method = RequestMethod.POST )
+    public String obtenerDiagnostico(@RequestParam("id") Integer id,
+                                     @RequestParam("idVehiculo") Integer idVehiculo,
+                                     @RequestParam("idsSintomas") Integer idsSintomas,
+                                     HttpServletRequest request,
+                                     Model model) throws VehiculoInvalido {
         try {
-            Diagnostico diagnostico = servicioDiagnostico.findById(id);
-            if(diagnostico == null){
+            List<Diagnostico> diagnostico = new ArrayList<>();
+            diagnostico.add(servicioDiagnostico.findById(id));
+            if(diagnostico.size() == 0){
                 throw new DiagnosticoNotFoundException("No se encuentra ningun diagnostico asociado a este id");
             }
             model.addAttribute("diagnostico", diagnostico);
+            model.addAttribute("idVehiculo", idVehiculo);
+            List<Sintoma> sintoma = new ArrayList<>();
+            sintoma.add(servicioSintoma.findById(idsSintomas));
+            model.addAttribute("sintoma", sintoma);
         } catch (DiagnosticoNotFoundException | IllegalArgumentException e) {
-            model.addAttribute("mensaje", e.getMessage());
             return "error";
         }
         return "mostrarDiagnostico";
     }
 
     @RequestMapping(value = "/diagnosticos", method = RequestMethod.POST )
-    public String obtenerDiagnosticoPorSintomas(@RequestParam("idsSintomas") String idsSintomasStr, Model model) {
+    public String obtenerDiagnosticoPorSintomas(@RequestParam("idsSintomas") String idsSintomasStr,
+                                                @RequestParam("idVh") Integer idVehiculo,
+                                                Model model) throws ItemNoEncontrado {
         logger.info("Llamada a /diagnosticos con idsSintomas: {}", idsSintomasStr);
-
+        Boolean flagItem = false;
+        model.addAttribute("idVh", idVehiculo);
         if (idsSintomasStr == null || idsSintomasStr.isEmpty()) {
             model.addAttribute("mensaje", "No se han seleccionado síntomas.");
             return "diagnosticos";
@@ -61,7 +74,8 @@ public class ControladorDiagnostico {
 
 
 
-        String devolucion = servicioDiagnostico.findDependingId(idsSintomas);
+
+       /* String devolucion = servicioDiagnostico.findDependingId(idsSintomas);
         String mapaDiagnostico = "Demasiados sintomas acerquese a un taller";
 
         System.out.println(devolucion);
@@ -70,8 +84,41 @@ public class ControladorDiagnostico {
 
         if(devolucion.equals(mapaDiagnostico)){
             return "diagnosticoConMapa";
-        }
+        }*/
 
+
+        List<Sintoma> sintomas = idsSintomas.stream()
+                .map(id -> servicioSintoma.findById(id))
+                .collect(Collectors.toList());
+
+        List<Diagnostico> devolucion = new ArrayList<>();
+        try{
+            devolucion = this.servicioDiagnostico.findDependingId(idsSintomas);
+            model.addAttribute("diagnosticos", devolucion);
+            if(devolucion.size() == 0){
+                //throw new DiagnosticoNotFoundException("No se encuentra ningun diagnostico asociado a este id");
+                model.addAttribute("mensaje", "No se encuentra ningun diagnostico asociado a este id");
+                return "diagnosticos";
+            }
+
+        } catch (AllItemsEqual e) {
+            List<ItemTablero> devolucion1 = new ArrayList<>();
+            devolucion1.add(servicioItemTablero.findById(servicioSintoma.findById(idsSintomas.get(0)).getItemTablero().getIdItemTablero()));
+            model.addAttribute("sintoma", sintomas);
+            flagItem = true;
+            model.addAttribute("flagItem", flagItem);
+            model.addAttribute("diagnosticos", devolucion1);
+
+            return "diagnosticos";
+        } catch (DemasiadosSintomas e) {
+            //throw new DemasiadosSintomas("Demasiados sintomas acerquese a un taller");
+            model.addAttribute("mensaje", "Demasiados sintomas acerquese a un taller.");
+            return "diagnosticos";
+        }
+        ////armar lista de sintomas dependiendo idsSintomas
+        model.addAttribute("sintoma", sintomas);
+
+        model.addAttribute("flagItem", flagItem);
         return "diagnosticos";
     }
 
@@ -94,5 +141,7 @@ public class ControladorDiagnostico {
         }
 
     }
+
+
 
 }

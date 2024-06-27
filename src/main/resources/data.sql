@@ -1,7 +1,7 @@
 -- Inserción condicional de usuario
 INSERT INTO Usuario (email, password, rol, activo, nombre)
 SELECT 'test@unlam.edu.ar', 'test', 'ADMIN', true, 'Administrador'
-WHERE NOT EXISTS (
+    WHERE NOT EXISTS (
         SELECT 1 FROM Usuario WHERE email = 'test@unlam.edu.ar'
     ) LIMIT 1;
 Insert into drivedoctor.diagnostico(idDiagnostico, descripcion ) SELECT 1,'La recomendación para este caso es verificar el funcionamiento de las mangueras de gasolina, en caso de que estas esten bien puede ser el tanque que este roto.' WHERE NOT EXISTS ( SELECT 1 FROM drivedoctor.diagnostico WHERE idDiagnostico = 1);
@@ -57,4 +57,5 @@ Insert into drivedoctor.diagnostico(idDiagnostico, descripcion ) SELECT 50,'Se r
 Insert into drivedoctor.diagnostico(idDiagnostico, descripcion ) SELECT 51,'Se recomienda cambiar la pieza inmediatamente sino podria afectar al paso de combustible no quemado a traves del sistema de escape' WHERE NOT EXISTS ( SELECT 1 FROM drivedoctor.diagnostico WHERE idDiagnostico = 51);
 Insert into drivedoctor.diagnostico(idDiagnostico, descripcion ) SELECT 52,'Para evitar incidentes cambiar urgente' WHERE NOT EXISTS ( SELECT 1 FROM drivedoctor.diagnostico WHERE idDiagnostico = 52);
 Insert into drivedoctor.diagnostico(idDiagnostico, descripcion ) SELECT 53,'Podria ser un problema de piston de freno, el material de friccion o las pastillas de freno lo recomendable seria que lo vea un mecanico' WHERE NOT EXISTS ( SELECT 1 FROM drivedoctor.diagnostico WHERE idDiagnostico = 53);
+
 

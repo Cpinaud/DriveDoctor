@@ -14,6 +14,9 @@ public class Diagnostico {
     @OneToMany(mappedBy = "diagnostico")
     private List<Sintoma> sintomas;
 
+    @ManyToMany(mappedBy = "diagnosticos")
+    private List<Historial> historiales;
+
     public Diagnostico(List<Sintoma> sintomas) {
         this.sintomas = sintomas;
     }
@@ -21,6 +24,13 @@ public class Diagnostico {
     public Diagnostico() {
     }
 
+    public List<Historial> getHistoriales() {
+        return historiales;
+    }
+
+    public void setHistoriales(List<Historial> historiales) {
+        this.historiales = historiales;
+    }
     public Integer getIdDiagnostico() {
         return IdDiagnostico;
     }

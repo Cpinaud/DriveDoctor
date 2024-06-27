@@ -21,14 +21,16 @@
                 <h2 class="mb-4">Seleccionar Item del Tablero</h2>
                 <form th:action="@{/mostrarSintomaDependiendoItem}" method="post">
                     <div class="form-group">
-                        <label for="itemTablero">Seleccione un item del tablero:</label>
+                        <label for="itemTablero">Seleccione a que área cree que pertenece su problema:</label>
                         <select class="form-control" id="itemTablero" name="idItemTablero" required>
                             <option th:each="opcion : ${opcionesItemTablero}" th:value="${opcion.idItemTablero}" th:text="${opcion.nombre}"></option>
                         </select>
+
+                        <input type="hidden" id="idVehiculo" name="idVehiculo" th:value="${idVehiculo}" />
                     </div>
                     <div style="margin-top: 10px">
                         <a th:href="@{/sintoma}" class="btn boton-secundario">Volver</a>
-                        <button type="submit" class="btn boton-principal">Mostrar Síntomas</button>
+                        <button type="submit" class="btn boton-principal">Mostrar posibles síntomas</button>
                     </div>
 
                 </form>

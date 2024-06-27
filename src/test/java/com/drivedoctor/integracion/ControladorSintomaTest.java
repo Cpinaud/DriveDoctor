@@ -1,6 +1,11 @@
 package com.drivedoctor.integracion;
 
+import com.drivedoctor.config.GoogleMapsConfig;
+import com.drivedoctor.dominio.ItemTablero;
+import com.drivedoctor.dominio.ServicioItemTablero;
+import com.drivedoctor.dominio.ServicioSintoma;
 import com.drivedoctor.dominio.Sintoma;
+import com.drivedoctor.dominio.excepcion.ItemsNoEncontrados;
 import com.drivedoctor.integracion.config.HibernateTestConfig;
 import com.drivedoctor.integracion.config.SpringWebTestConfig;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,23 +20,28 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import java.util.Arrays;
+import java.util.List;
 
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {HibernateTestConfig.class, SpringWebTestConfig.class})
+@ContextConfiguration(classes = {HibernateTestConfig.class, SpringWebTestConfig.class, GoogleMapsConfig.class})
 public class ControladorSintomaTest {
 
-    private Sintoma sitomaMock;
 
+    private ServicioItemTablero servicioItemTablero;
     @Autowired
     private WebApplicationContext wac;
     private MockMvc mockMvc;
 
     @BeforeEach
     public void setUp() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+        this.servicioItemTablero = mock(ServicioItemTablero.class);
     }
 
     @Test
@@ -55,8 +65,36 @@ public class ControladorSintomaTest {
         this.mockMvc.perform(get("/mostrarSintomaPorItem"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("item-tablero"))
-                .andExpect(model().attributeExists("sintoma"));
+                .andExpect(model().attributeExists("opcionesItemTablero"));
     }
+
+    @Test
+    public void queSePuedaCrearUnNuevoSintoma() throws Exception {
+        this.mockMvc.perform(post("/crearSintoma")
+                        .param("nombre", "Perdida de aceite")
+                        .param("descripcion", "Pierde aciete por debajo del motor"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/sintoma"));
+    }
+
+//    @Test
+//    public void quePuedaMostrarSintomaPorItem() throws Exception {
+//        List<ItemTablero> itemsTablero = Arrays.asList(
+//                new ItemTablero(),
+//                new ItemTablero()
+//        );
+//
+//        when(this.servicioItemTablero.obtenerTodosLosItems()).thenReturn(itemsTablero);
+//
+//        this.mockMvc.perform(get("/mostrarSintomaPorItem"))
+//                .andExpect(status().isOk())
+//                .andExpect(view().name("item-tablero"))
+//                .andExpect(model().attributeExists("opcionesItemTablero"))
+//                .andExpect(model().attribute("opcionesItemTablero", itemsTablero));
+//
+//        verify(this.servicioItemTablero, times(1)).obtenerTodosLosItems();
+//    }
+
 
 
 

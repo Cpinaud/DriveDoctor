@@ -41,10 +41,10 @@ function initMap() {
 
     function cargarYFiltrarTalleres(userCoords) {
         $.ajax({
-            url: '/spring/api/talleres',
+            url: '/api/talleres',
             method: 'GET',
             success: function(talleres) {
-                const maxDistancia = 30 * 1000;
+                const maxDistancia = 50 * 1000;
 
                 const filtrarTalleres = talleres.filter(function(taller) {
                     const tallerCoords = { lat: taller.latitud, lng: taller.longitud };
