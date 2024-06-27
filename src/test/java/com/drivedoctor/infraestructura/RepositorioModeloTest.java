@@ -45,7 +45,7 @@ public class RepositorioModeloTest {
         List<Modelo> modelosObtenidos = this.repositorioModelo.getByMarca(marca);
 
         Integer cantidadEsperada = 2;
-        assertThat(cantidadEsperada, equalTo(modelosObtenidos.size()));
+        assertThat(modelosObtenidos.size(), equalTo(cantidadEsperada));
 
 
     }

@@ -64,6 +64,6 @@ public class VistaSintomaE2E {
         assertThat(urlNavegada,equalToIgnoringCase("http://localhost:8080/drivedoctor/nuevoSintoma"));
     }
 
-//
+//  
 
 }
