@@ -43,7 +43,7 @@ public class ServicioSintomaTest {
     @Test
     public void quePuedaObtenerLosItemsDelTableroEnBaseAMiSintoma(){
         ItemTablero itemTableroMock = mock(ItemTablero.class);
-        when(itemTableroMock.getNombre()).thenReturn("itemEmbrague");
+        when(itemTableroMock.getNombre()).thenReturn("Embrague");
 
         List<Sintoma> sintomasMock = new ArrayList<>();
         sintomasMock.add(new Sintoma(itemTableroMock));

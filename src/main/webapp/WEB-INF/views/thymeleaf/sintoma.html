@@ -24,7 +24,7 @@
 
             <a th:if="${session.rol!='ADMIN'}" th:href="@{/mostrarSintomaPorItem/{id}(id=${idVh})}" class="btn boton-principal">Seleccionar área del problema...</a>
 
-            <a th:if="${session.rol!='ADMIN'}" th:href="@{/mostrarSintomasPorItems}" class="btn boton-principal">Tengo varios problemas con mi vehículo...</a>
+            <a th:if="${session.rol!='ADMIN'}" th:href="@{/mostrarSintomasPorItems/{id}(id=${idVh})}" class="btn boton-principal">Tengo varios problemas con mi vehículo...</a>
 
             <span th:if="${mensaje!=null}" th:text="${mensaje}"></span>
         </div>

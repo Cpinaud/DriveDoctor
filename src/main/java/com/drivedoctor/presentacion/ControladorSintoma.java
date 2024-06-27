@@ -99,8 +99,8 @@ public class ControladorSintoma {
         return new ModelAndView("item-tablero",modelo);
     }
 
-    @RequestMapping("/mostrarSintomasPorItems")  //PROBLEM
-    public ModelAndView mostrarSintomas() {
+    @RequestMapping("/mostrarSintomasPorItems/{idVehiculo}")  //PROBLEM
+    public ModelAndView mostrarSintomas(@PathVariable("idVehiculo") Integer idVehiculo) {
         ModelAndView modelAndView = new ModelAndView("items-tablero");
         List<ItemTablero> itemsTablero = servicioItemTablero.obtenerTodosLosItems();
 
@@ -111,8 +111,9 @@ public class ControladorSintoma {
 
 
         modelAndView.addObject("opcionesItemsTablero", itemsTablero);
-        modelAndView.addObject("opcionesSintomas", sintomas); // Agregar las opciones de los síntomas al modelo
+        //modelAndView.addObject("opcionesSintomas", sintomas); // Agregar las opciones de los síntomas al modelo
         modelAndView.addObject("sintoma", new Sintoma());
+        modelAndView.addObject("idVehiculo",idVehiculo);
         return modelAndView;
     }
     @RequestMapping(value = "/mostrarSintomaDependiendoItem", method = RequestMethod.POST )
@@ -130,18 +131,36 @@ public class ControladorSintoma {
 
     }
      @RequestMapping(value = "/mostrarSintomasDependiendoItems", method = RequestMethod.POST )
-    public ModelAndView mostrarSintomasDependiendoItems(@RequestParam("itemsTablero[]") Integer[] itemsTablero){
-        ModelMap modelo = new ModelMap();
+    public ModelAndView mostrarSintomasDependiendoItems(@RequestParam("itemsTablero[]") Integer[] itemsTablero,
+                                                        HttpServletRequest request,
+                                                        @RequestParam("idVehiculo") Integer idVehiculo,
+                                                        RedirectAttributes redirectAttributes){
+         ModelMap modelo = new ModelMap();
+        Integer userId = (Integer) request.getSession().getAttribute("ID");
+         try{
+             this.servicioVehiculo.validarVehiculoUser(userId,idVehiculo);
+         } catch (VehiculoInvalido e) {
+             modelo.addAttribute("mensaje", "No puede diagnosticar un vehiculo que no posee");
+             return new ModelAndView("redirect:/verMisVehiculos");
+
+         }
+
 
 
         List<ItemTablero> items = Arrays.stream(itemsTablero)
                 .map(servicioItemTablero::findById)
                 .collect(Collectors.toList());
-
+        //Esto tiene que ir en un método del servicio y agregar la opcion de buscar talleres en Maps
+         if(items.size()>3){
+             modelo.addAttribute("mensaje", "Las áreas seleccionadas son demasiadas, debe acercarse a un taller");
+             return new ModelAndView("mostrar-sintomas", modelo);
+         }
+        //
 
         List<Sintoma> sintomas= servicioSintoma.problemasEnTablero(items);
 
         modelo.addAttribute("sintomas", sintomas);
+        modelo.addAttribute("idVh", idVehiculo);
 
 
         obtenerSintomas(sintomas, modelo);

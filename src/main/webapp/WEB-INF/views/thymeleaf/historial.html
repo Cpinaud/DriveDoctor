@@ -11,7 +11,12 @@
     <!-- custom style -->
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
-<body>
+<body style="display:flex;flex-direction: column;">
+<div style="background-color: white;">
+    <a style="color:black" th:href="@{/home}" >Home</a>
+    <a style="color:black" th:if="${session.rol!='ADMIN'}" th:href="@{/verMisVehiculos}" >Mis Vehiculos </a>
+
+</div>
 <div class="historial">
 <h1 th:text="'Historial ' + ${vehiculo.patente} + ' ' + ${vehiculo.marca.nombre} + ' ' + ${vehiculo.modelo.nombre}"></h1>
 <hr>

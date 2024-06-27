@@ -40,8 +40,9 @@
                 <!-- Iterar sobre los síntomas y mostrar cada uno -->
                 <tr th:each="sintoma : ${sintomas}">
                     <td><input type="checkbox" class="sintoma-checkbox" th:data-id="${sintoma.diagnostico.idDiagnostico}"></td>
-                    <td th:text="${sintoma.descripcion}"></td>
+                    <td th:text="${sintoma.nombre}"></td>
                 </tr>
+                <input type="hidden" id="idVehiculo" name="idVehiculo" th:value="${idVh}" />
                 </tbody>
             </table>
         </div>
@@ -54,8 +55,8 @@
             <span id="selected-count">0 síntomas seleccionados</span>
             <div>
 
-                <a class="btn btn-primary btn-sm mt-2" id="view-diagnosis" href="#" onclick="viewDiagnosis()">Ver Diagnóstico</a>
-                <a class="btn btn-primary btn-sm mt-2" id="view-porcentaje" href="#" onclick="viewPorcentaje()">Ver porcentaje</a>
+                <a th:if="${mensaje==null}" class="btn btn-primary btn-sm mt-2" id="view-diagnosis" href="#" onclick="viewDiagnosis()">Ver Diagnóstico</a>
+                <a th:if="${mensaje==null}" class="btn btn-primary btn-sm mt-2" id="view-porcentaje" href="#" onclick="viewPorcentaje()">Ver porcentaje</a>
 
             </div>
         </div>
@@ -92,6 +93,12 @@
             input.name = 'idsSintomas';
             input.value = ids;
             form.appendChild(input);
+
+            const inputVh = document.createElement('input');
+            inputVh.type = 'hidden';
+            inputVh.name = 'idVh';
+            inputVh.value = document.getElementById('idVehiculo').value;
+            form.appendChild(inputVh);
 
             document.body.appendChild(form);
             console.log('Formulario enviado', form);

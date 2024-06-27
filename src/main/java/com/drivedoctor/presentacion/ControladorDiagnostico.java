@@ -1,8 +1,11 @@
 package com.drivedoctor.presentacion;
 
 import com.drivedoctor.dominio.*;
+import com.drivedoctor.dominio.excepcion.AllItemsEqual;
+import com.drivedoctor.dominio.excepcion.DemasiadosSintomas;
 import com.drivedoctor.dominio.excepcion.DiagnosticoNotFoundException;
 import com.drivedoctor.dominio.excepcion.VehiculoInvalido;
+import com.drivedoctor.infraestructura.ServicioDiagnosticoImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +25,14 @@ public class ControladorDiagnostico {
     private ServicioDiagnostico servicioDiagnostico;
     private static final Logger logger = LoggerFactory.getLogger(ControladorDiagnostico.class);
     private ServicioSintoma servicioSintoma;
+    private ServicioItemTablero servicioItemTablero;
 
     @Autowired
-    public ControladorDiagnostico(ServicioDiagnostico servicioDiagnostico, ServicioSintoma servicioSintoma)
+    public ControladorDiagnostico(ServicioDiagnostico servicioDiagnostico, ServicioSintoma servicioSintoma,ServicioItemTablero servicioItemTablero)
     {
         this.servicioDiagnostico = servicioDiagnostico;
         this.servicioSintoma = servicioSintoma;
+        this.servicioItemTablero = servicioItemTablero;
     }
 
     //MUESTRA EL DIAGNOSTICO ASOCIADO A UN SINTOMA
@@ -40,7 +45,7 @@ public class ControladorDiagnostico {
         try {
             List<Diagnostico> diagnostico = new ArrayList<>();
             diagnostico.add(servicioDiagnostico.findById(id));
-            if(diagnostico == null){
+            if(diagnostico.size() == 0){
                 throw new DiagnosticoNotFoundException("No se encuentra ningun diagnostico asociado a este id");
             }
             model.addAttribute("diagnostico", diagnostico);
@@ -55,8 +60,11 @@ public class ControladorDiagnostico {
     }
 
     @RequestMapping(value = "/diagnosticos", method = RequestMethod.POST )
-    public String obtenerDiagnosticoPorSintomas(@RequestParam("idsSintomas") String idsSintomasStr, Model model) {
+    public String obtenerDiagnosticoPorSintomas(@RequestParam("idsSintomas") String idsSintomasStr,
+                                                @RequestParam("idVh") Integer idVehiculo,
+                                                Model model) {
         logger.info("Llamada a /diagnosticos con idsSintomas: {}", idsSintomasStr);
+
 
         if (idsSintomasStr == null || idsSintomasStr.isEmpty()) {
             model.addAttribute("mensaje", "No se han seleccionado síntomas.");
@@ -67,9 +75,29 @@ public class ControladorDiagnostico {
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
 
-        List<String> devolucion = servicioDiagnostico.findDependingId(idsSintomas);
-        model.addAttribute("diagnosticos", devolucion);
+        try{
+            List<Diagnostico> devolucion = servicioDiagnostico.findDependingId(idsSintomas);
+            model.addAttribute("diagnosticos", devolucion);
+            if(devolucion.size() == 0){
+                //throw new DiagnosticoNotFoundException("No se encuentra ningun diagnostico asociado a este id");
+                model.addAttribute("mensaje", "No se encuentra ningun diagnostico asociado a este id");
+                return "diagnosticos";
+            }
+
+        } catch (AllItemsEqual e) {
+            List<ItemTablero> devolucion = new ArrayList<>();
+            devolucion.add(servicioItemTablero.findById(servicioSintoma.findById(idsSintomas.get(0)).getItemTablero().getIdItemTablero()));
+            model.addAttribute("diagnosticos", devolucion);
+
+            return "diagnosticos";
+        } catch (DemasiadosSintomas e) {
+            //throw new DemasiadosSintomas("Demasiados sintomas acerquese a un taller");
+            model.addAttribute("mensaje", "Demasiados sintomas acerquese a un taller.");
+            return "diagnosticos";
+        }
+        ////armar lista de sintomas dependiendo idsSintomas
         model.addAttribute("idsSintomas", idsSintomas);
+        model.addAttribute("idVh", idVehiculo);
 
         return "diagnosticos";
     }

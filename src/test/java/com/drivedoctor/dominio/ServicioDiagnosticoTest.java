@@ -1,5 +1,6 @@
 package com.drivedoctor.dominio;
 
+import com.drivedoctor.dominio.excepcion.AllItemsEqual;
 import com.drivedoctor.dominio.excepcion.DiagnosticoNotFoundException;
 import com.drivedoctor.infraestructura.ServicioDiagnosticoImpl;
 import com.drivedoctor.infraestructura.config.HibernateTestInfraestructuraConfig;
@@ -66,7 +67,7 @@ public class ServicioDiagnosticoTest {
     public void queSePuedaSaberElRiesgoDelCocheCuandoUnAutoTieneUnItemDeTipoMotor(){
         List<Sintoma> sintomasMock = new ArrayList<>();
         ItemTablero itemTableroMock = mock(ItemTablero.class);
-        when(itemTableroMock.getNombre()).thenReturn("ItemMotor");
+        when(itemTableroMock.getNombre()).thenReturn("Motor");
         sintomasMock.add(new Sintoma(itemTableroMock));
 
         double riesgoCalculado = servicioDiagnostico.calcularRiesgoPorSintoma(sintomasMock);
@@ -79,7 +80,7 @@ public class ServicioDiagnosticoTest {
     public void queSePuedaSaberElRiesgoDelCocheCuandoUnAutoTieneUnItemDeTipoFrenos(){
         List<Sintoma> sintomasMock = new ArrayList<>();
         ItemTablero itemTableroMock = mock(ItemTablero.class);
-        when(itemTableroMock.getNombre()).thenReturn("ItemFreno");
+        when(itemTableroMock.getNombre()).thenReturn("Freno");
         sintomasMock.add(new Sintoma(itemTableroMock));
 
         double riesgoCalculado = servicioDiagnostico.calcularRiesgoPorSintoma(sintomasMock);
@@ -92,7 +93,7 @@ public class ServicioDiagnosticoTest {
     public void queSePuedaSaberElRiesgoDelCocheCuandoUnAutoTieneUnItemDeTipoFiltroGasolina(){
         List<Sintoma> sintomasMock = new ArrayList<>();
         ItemTablero itemTableroMock = mock(ItemTablero.class);
-        when(itemTableroMock.getNombre()).thenReturn("ItemFiltroGasolina");
+        when(itemTableroMock.getNombre()).thenReturn("FiltroGasolina");
         sintomasMock.add(new Sintoma(itemTableroMock));
 
         double riesgoCalculado = servicioDiagnostico.calcularRiesgoPorSintoma(sintomasMock);
@@ -116,10 +117,10 @@ public class ServicioDiagnosticoTest {
     public void queSePuedaTenerMasDeUnItemEnElTablero(){
         List<Sintoma> sintomasMock = new ArrayList<>();
         ItemTablero itemTableroMock = mock(ItemTablero.class);
-        when(itemTableroMock.getNombre()).thenReturn("ItemMotor");
+        when(itemTableroMock.getNombre()).thenReturn("Motor");
         ItemTablero itemTableroMock2 = mock(ItemTablero.class);
 
-        when(itemTableroMock2.getNombre()).thenReturn("ItemFreno");
+        when(itemTableroMock2.getNombre()).thenReturn("Freno");
         sintomasMock.add(new Sintoma(itemTableroMock));
         sintomasMock.add(new Sintoma(itemTableroMock2));
 
@@ -133,11 +134,11 @@ public class ServicioDiagnosticoTest {
     public void queSePuedaTenerMasDeDosItemEnElTablero(){
         List<Sintoma> sintomasMock = new ArrayList<>();
         ItemTablero itemTableroFrenoMock = mock(ItemTablero.class);
-        when(itemTableroFrenoMock.getNombre()).thenReturn("ItemFreno");
+        when(itemTableroFrenoMock.getNombre()).thenReturn("Freno");
         ItemTablero itemTableroGasolinaMock = mock(ItemTablero.class);
-        when(itemTableroGasolinaMock.getNombre()).thenReturn("ItemFiltroGasolina");
+        when(itemTableroGasolinaMock.getNombre()).thenReturn("FiltroGasolina");
         ItemTablero itemTableroEpcMock = mock(ItemTablero.class);
-        when(itemTableroEpcMock.getNombre()).thenReturn("ItemEPC");
+        when(itemTableroEpcMock.getNombre()).thenReturn("EPC");
 
         sintomasMock.add(new Sintoma(itemTableroEpcMock));
         sintomasMock.add(new Sintoma(itemTableroFrenoMock));
@@ -154,7 +155,7 @@ public class ServicioDiagnosticoTest {
     public void queEnCasoDeQueSeIngresenDosSintomasConElMismoItemNoSeSumen(){
         List<Sintoma> sintomasMock = new ArrayList<>();
         ItemTablero itemTableroFrenoMock = mock(ItemTablero.class);
-        when(itemTableroFrenoMock.getNombre()).thenReturn("ItemFreno");
+        when(itemTableroFrenoMock.getNombre()).thenReturn("Freno");
         sintomasMock.add(new Sintoma(itemTableroFrenoMock));
         sintomasMock.add(new Sintoma(itemTableroFrenoMock));
 
@@ -169,9 +170,9 @@ public class ServicioDiagnosticoTest {
     public void queEnCasoDeQueSeIngresenDosSintomasConElMismoItemNoSeSumenYAgregandoOtroItemAsiVerificamosQueSigaSumandoSiEsDiferente(){
         List<Sintoma> sintomasMock = new ArrayList<>();
         ItemTablero itemTableroFrenoMock = mock(ItemTablero.class);
-        when(itemTableroFrenoMock.getNombre()).thenReturn("ItemFreno");
+        when(itemTableroFrenoMock.getNombre()).thenReturn("Freno");
         ItemTablero itemTableroMotorMock = mock(ItemTablero.class);
-        when(itemTableroMotorMock.getNombre()).thenReturn("ItemMotor");
+        when(itemTableroMotorMock.getNombre()).thenReturn("Motor");
         sintomasMock.add(new Sintoma(itemTableroFrenoMock));
         sintomasMock.add(new Sintoma(itemTableroFrenoMock));
         sintomasMock.add(new Sintoma(itemTableroMotorMock));
@@ -186,11 +187,11 @@ public class ServicioDiagnosticoTest {
     public void queEnCasoDeQueHallaVariosItemsYSupereEl100PorcientMuestreComoMaximoEseValor(){
         List<Sintoma> sintomasMock = new ArrayList<>();
         ItemTablero itemTableroFrenoMock = mock(ItemTablero.class);
-        when(itemTableroFrenoMock.getNombre()).thenReturn("ItemFreno");
+        when(itemTableroFrenoMock.getNombre()).thenReturn("Freno");
         ItemTablero itemTableroAirbagMock = mock(ItemTablero.class);
-        when(itemTableroAirbagMock.getNombre()).thenReturn("ItemAirbag");
+        when(itemTableroAirbagMock.getNombre()).thenReturn("Airbag");
         ItemTablero itemTableroMotorMock = mock(ItemTablero.class);
-        when(itemTableroMotorMock.getNombre()).thenReturn("ItemMotor");
+        when(itemTableroMotorMock.getNombre()).thenReturn("Motor");
         sintomasMock.add(new Sintoma(itemTableroAirbagMock));
         sintomasMock.add(new Sintoma(itemTableroFrenoMock));
         sintomasMock.add(new Sintoma(itemTableroMotorMock));
@@ -204,7 +205,7 @@ public class ServicioDiagnosticoTest {
     }
 
     @Test
-    public void queAlNoRecibirNadaMeDevuelvaNull(){
+    public void queAlNoRecibirNadaMeDevuelvaNull() throws AllItemsEqual {
         List<Integer> sintomaMock = new ArrayList<>();
         String diagnosticoEsperado = servicioDiagnostico.findDependingId(sintomaMock).toString();
         assertNull(diagnosticoEsperado);
@@ -212,7 +213,7 @@ public class ServicioDiagnosticoTest {
     }
 
     @Test
-    public void queAlRecibirUnSintomaConUnIdMeDevuelvaSuDescripcionDeDiagnostico() {
+    public void queAlRecibirUnSintomaConUnIdMeDevuelvaSuDescripcionDeDiagnostico() throws AllItemsEqual {
         Integer idSintoma = 1;
         String descripcionDiagnostico = "Descripción de prueba";
 
@@ -234,7 +235,7 @@ public class ServicioDiagnosticoTest {
 
 
     @Test
-    public void queAlRecibirDosElementosDelMismoElementoMeDevuelvaLaDescripcionDelItem() {
+    public void queAlRecibirDosElementosDelMismoElementoMeDevuelvaLaDescripcionDelItem() throws AllItemsEqual {
         Integer idSintoma1 = 1;
         Integer idSintoma2 = 2;
         String descripcionEsperada = "prueba";
@@ -255,7 +256,7 @@ public class ServicioDiagnosticoTest {
     }
 
     @Test
-    public void queAlRecibirDosElementosDeDiferenteItemMuestreElDiagnosticoDeCadaUno() {
+    public void queAlRecibirDosElementosDeDiferenteItemMuestreElDiagnosticoDeCadaUno() throws AllItemsEqual {
         Integer idSintoma = 1;
         Integer idSintoma2 = 2;
 
@@ -290,8 +291,7 @@ public class ServicioDiagnosticoTest {
     }
 
     @Test
-    public void queAlRecibirTresElementosDelMismoItemMuestreSuDescripcion()
-    {
+    public void queAlRecibirTresElementosDelMismoItemMuestreSuDescripcion() throws AllItemsEqual {
         Integer idSintoma1 = 1;
         Integer idSintoma2 = 2;
         Integer idSintoma3 = 3;
@@ -314,8 +314,7 @@ public class ServicioDiagnosticoTest {
     }
 
     @Test
-    public void queAlRecibirTresElementosDelMismoItemYUnoDiferenteNoMuestreSuDescripcion()
-    {
+    public void queAlRecibirTresElementosDelMismoItemYUnoDiferenteNoMuestreSuDescripcion() throws AllItemsEqual {
         Integer idSintoma1 = 1;
         Integer idSintoma2 = 2;
         Integer idSintoma3 = 3;
@@ -343,7 +342,7 @@ public class ServicioDiagnosticoTest {
     }
 
     @Test
-    public void siRecibe3OMasSintomasDelMismoTipoMuestreElMensajeDeDescripcionDelItem(){
+    public void siRecibe3OMasSintomasDelMismoTipoMuestreElMensajeDeDescripcionDelItem() throws AllItemsEqual {
         Integer idSintoma1 = 1;
         Integer idSintoma2 = 2;
         Integer idSintoma3 = 3;
@@ -370,7 +369,7 @@ public class ServicioDiagnosticoTest {
     }
 
     @Test
-    public void queAlRecibir3SintomasYNoSonDelMismoItemMuestreElMensajeDemasiadosSintomasAcerqueseAUnTaller(){
+    public void queAlRecibir3SintomasYNoSonDelMismoItemMuestreElMensajeDemasiadosSintomasAcerqueseAUnTaller() throws AllItemsEqual {
         Integer idSintoma1 = 1;
         Integer idSintoma2 = 2;
         Integer idSintoma3 = 3;
@@ -407,7 +406,7 @@ public class ServicioDiagnosticoTest {
 
     private Sintoma createSintoma(Integer idSintoma, Diagnostico diagnostico) {
         ItemTablero itemTableroMotorMock = mock(ItemTablero.class);
-        when(itemTableroMotorMock.getNombre()).thenReturn("ItemMotor");
+        when(itemTableroMotorMock.getNombre()).thenReturn("Motor");
         when(itemTableroMotorMock.getDescripcion()).thenReturn("prueba");
         Sintoma sintoma = new Sintoma(itemTableroMotorMock);
         sintoma.setDiagnostico(diagnostico);

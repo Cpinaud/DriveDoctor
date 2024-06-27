@@ -1,5 +1,7 @@
 package com.drivedoctor.dominio;
 
+import com.drivedoctor.dominio.excepcion.AllItemsEqual;
+import com.drivedoctor.dominio.excepcion.DemasiadosSintomas;
 import com.drivedoctor.dominio.excepcion.DiagnosticoNotFoundException;
 
 import java.util.List;
@@ -14,7 +16,7 @@ public interface ServicioDiagnostico {
 
     double calcularRiesgoPorSintoma(List<Sintoma> sintomas);
 
-    List<String> findDependingId (List<Integer> idsSintoma);
+    List<Diagnostico> findDependingId (List<Integer> idsSintoma) throws AllItemsEqual, DemasiadosSintomas;
     //DIAGNOSTICO EN RELACION CON EL SINTOMA
     Diagnostico findBySintoma(Sintoma sintoma);
     List<Diagnostico> findBySintomas(List<Sintoma> sintomas);

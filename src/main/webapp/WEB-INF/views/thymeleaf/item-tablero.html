@@ -23,7 +23,7 @@
                     <div class="form-group">
                         <label for="itemTablero">Seleccione a que área cree que pertenece su problema:</label>
                         <select class="form-control" id="itemTablero" name="idItemTablero" required>
-                            <option th:each="opcion : ${opcionesItemTablero}" th:value="${opcion.idItemTablero}" th:text="${opcion.descripcion}"></option>
+                            <option th:each="opcion : ${opcionesItemTablero}" th:value="${opcion.idItemTablero}" th:text="${opcion.nombre}"></option>
                         </select>
 
                         <input type="hidden" id="idVehiculo" name="idVehiculo" th:value="${idVehiculo}" />

@@ -1,6 +1,7 @@
 package com.drivedoctor.presentacion;
 
 import com.drivedoctor.dominio.*;
+import com.drivedoctor.dominio.excepcion.AllItemsEqual;
 import com.drivedoctor.dominio.excepcion.VehiculoInvalido;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,7 @@ import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,6 +23,8 @@ public class ControladorDiagnosticoTest {
     private ServicioDiagnostico servicioDiagnostico;
     private ServicioVehiculo servicioVehiculo;
     private ServicioSintoma servicioSintoma;
+
+    private ServicioItemTablero servicioItemTablero;
     private Sintoma sintomaMock;
 
 
@@ -28,7 +32,8 @@ public class ControladorDiagnosticoTest {
     public void init(){
         this.servicioDiagnostico = mock(ServicioDiagnostico.class);
         this.servicioSintoma = mock(ServicioSintoma.class);
-        this.controladorDiagnostico = new ControladorDiagnostico(this.servicioDiagnostico, this.servicioSintoma);
+        this.servicioItemTablero = mock(ServicioItemTablero.class);
+        this.controladorDiagnostico = new ControladorDiagnostico(this.servicioDiagnostico, this.servicioSintoma,this.servicioItemTablero);
         sintomaMock = mock(Sintoma.class);
     }
 
@@ -60,21 +65,26 @@ public class ControladorDiagnosticoTest {
     }
 
     @Test
-    public void mostrarVistaCuandoSeObtenganDosDiagnosticosAsociadosAdosSintomas() {
+    public void mostrarVistaCuandoSeObtenganDosDiagnosticosAsociadosAdosSintomas() throws AllItemsEqual {
         int idSintoma1 = 1;
         int idSintoma2 = 2;
-
+        Integer idVh=1;
         List<Integer> idsSintomas = List.of(idSintoma1, idSintoma2);
         String idsSintomasStr = "1,2";
-
-
-        String diagnosticosEsperados = "Diagnostico1, Diagnostico2";
-        when(servicioDiagnostico.findDependingId(idsSintomas)).thenReturn(Collections.singletonList(diagnosticosEsperados));
+        Diagnostico diagnostico1 = new Diagnostico();
+        diagnostico1.setIdDiagnostico(1);
+        Diagnostico diagnostico2 = new Diagnostico();
+        diagnostico1.setIdDiagnostico(2);
+        //String diagnosticosEsperados = "Diagnostico1, Diagnostico2";
+        List<Diagnostico> diagnosticosEsperados = new ArrayList<>();
+        diagnosticosEsperados.add(diagnostico2);
+        diagnosticosEsperados.add(diagnostico1);
+        when(servicioDiagnostico.findDependingId(idsSintomas)).thenReturn(diagnosticosEsperados);
 
         Model model = mock(Model.class);
 
         // Ejecución
-        String vista = controladorDiagnostico.obtenerDiagnosticoPorSintomas(idsSintomasStr, model);
+        String vista = controladorDiagnostico.obtenerDiagnosticoPorSintomas(idsSintomasStr,idVh, model);
 
 
         // Verificación
