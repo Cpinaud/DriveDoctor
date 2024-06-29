@@ -15,7 +15,8 @@ public class Taller {
     private Double latitud;
     private Double longitud;
     private String localidad;
-
+    private String especialidad;
+    private Double estrellas;
 
     public Integer getIdTaller() {
         return idTaller;
@@ -56,4 +57,21 @@ public class Taller {
     public void setLocalidad(String localidad) {
         this.localidad = localidad;
     }
+
+    public String getEspecialidad() {
+        return especialidad;
+    }
+
+    public void setEspecialidad(String especialidad) {
+        this.especialidad = especialidad;
+    }
+
+    public Double getEstrellas() {
+        return estrellas;
+    }
+
+    public void setEstrellas(Double estrellas) {
+        this.estrellas = estrellas;
+    }
 }
+
