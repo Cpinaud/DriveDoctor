@@ -2,11 +2,11 @@ package com.drivedoctor.punta_a_punta.vistas;
 
 import com.microsoft.playwright.Page;
 
-public class VistaHome extends VistaWeb{
+public class VistaVerMisVehiculos extends VistaWeb {
 
-    public VistaHome(Page page) {
+    public VistaVerMisVehiculos(Page page)  {
         super(page);
-        page.navigate("http://localhost:8080/drivedoctor/home");
+        page.navigate("http://localhost:8080/drivedoctor/verMisVehiculos");
     }
 
     public String obtenerTextoDeElemento(String selectorCSS) {
@@ -19,4 +19,11 @@ public class VistaHome extends VistaWeb{
         this.darClickEnElElemento(elemento);
     }
 
+    public void seleccionarOpcion(String elemento,String value) {
+        page.selectOption(elemento,value);
+    }
+    public void rellenarInput(String input, String valor){
+        page.fill(input, valor);
+
+    }
 }

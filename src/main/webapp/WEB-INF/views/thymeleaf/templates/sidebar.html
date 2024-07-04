@@ -3,17 +3,17 @@
     <a th:href="@{/home}"  class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
         <span class="fs-4">Drive Doctor</span>
     </a>
-    <span class="fs-8" th:if="${session.ID!=null}" th:text="'Hola, ' + ${session.name}"></span>
+    <span id="nombreUsuario" class="fs-8" th:if="${session.ID!=null}" th:text="'Hola, ' + ${session.name}"></span>
     <hr>
     <div th:if="${session.ID!=null}">
     <ul class="nav nav-pills flex-column mb-auto">
         <li  class="nav-item">
-            <a th:if="${session.rol!='ADMIN'}" th:href="@{/verMisVehiculos}" class="nav-link text-white">
+            <a id="misVehiculos" th:if="${session.rol!='ADMIN'}" th:href="@{/verMisVehiculos}" class="nav-link text-white">
                 Mis vehículos
             </a>
         </li>
         <li  class="nav-item">
-            <a th:if="${session.rol!='ADMIN'}" th:href="@{/nuevo-vehiculo}" class="nav-link text-white">
+            <a id="agregarVehiculo" th:if="${session.rol!='ADMIN'}" th:href="@{/nuevo-vehiculo}" class="nav-link text-white">
                 Agregar Vehículos
             </a>
         </li>
