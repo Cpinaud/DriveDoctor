@@ -13,7 +13,6 @@ import javax.servlet.http.HttpSession;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.util.AssertionErrors.assertNotNull;
 import static org.springframework.test.util.AssertionErrors.assertNull;
 
 public class ControladorLoginTest {
