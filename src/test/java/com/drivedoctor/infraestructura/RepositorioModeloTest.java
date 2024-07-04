@@ -47,7 +47,7 @@ public class RepositorioModeloTest {
 
         this.sessionFactory.getCurrentSession().save(modelo);
 
-        Modelo obtenido = (Modelo) this.sessionFactory.getCurrentSession()
+        Modelo obtenido = this.sessionFactory.getCurrentSession()
                 .createQuery("FROM Modelo WHERE id = :idBuscado", Modelo.class)
                 .setParameter("idBuscado", idBuscado)
                 .uniqueResult();

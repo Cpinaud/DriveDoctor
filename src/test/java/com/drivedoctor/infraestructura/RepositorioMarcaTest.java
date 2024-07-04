@@ -75,7 +75,10 @@ public class RepositorioMarcaTest {
         session.save(marca1);
 
 
-        Marca buscada = this.repositorioMarca.findById(Idbuscada);
+        Marca buscada = this.sessionFactory.getCurrentSession()
+                .createQuery("FROM Modelo WHERE id = :idBuscado", Marca.class)
+                .setParameter("idBuscado", Idbuscada)
+                .uniqueResult();
 
         assertThat(buscada, notNullValue());
         assertThat(buscada.getId(), equalTo(Idbuscada));
