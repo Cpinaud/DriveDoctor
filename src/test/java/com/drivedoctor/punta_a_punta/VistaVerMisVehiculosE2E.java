@@ -56,31 +56,31 @@ public class VistaVerMisVehiculosE2E {
     void deberiaEscribirElNombreDeLaMarcaDelVehiculoDelUsuario(){
         String textContent = vistaVerMisVehiculos.obtenerTextoDeElemento("#nombreMiVehiculo");
 
-        assertThat(textContent,equalToIgnoringCase("Renault"));
+        assertThat(textContent,equalToIgnoringCase("Ford"));
     }
     @Test
     void deberiaEscribirElNombreDelModeloDelVehiculoDelUsuario(){
         String textContent = vistaVerMisVehiculos.obtenerTextoDeElemento("#modeloMiVehiculo");
 
-        assertThat(textContent,equalToIgnoringCase("Clio"));
+        assertThat(textContent,equalToIgnoringCase("Fiesta"));
     }
     @Test
     void deberiaEscribirElAñoDelVehiculoDelUsuario(){
         String textContent = vistaVerMisVehiculos.obtenerTextoDeElemento("#anioMiVehiculo");
 
-        assertThat(textContent,equalToIgnoringCase("2015"));
+        assertThat(textContent,equalToIgnoringCase("2019"));
     }
 
     @Test
     void deberiaEscribirLaPatenteDelVehiculoDelUsuario(){
         String textContent = vistaVerMisVehiculos.obtenerTextoDeElemento("#patenteMiVehiculo");
 
-        assertThat(textContent,equalToIgnoringCase("AA395BB"));
+        assertThat(textContent,equalToIgnoringCase("AA123BB"));
     }
 
     @Test
     void deberiaEscribirUnMensajeAlBuscarUnaMarcaDeVehiculoQueElUsuarioNoPosee(){
-        vistaVerMisVehiculos.seleccionarOpcion("#marca", "2");
+        vistaVerMisVehiculos.seleccionarOpcion("#marca", "3");
         vistaVerMisVehiculos.darClickEnUnElemento("#buscar");
         String textContent = vistaVerMisVehiculos.obtenerTextoDeElemento("#mensajeMiVehiculo");
 
@@ -92,13 +92,14 @@ public class VistaVerMisVehiculosE2E {
        vistaVerMisVehiculos.darClickEnUnElemento("#modificarMiVehiculo");
         String urlNavegada = this.vistaVerMisVehiculos.obtenerURLActual();
 
-        assertThat(urlNavegada, equalToIgnoringCase("http://localhost:8080/drivedoctor/modificar-vehiculo/1"));
+        assertThat(urlNavegada, equalToIgnoringCase("http://localhost:8080/drivedoctor/modificar-vehiculo/5"));
     }
-
+// MODIFICAR
     @Test
     void alHacerClickEnModificarPodamosCambiarElAñoDeEseVehiculo(){
        vistaVerMisVehiculos.darClickEnUnElemento("#modificarMiVehiculo");
        vistaVerMisVehiculos.rellenarInput("#anoFabricacion","2019");
+       // si modifico el auto despues debo cambiar test
        vistaVerMisVehiculos.darClickEnUnElemento("#vehiculoModificado");
 
         String textContent = vistaVerMisVehiculos.obtenerTextoDeElemento("#anioMiVehiculo");
@@ -110,12 +111,12 @@ public class VistaVerMisVehiculosE2E {
     @Test
     void alHacerClickEnModificarPodamosCambiarLaPatenteDeEseVehiculo(){
        vistaVerMisVehiculos.darClickEnUnElemento("#modificarMiVehiculo");
-       vistaVerMisVehiculos.rellenarInput("#patente","CC395DD");
+       vistaVerMisVehiculos.rellenarInput("#patente","AA395DD");
        vistaVerMisVehiculos.darClickEnUnElemento("#vehiculoModificado");
 
         String textContent = vistaVerMisVehiculos.obtenerTextoDeElemento("#patenteMiVehiculo");
 
-        assertThat(textContent,equalToIgnoringCase("CC395DD"));
+        assertThat(textContent,equalToIgnoringCase("AA395DD"));
     }
 
     @Test
@@ -131,7 +132,7 @@ public class VistaVerMisVehiculosE2E {
         vistaVerMisVehiculos.darClickEnUnElemento("#diagnosticar");
         String textContent = vistaVerMisVehiculos.obtenerTextoDeElemento("#diagnosticarVehiculo");
 
-        assertThat(textContent,equalToIgnoringCase("Diagnosticar unidad CC395DD"));
+        assertThat(textContent,equalToIgnoringCase("Diagnosticar unidad AA395DD"));
     }
 
     @Test
