@@ -72,7 +72,7 @@ function initMap() {
                     const infowindowTaller = new google.maps.InfoWindow();
 
 
-           /*   Ver como mostrar esto
+
                   const numeroEstrellas = taller.estrellas;
                     let mostrarEstrellas = '';
 
@@ -82,10 +82,10 @@ function initMap() {
 
                     if (numeroEstrellas % 1 !== 0) {
                         mostrarEstrellas += '<i class="bi bi-star-half"></i>';
-                    } */
+                    }
 
 
-                    const contentString = '<h5>' + taller.nombre + '</h5>'
+                    const contentString = '<h4>' + taller.nombre + '</h4>' + '<h5>' + mostrarEstrellas + '</h5>';
 
                     infowindowTaller.setContent(contentString);
 
