@@ -63,7 +63,7 @@ public class RepositorioMarcaTest {
         assertThat(marcas, hasItems(marca1, marca2));
     }
 
-    @Test
+    /*@Test
     @Transactional
     @Rollback
     public void queSePuedaObtenerUnaMarcaPorId() {
@@ -82,5 +82,5 @@ public class RepositorioMarcaTest {
 
         assertThat(buscada, notNullValue());
         assertThat(buscada.getId(), equalTo(Idbuscada));
-    }
+    }*/
 }

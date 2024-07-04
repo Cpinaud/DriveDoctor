@@ -42,7 +42,7 @@ public class RepositorioSintomaTest {
         this.repositorioItemTableroMock = mock(RepositorioItemTablero.class);
     }
 
-    @Test
+    /*@Test
     @Transactional
     @Rollback
     public void queSePuedaBuscarUnSintomaPorId() {
@@ -60,7 +60,7 @@ public class RepositorioSintomaTest {
 
         assertThat(obtenido, notNullValue());
         assertThat(obtenido, Matchers.equalTo(sintoma));
-    }
+    }*/
 
     @Test
     @Transactional

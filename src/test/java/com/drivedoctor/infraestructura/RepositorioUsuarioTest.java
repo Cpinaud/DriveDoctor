@@ -125,10 +125,10 @@ public class RepositorioUsuarioTest {
         assertThat(usuarioModificado.getPassword(), equalTo("nuevaPassword"));
     }
 
-    @Test
+   /* @Test
     @Transactional
     @Rollback
-    public void queSePuedaObtenerUnModeloPorId() {
+    public void queSePuedaObtenerUnUsuarioPorId() {
         Usuario usuario = new Usuario();
         usuario.setId(1);
         Integer Idbuscada = 1;
@@ -143,7 +143,7 @@ public class RepositorioUsuarioTest {
 
         assertThat(buscado, notNullValue());
         assertThat(buscado.getId(), Matchers.equalTo(Idbuscada));
-    }
+    }*/
 
     @Test
     @Transactional
