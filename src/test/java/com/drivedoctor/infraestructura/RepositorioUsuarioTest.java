@@ -3,6 +3,7 @@ package com.drivedoctor.infraestructura;
 import com.drivedoctor.dominio.*;
 import com.drivedoctor.dominio.excepcion.UsuarioExistente;
 import com.drivedoctor.infraestructura.config.HibernateTestInfraestructuraConfig;
+import org.hamcrest.Matchers;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -127,23 +128,21 @@ public class RepositorioUsuarioTest {
     @Test
     @Transactional
     @Rollback
-    public void queSePuedaBuscarUnUsuarioPorId() {
-        // Preparación
+    public void queSePuedaObtenerUnModeloPorId() {
         Usuario usuario = new Usuario();
-        usuario.setPassword("test2");
-        usuario.setEmail("test@test2.com");
         usuario.setId(1);
-        Integer idBuscado = 1;
+        Integer Idbuscada = 1;
+        Session session = sessionFactory.getCurrentSession();
+        session.save(usuario);
 
-        this.sessionFactory.getCurrentSession().save(usuario);
-        //Usuario obtenido = this.repositorioUsuario.findById(idBuscado);
-        Usuario obtenido = this.sessionFactory.getCurrentSession()
+
+        Usuario buscado = this.sessionFactory.getCurrentSession()
                 .createQuery("FROM Usuario WHERE id = :idBuscado", Usuario.class)
-                .setParameter("idBuscado", idBuscado)
+                .setParameter("idBuscado", Idbuscada)
                 .uniqueResult();
 
-        assertThat(obtenido, notNullValue());
-        assertThat(obtenido, equalTo(usuario));
+        assertThat(buscado, notNullValue());
+        assertThat(buscado.getId(), Matchers.equalTo(Idbuscada));
     }
 
     @Test

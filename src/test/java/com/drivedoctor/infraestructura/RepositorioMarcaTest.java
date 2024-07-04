@@ -76,7 +76,7 @@ public class RepositorioMarcaTest {
 
 
         Marca buscada = this.sessionFactory.getCurrentSession()
-                .createQuery("FROM Modelo WHERE id = :idBuscado", Marca.class)
+                .createQuery("FROM Marca WHERE id = :idBuscado", Marca.class)
                 .setParameter("idBuscado", Idbuscada)
                 .uniqueResult();
 

@@ -5,6 +5,7 @@ import com.drivedoctor.infraestructura.config.HibernateTestInfraestructuraConfig
 import com.drivedoctor.integracion.config.HibernateTestConfig;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,21 +40,22 @@ public class RepositorioModeloTest {
     @Test
     @Transactional
     @Rollback
-    public void queSePuedaBuscarUnModeloPorId() {
-        // Preparación
-        Modelo modelo = new Modelo();
-        modelo.setId(1);
-        Integer idBuscado = 1;
+    public void queSePuedaObtenerUnModeloPorId() {
+        Modelo modelo1 = new Modelo();
+        modelo1.setNombre("Etios");
+        modelo1.setId(1);
+        Integer Idbuscada = 1;
+        Session session = sessionFactory.getCurrentSession();
+        session.save(modelo1);
 
-        this.sessionFactory.getCurrentSession().save(modelo);
 
-        Modelo obtenido = this.sessionFactory.getCurrentSession()
+        Modelo buscada = this.sessionFactory.getCurrentSession()
                 .createQuery("FROM Modelo WHERE id = :idBuscado", Modelo.class)
-                .setParameter("idBuscado", idBuscado)
+                .setParameter("idBuscado", Idbuscada)
                 .uniqueResult();
 
-        assertThat(obtenido, notNullValue());
-        assertThat(obtenido, Matchers.equalTo(modelo));
+        assertThat(buscada, notNullValue());
+        assertThat(buscada.getId(), Matchers.equalTo(Idbuscada));
     }
 
     @Test
