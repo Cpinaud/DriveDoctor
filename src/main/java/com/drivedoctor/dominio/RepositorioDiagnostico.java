@@ -1,13 +1,13 @@
 package com.drivedoctor.dominio;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
-public interface RepositorioDiagnostico {
+@Transactional
+public interface RepositorioDiagnostico extends Busqueda<Diagnostico,Integer>,Guardado<Diagnostico> {
 
     Diagnostico buscar(Integer diagnostico);
-    void guardar(Diagnostico diagnostico);
 
-    Diagnostico findById(Integer idDiagnostico);
     List<Diagnostico> findByIds(List<Integer> idsDiagnostico);
 
     List<Diagnostico> obtenerPorSintomasIds(List<Integer> idSintomas);

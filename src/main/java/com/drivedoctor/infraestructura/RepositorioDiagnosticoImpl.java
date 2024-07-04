@@ -23,14 +23,12 @@ public class RepositorioDiagnosticoImpl implements RepositorioDiagnostico {
 
     @Override
     public void guardar(Diagnostico diagnostico) {
-            sessionFactory.getCurrentSession().save(diagnostico);
+
+        sessionFactory.getCurrentSession().save(diagnostico);
     }
 
     @Override
     public Diagnostico findById(Integer idDiagnostico) {
-
-
-
         return sessionFactory.getCurrentSession().get(Diagnostico.class, idDiagnostico);
     }
 

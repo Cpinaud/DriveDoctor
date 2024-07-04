@@ -1,7 +1,6 @@
 package com.drivedoctor.dominio;
 
-import com.drivedoctor.dominio.excepcion.AllItemsEqual;
-import com.drivedoctor.dominio.excepcion.DiagnosticoNotFoundException;
+import com.drivedoctor.dominio.excepcion.*;
 import com.drivedoctor.infraestructura.ServicioDiagnosticoImpl;
 import com.drivedoctor.infraestructura.config.HibernateTestInfraestructuraConfig;
 import com.drivedoctor.integracion.config.HibernateTestConfig;
@@ -18,8 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {HibernateTestInfraestructuraConfig.class})
+
 public class ServicioDiagnosticoTest {
 
     private ServicioDiagnostico servicioDiagnostico;
@@ -36,7 +34,7 @@ public class ServicioDiagnosticoTest {
     }
 
     @Test
-    public void queSePuedaObtenerElIdDeUnDiagnostico(){
+    public void queSePuedaObtenerElIdDeUnDiagnostico() throws ElementoNoEncontrado {
         Integer idDiagnostico = 1;
         Diagnostico diagnosticoMock = new Diagnostico();
         diagnosticoMock.setIdDiagnostico(idDiagnostico);
@@ -48,16 +46,16 @@ public class ServicioDiagnosticoTest {
     }
 
     @Test
-    public void queEnCasoDeQueNoSeEncuentreDevuelvaNull() {
+    public void queEnCasoDeQueNoSeEncuentreElDiagnosticoDevuelvaElementoNoEncontradoException() throws ElementoNoEncontrado {
         Integer idDiagnostico = 1;
-        when(repositorioDiagnostico.findById(idDiagnostico)).thenReturn(null);
 
-        try {
-            servicioDiagnostico.findById(idDiagnostico);
-            fail("Se esperaba DiagnosticoNotFoundException");
-        } catch (DiagnosticoNotFoundException e) {
-            assertEquals("Diagnóstico no encontrado para el ID: " + idDiagnostico, e.getMessage());
-        }
+        when(this.repositorioDiagnostico.findById(idDiagnostico)).thenThrow(ElementoNoEncontrado.class);
+
+
+        assertThrows(ElementoNoEncontrado.class, () -> {
+            this.servicioDiagnostico.findById(idDiagnostico);
+        });
+
 
 
         verify(repositorioDiagnostico, times(1)).findById(idDiagnostico);
@@ -205,15 +203,15 @@ public class ServicioDiagnosticoTest {
     }
 
     @Test
-    public void queAlNoRecibirNadaMeDevuelvaNull() throws AllItemsEqual {
+    public void queAlNoRecibirNadaMeDevuelvaNull() throws AllItemsEqual, DemasiadosItems, DemasiadosSintomas {
         List<Integer> sintomaMock = new ArrayList<>();
-        String diagnosticoEsperado = servicioDiagnostico.findDependingId(sintomaMock).toString();
+        List<Diagnostico> diagnosticoEsperado = servicioDiagnostico.findDependingId(sintomaMock);
         assertNull(diagnosticoEsperado);
 
     }
 
     @Test
-    public void queAlRecibirUnSintomaConUnIdMeDevuelvaSuDescripcionDeDiagnostico() throws AllItemsEqual {
+    public void queAlRecibirUnSintomaConUnIdMeDevuelvaSuDescripcionDeDiagnostico() throws AllItemsEqual, DemasiadosItems, DemasiadosSintomas {
         Integer idSintoma = 1;
         String descripcionDiagnostico = "Descripción de prueba";
 
@@ -226,16 +224,18 @@ public class ServicioDiagnosticoTest {
         List<Integer> sintomasMock = Arrays.asList(idSintoma);
 
         when(repositorioDiagnostico.obtenerPorSintomaId(idSintoma)).thenReturn(diagnostico1);
+        List<Diagnostico> diagnosticos =servicioDiagnostico.findDependingId(sintomasMock);
+        String descripcionObtenida = diagnosticos.get(0).getDescripcion();
 
-        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock).toString();
-
+        assertEquals(diagnosticos.size(), 1);
         assertEquals(descripcionDiagnostico, descripcionObtenida);
         verify(repositorioDiagnostico, times(1)).obtenerPorSintomaId(idSintoma);
+
     }
 
 
     @Test
-    public void queAlRecibirDosElementosDelMismoElementoMeDevuelvaLaDescripcionDelItem() throws AllItemsEqual {
+    public void queAlRecibirDosElementosDelMismoElementoMeDevuelvaLaDescripcionDelItem() throws AllItemsEqual, DemasiadosItems, DemasiadosSintomas {
         Integer idSintoma1 = 1;
         Integer idSintoma2 = 2;
         String descripcionEsperada = "prueba";
@@ -250,13 +250,16 @@ public class ServicioDiagnosticoTest {
                 .thenReturn(Arrays.asList(sintoma1, sintoma2));
 
         List<Integer> sintomasMock = Arrays.asList(idSintoma1, idSintoma2);
-        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock).toString();
+        when(repositorioSintoma.obtenerLosSintomasPorSusIds(anyList()))
+                .thenReturn(Arrays.asList(sintoma1, sintoma2));
 
-        assertEquals(descripcionEsperada, descripcionObtenida);
+        assertThrows(AllItemsEqual.class, () -> {
+            this.servicioDiagnostico.findDependingId(sintomasMock);
+        });
     }
 
     @Test
-    public void queAlRecibirDosElementosDeDiferenteItemMuestreElDiagnosticoDeCadaUno() throws AllItemsEqual {
+    public void queAlRecibirDosElementosDeDiferenteItemMuestreElDiagnosticoDeCadaUno() throws AllItemsEqual, DemasiadosItems, DemasiadosSintomas {
         Integer idSintoma = 1;
         Integer idSintoma2 = 2;
 
@@ -282,22 +285,25 @@ public class ServicioDiagnosticoTest {
 
         List<Integer> sintomasMock = Arrays.asList(idSintoma, idSintoma2);
 
-        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock).toString();
-        String descripcionEsperada = descripcionDiagnostico + " " + descripcionDiagnostico2;
+        List<Diagnostico> diagnosticosObtenidos = servicioDiagnostico.findDependingId(sintomasMock);
+        List<Diagnostico> diagnostocosEsperados = new ArrayList<>();
+        diagnostocosEsperados.add(diagnostico1);
+        diagnostocosEsperados.add(diagnostico2);
 
-        assertEquals(descripcionEsperada, descripcionObtenida);
+        assertEquals(diagnostocosEsperados, diagnosticosObtenidos);
 
 
     }
 
     @Test
-    public void queAlRecibirTresElementosDelMismoItemMuestreSuDescripcion() throws AllItemsEqual {
+    public void queAlRecibirTresElementosDelMismoItemLanzeLaExepcionAllItemsEquals() throws AllItemsEqual {
         Integer idSintoma1 = 1;
         Integer idSintoma2 = 2;
         Integer idSintoma3 = 3;
         String descripcionEsperada = "prueba";
 
         ItemTablero itemTableroMock = mock(ItemTablero.class);
+        itemTableroMock.setDescripcion(descripcionEsperada);
         when(itemTableroMock.getDescripcion()).thenReturn(descripcionEsperada);
 
         Sintoma sintoma1 = crearSintomaConItem(idSintoma1, itemTableroMock);
@@ -308,13 +314,17 @@ public class ServicioDiagnosticoTest {
                 .thenReturn(Arrays.asList(sintoma1, sintoma2, sintoma3));
 
         List<Integer> sintomasMock = Arrays.asList(idSintoma1, idSintoma2, idSintoma3);
-        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock).toString();
 
-        assertEquals(descripcionEsperada, descripcionObtenida);
+        when(repositorioSintoma.obtenerLosSintomasPorSusIds(anyList()))
+                .thenReturn(Arrays.asList(sintoma1, sintoma2, sintoma3));
+
+        assertThrows(AllItemsEqual.class, () -> {
+            this.servicioDiagnostico.findDependingId(sintomasMock);
+        });
     }
 
     @Test
-    public void queAlRecibirTresElementosDelMismoItemYUnoDiferenteNoMuestreSuDescripcion() throws AllItemsEqual {
+    public void queAlRecibirTresElementosDelMismoItemYUnoDiferenteNoMuestreSuDescripcion() throws AllItemsEqual, DemasiadosSintomas {
         Integer idSintoma1 = 1;
         Integer idSintoma2 = 2;
         Integer idSintoma3 = 3;
@@ -331,18 +341,22 @@ public class ServicioDiagnosticoTest {
         Sintoma sintoma2 = crearSintomaConItem(idSintoma2, itemTableroMock);
         Sintoma sintoma3 = crearSintomaConItem(idSintoma3, itemTableroMock);
         Sintoma sintoma4 = crearSintomaConItem(idSintoma4, itemTableroMock2);
+        List<Integer> sintomasId = new ArrayList<>();
+        sintomasId.add(idSintoma1);
+        sintomasId.add(idSintoma2);
+        sintomasId.add(idSintoma3);
+        sintomasId.add(idSintoma4);
 
-        when(repositorioSintoma.obtenerLosSintomasPorSusIds(Arrays.asList(idSintoma1, idSintoma2, idSintoma3, idSintoma4)))
+        when(repositorioSintoma.obtenerLosSintomasPorSusIds(anyList()))
                 .thenReturn(Arrays.asList(sintoma1, sintoma2, sintoma3, sintoma4));
 
-        List<Integer> sintomasMock = Arrays.asList(idSintoma1, idSintoma2, idSintoma3, idSintoma4);
-        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock).toString();
-
-        assertNotEquals(descripcionEsperada, descripcionObtenida);
+        assertThrows(DemasiadosSintomas.class, () -> {
+            this.servicioDiagnostico.findDependingId(sintomasId);
+        });
     }
 
     @Test
-    public void siRecibe3OMasSintomasDelMismoTipoMuestreElMensajeDeDescripcionDelItem() throws AllItemsEqual {
+    public void siRecibe3OMasSintomasDelMismoTipoMuestreElMensajeDeDescripcionDelItem() throws AllItemsEqual, DemasiadosItems, DemasiadosSintomas {
         Integer idSintoma1 = 1;
         Integer idSintoma2 = 2;
         Integer idSintoma3 = 3;
@@ -363,45 +377,44 @@ public class ServicioDiagnosticoTest {
                 .thenReturn(Arrays.asList(sintoma1, sintoma2, sintoma3, sintoma4));
 
         List<Integer> sintomasMock = Arrays.asList(idSintoma1, idSintoma2, idSintoma3, idSintoma4);
-        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock).toString();
+        when(repositorioSintoma.obtenerLosSintomasPorSusIds(anyList()))
+                .thenReturn(Arrays.asList(sintoma1, sintoma2, sintoma3));
 
-        assertEquals(descripcionEsperada, descripcionObtenida);
+        assertThrows(AllItemsEqual.class, () -> {
+            this.servicioDiagnostico.findDependingId(sintomasMock);
+        });
     }
 
     @Test
-    public void queAlRecibir3SintomasYNoSonDelMismoItemMuestreElMensajeDemasiadosSintomasAcerqueseAUnTaller() throws AllItemsEqual {
+    public void queAlRecibir3SintomasYNoSonDelMismoItemMuestreElMensajeDemasiadosItemsAcerqueseAUnTaller() throws AllItemsEqual {
         Integer idSintoma1 = 1;
         Integer idSintoma2 = 2;
         Integer idSintoma3 = 3;
-        Integer idSintoma4 = 4;
-        String descripcionEsperada = "prueba";
-        String noDescripcionEsperada = "prueba";
-        String mensajeEsperado = "Demasiados sintomas acerquese a un taller";
 
         ItemTablero itemTableroMock = mock(ItemTablero.class);
-        when(itemTableroMock.getDescripcion()).thenReturn(descripcionEsperada);
         ItemTablero itemTableroMock2 = mock(ItemTablero.class);
-        when(itemTableroMock2.getDescripcion()).thenReturn(noDescripcionEsperada);
+        ItemTablero itemTableroMock3 = mock(ItemTablero.class);
 
         Sintoma sintoma1 = crearSintomaConItem(idSintoma1, itemTableroMock);
-        Sintoma sintoma2 = crearSintomaConItem(idSintoma2, itemTableroMock);
-        Sintoma sintoma3 = crearSintomaConItem(idSintoma3, itemTableroMock);
-        Sintoma sintoma4 = crearSintomaConItem(idSintoma4, itemTableroMock2);
+        Sintoma sintoma2 = crearSintomaConItem(idSintoma2, itemTableroMock2);
+        Sintoma sintoma3 = crearSintomaConItem(idSintoma3, itemTableroMock3);
 
-        when(repositorioSintoma.obtenerLosSintomasPorSusIds(Arrays.asList(idSintoma1, idSintoma2, idSintoma3, idSintoma4)))
-                .thenReturn(Arrays.asList(sintoma1, sintoma2, sintoma3, sintoma4));
 
-        List<Integer> sintomasMock = Arrays.asList(idSintoma1, idSintoma2, idSintoma3, idSintoma4);
-        String descripcionObtenida = servicioDiagnostico.findDependingId(sintomasMock).toString();
+        when(repositorioSintoma.obtenerLosSintomasPorSusIds(anyList()))
+                .thenReturn(Arrays.asList(sintoma1, sintoma2, sintoma3));
 
-        assertNotEquals(descripcionEsperada, descripcionObtenida);
-        assertEquals(mensajeEsperado, descripcionObtenida);
+        List<Integer> sintomasMock =Arrays.asList(idSintoma1, idSintoma2, idSintoma3);
+
+        assertThrows(DemasiadosItems.class, () -> {
+            this.servicioDiagnostico.findDependingId(sintomasMock);
+        });
+
 
     }
 
 
 
-    
+
 
 
     private Sintoma createSintoma(Integer idSintoma, Diagnostico diagnostico) {

@@ -42,11 +42,18 @@ public class ControladorUsuario {
 
 
     @RequestMapping(path = "/verMisVehiculos",method = RequestMethod.GET)
-    public ModelAndView verMisVehiculos( HttpServletRequest request) {
+    public ModelAndView verMisVehiculos( HttpServletRequest request) throws ElementoNoEncontrado {
         String viewName = "misVehiculos";
         ModelMap model = new ModelMap();
+
         Integer usuarioId= (Integer) request.getSession().getAttribute("ID");
-        Usuario usuario = servicioUsuario.buscar(usuarioId);
+        Usuario usuario = new Usuario();
+        try {
+            usuario = servicioUsuario.findById(usuarioId);
+        } catch (ElementoNoEncontrado e) {
+            model.put("mensaje", "El usuario no existe");
+            return new ModelAndView(viewName, model);
+        }
         List<Marca> marcas = this.servicioMarca.obtenerMarcasAll();
         model.put("marcas", marcas);
         model.put("id",request.getSession().getAttribute("ID"));
@@ -67,12 +74,18 @@ public class ControladorUsuario {
     @RequestMapping(path = "/buscarPorMarca",method = RequestMethod.POST)
     public ModelAndView verMisVhPorMarca(HttpServletRequest request,
                                          @RequestParam("marca") Integer marcaid,
-                                         RedirectAttributes redirectAttributes) throws MarcaNoEncontrada {
+                                         RedirectAttributes redirectAttributes) throws ElementoNoEncontrado {
         String viewName = "misVehiculos";
         ModelMap model = new ModelMap();
         Integer usuarioId= (Integer) request.getSession().getAttribute("ID");
-        Usuario usuario = servicioUsuario.buscar(usuarioId);
-        Marca marca = this.servicioMarca.obtenerMarcaPorId(marcaid);
+        Usuario usuario = new Usuario();
+        try {
+            usuario = servicioUsuario.findById(usuarioId);
+        } catch (ElementoNoEncontrado e) {
+            model.put("mensaje", "El usuario no existe");
+            return new ModelAndView(viewName, model);
+        }
+        Marca marca = this.servicioMarca.findById(marcaid);
         List<Marca> marcas = this.servicioMarca.obtenerMarcasAll();
         model.put("marcas", marcas);
         model.put("id",request.getSession().getAttribute("ID"));

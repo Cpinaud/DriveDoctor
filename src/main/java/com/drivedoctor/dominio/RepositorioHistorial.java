@@ -1,5 +1,8 @@
 package com.drivedoctor.dominio;
 
-public interface RepositorioHistorial {
-    void guardarHistoria(Historial historia);
+import javax.transaction.Transactional;
+
+@Transactional
+public interface RepositorioHistorial extends Busqueda<Historial,Integer>,Guardado<Historial> {
+
 }

@@ -1,17 +1,15 @@
 package com.drivedoctor.dominio;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
-public interface RepositorioSintoma {
+@Transactional
+public interface RepositorioSintoma extends Busqueda<Sintoma,Integer>,Guardado<Sintoma> {
 
     Sintoma buscar(ItemTablero itemTablero);
-    void guardar(Sintoma sintoma);
     List<Sintoma> obtenerPorItemTablero(ItemTablero itemTablero);
     List<Sintoma> getAll();
-
-    Sintoma findById(Integer idSintoma);
     List<Sintoma> obtenerPorItemsTablero(List<ItemTablero> items);
-    List<Sintoma> obtenerPorIds(List<Integer> idSintomas);
     List<Sintoma> obtenerLosSintomasPorSusIds(List<Integer> idsSintomas);
 
 

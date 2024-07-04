@@ -1,12 +1,8 @@
 package com.drivedoctor.dominio;
 
-import com.drivedoctor.dominio.excepcion.ItemNoEncontrado;
-import com.drivedoctor.dominio.excepcion.ItemsNoEncontrados;
-
 import java.util.List;
 
-public interface ServicioItemTablero {
+public interface ServicioItemTablero extends Busqueda<ItemTablero,Integer> {
 
     List<ItemTablero> obtenerTodosLosItems() ;
-    ItemTablero findById(Integer idItemTablero) throws ItemNoEncontrado;
 }

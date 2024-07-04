@@ -1,12 +1,14 @@
 package com.drivedoctor.dominio;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
-public interface RepositorioModelo {
+@Transactional
+public interface RepositorioModelo extends Busqueda<Modelo,Integer> {
 
     List<Modelo> getAll();
 
     List<Modelo> getByMarca(Marca marca);
 
-    Modelo getById(Integer modeloId);
+
 }

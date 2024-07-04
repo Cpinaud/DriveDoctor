@@ -127,7 +127,7 @@ public class RepositorioUsuarioTest {
     @Test
     @Transactional
     @Rollback
-    public void queSePuedaBuscarUnUsuarioPorId() throws UsuarioExistente {
+    public void queSePuedaBuscarUnUsuarioPorId() {
         // Preparación
         Usuario usuario = new Usuario();
         usuario.setPassword("test2");
@@ -135,8 +135,12 @@ public class RepositorioUsuarioTest {
         usuario.setId(1);
         Integer idBuscado = 1;
 
-        this.repositorioUsuario.guardar(usuario);
-        Usuario obtenido = this.repositorioUsuario.buscarPorId(idBuscado);
+        this.sessionFactory.getCurrentSession().save(usuario);
+        //Usuario obtenido = this.repositorioUsuario.findById(idBuscado);
+        Usuario obtenido = this.sessionFactory.getCurrentSession()
+                .createQuery("FROM Usuario WHERE id = :idBuscado", Usuario.class)
+                .setParameter("idBuscado", idBuscado)
+                .uniqueResult();
 
         assertThat(obtenido, notNullValue());
         assertThat(obtenido, equalTo(usuario));

@@ -1,12 +1,12 @@
 package com.drivedoctor.infraestructura;
 
-import com.drivedoctor.dominio.ItemTablero;
-import com.drivedoctor.dominio.RepositorioItemTablero;
-import com.drivedoctor.dominio.RepositorioSintoma;
-import com.drivedoctor.dominio.Sintoma;
+import com.drivedoctor.dominio.*;
+import com.drivedoctor.dominio.excepcion.ElementoNoEncontrado;
+import com.drivedoctor.dominio.excepcion.UsuarioExistente;
 import com.drivedoctor.infraestructura.config.HibernateTestInfraestructuraConfig;
 import com.drivedoctor.integracion.config.HibernateTestConfig;
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.mock;
 
@@ -39,6 +40,26 @@ public class RepositorioSintomaTest {
     public void init(){
         this.repositorioSintoma = new RepositorioSintomaImpl(this.sessionFactory);
         this.repositorioItemTableroMock = mock(RepositorioItemTablero.class);
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void queSePuedaBuscarUnSintomaPorId() {
+        // Preparación
+        Sintoma sintoma = new Sintoma();
+        sintoma.setId(1);
+        Integer idBuscado = 1;
+
+        this.sessionFactory.getCurrentSession().save(sintoma);
+
+        Sintoma obtenido = (Sintoma) this.sessionFactory.getCurrentSession()
+                .createQuery("FROM Sintoma WHERE id = :idBuscado", Sintoma.class)
+                .setParameter("idBuscado", idBuscado)
+                .uniqueResult();
+
+        assertThat(obtenido, notNullValue());
+        assertThat(obtenido, Matchers.equalTo(sintoma));
     }
 
     @Test

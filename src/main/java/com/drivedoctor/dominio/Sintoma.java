@@ -80,6 +80,10 @@ public class Sintoma {
     public void setDiagnostico(Diagnostico diagnostico) {
         this.diagnostico = diagnostico;
     }
+
+    public void setId(Integer i) {
+        this.idSintoma=i;
+    }
 }
 
 

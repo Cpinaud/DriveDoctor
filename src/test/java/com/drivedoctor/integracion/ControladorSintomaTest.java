@@ -46,7 +46,8 @@ public class ControladorSintomaTest {
 
     @Test
     public void quePuedaNavegarALaVistaDeSintoma() throws Exception {
-        this.mockMvc.perform(get("/sintoma"))
+        this.mockMvc.perform(get("/sintoma")
+                .sessionAttr("rol", "ADMIN"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("sintoma"))
                 .andExpect(model().attributeExists("sintoma"));
@@ -62,7 +63,7 @@ public class ControladorSintomaTest {
 
     @Test
     public void queSePuedaNavegarALaVistaParaSaberUnSintomaTeniendoUnItemEnElTablero() throws Exception {
-        this.mockMvc.perform(get("/mostrarSintomaPorItem"))
+        this.mockMvc.perform(get("/mostrarSintomaPorItem/"+anyInt()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("item-tablero"))
                 .andExpect(model().attributeExists("opcionesItemTablero"));

@@ -1,6 +1,7 @@
 package com.drivedoctor.presentacion;
 
 import com.drivedoctor.dominio.*;
+import com.drivedoctor.dominio.excepcion.ElementoNoEncontrado;
 import com.drivedoctor.dominio.excepcion.UserSinPermiso;
 import com.drivedoctor.dominio.excepcion.UsuarioSinVehiculos;
 import com.drivedoctor.dominio.excepcion.VehiculoInvalido;
@@ -35,7 +36,7 @@ public class ControladorHistorial {
     public ModelAndView guardarDiagnostico(HttpServletRequest request, Model model,
                                            @RequestParam("idVehiculo") Integer idVehiculo,
                                            @RequestParam("idSintoma") List<Integer> idSintomas,
-                                           @RequestParam("idDiagnostico") List<Integer> idDiagnosticos){
+                                           @RequestParam("idDiagnostico") List<Integer> idDiagnosticos) throws ElementoNoEncontrado {
 
         try{
             this.servicioVehiculo.validarVehiculoUser((Integer) request.getSession().getAttribute("ID"),idVehiculo);
@@ -49,14 +50,14 @@ public class ControladorHistorial {
     }
 
     @RequestMapping(path = "/historial/{idVh}",method = RequestMethod.GET)
-    public ModelAndView verHistorial( HttpServletRequest request,@PathVariable("idVh") Integer idVehiculo) {
+    public ModelAndView verHistorial( HttpServletRequest request,@PathVariable("idVh") Integer idVehiculo) throws ElementoNoEncontrado {
         try{
             this.servicioVehiculo.validarVehiculoUser((Integer) request.getSession().getAttribute("ID"),idVehiculo);
         } catch (VehiculoInvalido e) {
             throw new RuntimeException(e);
             //Agregar mensaje "No puede visualizar el historial de un vehiculo que no le pertenece"
         }
-        Vehiculo vehiculo = servicioVehiculo.buscarById(idVehiculo);
+        Vehiculo vehiculo = servicioVehiculo.findById(idVehiculo);
         ModelMap model = new ModelMap();
         model.put("vehiculo", vehiculo);
 

@@ -29,7 +29,7 @@ public class ControladorVehiculo {
     public ModelAndView eliminarVehiculo(ModelMap model,HttpServletRequest request,
                                          @RequestParam("idVehiculo") Integer idVehiculo,
                                          @RequestParam("patente") String patente,
-                                         RedirectAttributes redirectAttributes) {
+                                         RedirectAttributes redirectAttributes) throws ElementoNoEncontrado {
 
 
         if (request.getSession().getAttribute("ID")==null){
@@ -49,15 +49,15 @@ public class ControladorVehiculo {
         } catch (VehiculoInvalido e){
             return new ModelAndView("redirect:/verMisVehiculos");
         }
-        Vehiculo vehiculo = servicioVehiculo.buscarById(idVehiculo);
+        Vehiculo vehiculo = servicioVehiculo.findById(idVehiculo);
         servicioVehiculo.eliminarVehiculo(vehiculo);
 
         return new ModelAndView("redirect:/verMisVehiculos");
     }
 
     @GetMapping("/modificar-vehiculo/{id}")
-    public ModelAndView modificarVehiculo(ModelMap model,HttpServletRequest request,@PathVariable("id") Integer idVehiculo) {
-        Vehiculo vehiculo = servicioVehiculo.buscarById(idVehiculo);
+    public ModelAndView modificarVehiculo(ModelMap model,HttpServletRequest request,@PathVariable("id") Integer idVehiculo) throws ElementoNoEncontrado {
+        Vehiculo vehiculo = servicioVehiculo.findById(idVehiculo);
         model.put("vehiculo", vehiculo);
         if (request.getSession().getAttribute("ID")==null){
             return new ModelAndView("redirect:/login");
@@ -119,14 +119,21 @@ public class ControladorVehiculo {
     public ModelAndView agregarVehiculo(@ModelAttribute("vehiculo") Vehiculo vehiculo,
                                         HttpServletRequest request,
                                         @RequestParam("modeloId") Integer modeloId,
-                                        RedirectAttributes redirectAttributes) throws ModeloNoEncontrado {
+                                        RedirectAttributes redirectAttributes) throws ElementoNoEncontrado {
 
-        Modelo modelo = servicioModelo.getById(modeloId);
+        ModelMap model = new ModelMap();
+
+        try{
+        Modelo modelo = servicioModelo.findById(modeloId);
         vehiculo.setModelo(modelo);
         Marca marca = modelo.getMarca();
-
         vehiculo.setMarca(marca);
-        ModelMap model = new ModelMap();
+
+        }catch (ElementoNoEncontrado e){
+            redirectAttributes.addFlashAttribute("error", "La marca no existe");
+            return new ModelAndView("redirect:/nuevo-vehiculo", model);
+        }
+
 
         Integer usuarioId= (Integer) request.getSession().getAttribute("ID");
 

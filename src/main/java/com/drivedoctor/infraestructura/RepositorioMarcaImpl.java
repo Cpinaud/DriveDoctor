@@ -29,11 +29,10 @@ public class RepositorioMarcaImpl implements RepositorioMarca {
     }
 
     @Override
-    public Marca getById(Integer id) {
+    public Marca findById(Integer id) {
         return (Marca) sessionFactory.getCurrentSession().createCriteria(Marca.class)
                 .add(Restrictions.eq("id", id))
                 .uniqueResult();
-
 
     }
 

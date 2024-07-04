@@ -1,19 +1,25 @@
 package com.drivedoctor.infraestructura;
 
+import com.drivedoctor.dominio.RepositorioItemTablero;
 import com.drivedoctor.dominio.ItemTablero;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
 import java.util.List;
 
-@Repository("repositorioItemTablero")
-public class RepositorioItemTablero implements com.drivedoctor.dominio.RepositorioItemTablero {
+@Repository
+public class RepositorioItemTableroImpl implements RepositorioItemTablero {
 
     private SessionFactory sessionFactory;
 
-    public RepositorioItemTablero(SessionFactory sessionFactory){this.sessionFactory = sessionFactory;};
+    @Autowired
+    public RepositorioItemTableroImpl(SessionFactory sessionFactory){
+
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public List<ItemTablero> findAll() {
@@ -30,6 +36,7 @@ public class RepositorioItemTablero implements com.drivedoctor.dominio.Repositor
 
     @Override
     public void guardar(ItemTablero itemTablero) {
+
         this.sessionFactory.getCurrentSession().save(itemTablero);
     }
 

@@ -1,9 +1,6 @@
 package com.drivedoctor.infraestructura;
 
-import com.drivedoctor.dominio.Diagnostico;
-import com.drivedoctor.dominio.ItemTablero;
-import com.drivedoctor.dominio.RepositorioSintoma;
-import com.drivedoctor.dominio.Sintoma;
+import com.drivedoctor.dominio.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -21,10 +18,10 @@ import java.util.List;
 @Repository("repositorioSintoma")
 public class RepositorioSintomaImpl implements RepositorioSintoma {
 
-        private SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
     private List<Sintoma> sintomas;
 
-        public RepositorioSintomaImpl(SessionFactory sessionFactory){this.sessionFactory = sessionFactory;
+    public RepositorioSintomaImpl(SessionFactory sessionFactory){this.sessionFactory = sessionFactory;
             this.sintomas = new ArrayList<>();}
 
     @Override
@@ -34,7 +31,8 @@ public class RepositorioSintomaImpl implements RepositorioSintoma {
 
     @Override
     public void guardar(Sintoma sintoma) {
-            sessionFactory.getCurrentSession().save(sintoma);
+
+        sessionFactory.getCurrentSession().save(sintoma);
     }
 
     //OBTIENE LOS SINTOMAS ASOCIADOS A UN ITEM
@@ -66,11 +64,11 @@ public class RepositorioSintomaImpl implements RepositorioSintoma {
         return this.sintomas;
     }
 
-   //OBTIENE UN SINTOMA POR SU ID
     @Override
     public Sintoma findById(Integer idSintoma) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.get(Sintoma.class, idSintoma);
+        return (Sintoma) sessionFactory.getCurrentSession().createCriteria(Sintoma.class)
+                .add(Restrictions.eq("id", idSintoma))
+                .uniqueResult();
     }
 
 
@@ -81,11 +79,6 @@ public class RepositorioSintomaImpl implements RepositorioSintoma {
         Query<Sintoma> query = this.sessionFactory.getCurrentSession().createQuery(sql, Sintoma.class);
         query.setParameter("items", items);
         return query.getResultList();
-    }
-
-    @Override
-    public List<Sintoma> obtenerPorIds(List<Integer> idSintomas) {
-        return null;
     }
 
     @Override

@@ -75,7 +75,7 @@ public class RepositorioMarcaTest {
         session.save(marca1);
 
 
-        Marca buscada = this.repositorioMarca.getById(Idbuscada);
+        Marca buscada = this.repositorioMarca.findById(Idbuscada);
 
         assertThat(buscada, notNullValue());
         assertThat(buscada.getId(), equalTo(Idbuscada));

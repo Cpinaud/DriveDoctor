@@ -1,7 +1,7 @@
 package com.drivedoctor.infraestructura;
 
 import com.drivedoctor.dominio.*;
-import com.drivedoctor.dominio.excepcion.ModeloNoEncontrado;
+import com.drivedoctor.dominio.excepcion.ElementoNoEncontrado;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -26,10 +26,10 @@ public class ServicioModeloImpl implements ServicioModelo {
     }
 
     @Override
-    public Modelo getById(Integer modeloId) throws ModeloNoEncontrado {
-        Modelo modelo = this.repositorioModelo.getById(modeloId);
+    public Modelo findById(Integer modeloId) throws ElementoNoEncontrado {
+        Modelo modelo = this.repositorioModelo.findById(modeloId);
         if (modelo == null) {
-            throw new ModeloNoEncontrado();
+            throw new ElementoNoEncontrado();
         }
 
         return modelo;

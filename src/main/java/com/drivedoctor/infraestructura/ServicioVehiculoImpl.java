@@ -34,10 +34,10 @@ public class ServicioVehiculoImpl implements ServicioVehiculo {
     }
 
     @Override
-    public void agregarVehiculo(Integer usuarioId, Vehiculo vehiculo) throws UsuarioInexistente, AnioInvalido, PatenteInvalida,PatenteExistente {
-        Usuario usuario = repositorioUsuario.buscarPorId(usuarioId);
+    public void agregarVehiculo(Integer usuarioId, Vehiculo vehiculo) throws UsuarioInexistente, AnioInvalido, PatenteInvalida, PatenteExistente, ElementoNoEncontrado {
+        Usuario usuario = repositorioUsuario.findById(usuarioId);
         if(usuario == null){
-            throw new UsuarioInexistente();
+            throw new ElementoNoEncontrado();
         }
         if(vehiculo.getAnoFabricacion()<2000){
             throw new AnioInvalido();
@@ -76,15 +76,20 @@ public class ServicioVehiculoImpl implements ServicioVehiculo {
        return repositorioVehiculo.getPorMarca(marca);
     }
 
-    @Override
+    /*@Override
     public Vehiculo buscarById(Integer idVehiculo) {
         return repositorioVehiculo.getById(idVehiculo);
+    }*/
+
+    @Override
+    public Vehiculo findById(Integer idVehiculo) throws ElementoNoEncontrado {
+        return repositorioVehiculo.findById(idVehiculo);
     }
 
     @Override
-    public void modificarVehiculo(Integer usuarioId, Integer idVehiculo, String patente, Integer anio) throws UsuarioInexistente, AnioInvalido, PatenteInvalida, PatenteExistente, VehiculoInexistente, vehiculoSinCambios {
-        Usuario usuario = repositorioUsuario.buscarPorId(usuarioId);
-        Vehiculo vehiculo = repositorioVehiculo.getById(idVehiculo);
+    public void modificarVehiculo(Integer usuarioId, Integer idVehiculo, String patente, Integer anio) throws UsuarioInexistente, AnioInvalido, PatenteInvalida, PatenteExistente, VehiculoInexistente, vehiculoSinCambios, ElementoNoEncontrado {
+        Usuario usuario = repositorioUsuario.findById(usuarioId);
+        Vehiculo vehiculo = repositorioVehiculo.findById(idVehiculo);
         if(usuario == null){
             throw new UsuarioInexistente();
         }
@@ -122,12 +127,12 @@ public class ServicioVehiculoImpl implements ServicioVehiculo {
     }
 
     @Override
-    public void validarVehiculoUser(Integer idVehiculo, Integer idVehiculoPorPatente, Integer userId) throws VehiculoInvalido {
+    public void validarVehiculoUser(Integer idVehiculo, Integer idVehiculoPorPatente, Integer userId) throws VehiculoInvalido, ElementoNoEncontrado {
 
         if(!Objects.equals(idVehiculo, idVehiculoPorPatente)){
             throw new VehiculoInvalido();
         }else{
-            Vehiculo vehiculo = repositorioVehiculo.getById(idVehiculo);
+            Vehiculo vehiculo = repositorioVehiculo.findById(idVehiculo);
             Integer usuarioVehiculo = vehiculo.getUsuario().getId();
             if(!Objects.equals(usuarioVehiculo, userId)){
                 throw new VehiculoInvalido();
@@ -141,8 +146,8 @@ public class ServicioVehiculoImpl implements ServicioVehiculo {
     }
 
     @Override
-    public void validarVehiculoUser(Integer userId, Integer idVehiculo) throws VehiculoInvalido {
-        Vehiculo vehiculo = repositorioVehiculo.getById(idVehiculo);
+    public void validarVehiculoUser(Integer userId, Integer idVehiculo) throws VehiculoInvalido, ElementoNoEncontrado {
+        Vehiculo vehiculo = repositorioVehiculo.findById(idVehiculo);
         Integer usuarioVehiculo = vehiculo.getUsuario().getId();
         if(!Objects.equals(usuarioVehiculo, userId)){
             throw new VehiculoInvalido();
@@ -150,8 +155,8 @@ public class ServicioVehiculoImpl implements ServicioVehiculo {
     }
 
     @Override
-    public List<Historial> getHistoriales(Integer idVehiculo) {
-        Vehiculo vehiculo = this.buscarById(idVehiculo);
+    public List<Historial> getHistoriales(Integer idVehiculo) throws ElementoNoEncontrado {
+        Vehiculo vehiculo = this.findById(idVehiculo);
         List<Historial> historial = repositorioVehiculo.obtenerHistorial(vehiculo);
         for (Historial historiales : historial) {
             Hibernate.initialize(historiales.getSintomas());
