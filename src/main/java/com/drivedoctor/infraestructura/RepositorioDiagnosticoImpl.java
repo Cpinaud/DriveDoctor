@@ -28,11 +28,19 @@ public class RepositorioDiagnosticoImpl implements RepositorioDiagnostico {
     }
 
     @Override
+    public void modificar(Diagnostico diagnostico) {
+        sessionFactory.getCurrentSession().update(diagnostico);
+    }
+
+    @Override
+    public void eliminar(Diagnostico diagnostico) {
+        sessionFactory.getCurrentSession().delete(diagnostico);
+    }
+
+    @Override
     public Diagnostico findById(Integer idDiagnostico) {
         return sessionFactory.getCurrentSession().get(Diagnostico.class, idDiagnostico);
     }
-
-    //OBTIENE DIAGOSTICOS POR IDs
     @Override
     public List<Diagnostico> findByIds(List<Integer> idsDiagnostico) {
         return null;

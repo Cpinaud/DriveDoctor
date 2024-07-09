@@ -171,13 +171,13 @@ public class ServicioVehiculoTest {
     @Test
     public void queSeLanceLaExcepcionElementoNoEncontradoSiNoExisteUnVehiculoConElIdSolicitado() throws ElementoNoEncontrado {
 
-        when(repositorioVehiculo.findById(anyInt())).thenThrow(ElementoNoEncontrado.class);
+        when(repositorioVehiculo.findById(anyInt())).thenReturn(null);
 
         assertThrows(ElementoNoEncontrado.class, () -> {
-            servicioVehiculo.findById(1);
+            servicioVehiculo.findById(anyInt());
         });
 
-        verify(repositorioVehiculo, times(1)).findById(1);
+        verify(repositorioVehiculo, times(1)).findById(anyInt());
     }
 
 
@@ -273,23 +273,23 @@ public class ServicioVehiculoTest {
 
 
     @Test
-    public void queAlModificarVehiculoDeberiaLanzarElementoNoEncontradoSiElUsuarioNoExiste() throws ElementoNoEncontrado {
+    public void queAlModificarVehiculoDeberiaLanzarUsuarioInexistenteSiElUsuarioNoExiste() throws UsuarioInexistente {
         Integer usuarioId = 1;
-        when(this.repositorioUsuario.findById(usuarioId)).thenThrow(ElementoNoEncontrado.class);
+        when(repositorioUsuario.findById(anyInt())).thenReturn(null);
 
-        assertThrows(ElementoNoEncontrado.class, () -> {
-            servicioVehiculo.modificarVehiculo(usuarioId, 2, "AAA111", 2015);
+        assertThrows(UsuarioInexistente.class, () -> {
+            servicioVehiculo.modificarVehiculo(usuarioId, 4000, "AAA111", 2015);
         });
     }
 
     @Test
-    public void queAlModificarVehiucloDeberiaLanzarElementoNoEncontradoSiElVehiculoNoExiste() throws ElementoNoEncontrado {
+    public void queAlModificarVehiucloDeberiaLanzarVehiculoInexistenteSiElVehiculoNoExiste() throws VehiculoInexistente {
         Integer usuarioId = 1;
         Integer idVehiculo = 2;
         when(repositorioUsuario.findById(usuarioId)).thenReturn(new Usuario());
 
-        when(this.repositorioVehiculo.findById(idVehiculo)).thenThrow(ElementoNoEncontrado.class);
-        assertThrows(ElementoNoEncontrado.class, () -> {
+        when(this.repositorioVehiculo.findById(idVehiculo)).thenReturn(null);
+        assertThrows(VehiculoInexistente.class, () -> {
             servicioVehiculo.modificarVehiculo(usuarioId, idVehiculo, "AAA111", 2015);
         });
     }

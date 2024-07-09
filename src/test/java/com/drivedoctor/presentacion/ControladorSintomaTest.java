@@ -18,6 +18,7 @@ public class ControladorSintomaTest {
     private ControladorSintoma controladorSintoma;
     private ServicioSintoma servicioSintoma;
     private Sintoma sintomaMock;
+    private ItemTablero itemTableroMock;
     private ServicioItemTablero servicioItemTableroMock;
     private ServicioVehiculo servicioVehiculoMock;
 
@@ -29,13 +30,14 @@ public class ControladorSintomaTest {
         this.servicioVehiculoMock = mock(ServicioVehiculo.class);
         this.controladorSintoma =  new ControladorSintoma(this.servicioSintoma, this.servicioItemTableroMock,this.servicioVehiculoMock);
         sintomaMock = mock(Sintoma.class);
+        itemTableroMock = mock(ItemTablero.class);
 
     }
 
     @Test
     public void queAlCompletarTodoElFormularioSeGuardeYMeLleveALaVistaSintoma(){
 
-        ModelAndView modelAndView = controladorSintoma.crearSintoma(sintomaMock);
+        ModelAndView modelAndView = controladorSintoma.crearSintoma(sintomaMock,itemTableroMock);
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/sintoma"));
 
     }

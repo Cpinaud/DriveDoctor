@@ -76,7 +76,7 @@ public class ControladorSintoma {
         List<String> opcionesItemTablero = itemsTablero.stream()
                 .map(ItemTablero::getNombre)
                 .collect(Collectors.toList());
-        modelAndView.addObject("opcionesItemTablero", opcionesItemTablero);
+        modelAndView.addObject("opcionesItemTablero", itemsTablero);
         modelAndView.addObject("sintoma", new Sintoma());
         return modelAndView;
     }
@@ -84,9 +84,10 @@ public class ControladorSintoma {
 
     
     @RequestMapping(value = "/crearSintoma", method = RequestMethod.POST)
-    public ModelAndView crearSintoma(Sintoma sintomaMock){
+    public ModelAndView crearSintoma(@ModelAttribute Sintoma sintoma,ItemTablero itemTablero){
         ModelMap modelo = new ModelMap();
-        servicioSintoma.guardar(sintomaMock);
+        sintoma.setIdSintoma(itemTablero.getIdItemTablero());
+        servicioSintoma.guardar(sintoma);
 
 
         return new ModelAndView("redirect:/sintoma");

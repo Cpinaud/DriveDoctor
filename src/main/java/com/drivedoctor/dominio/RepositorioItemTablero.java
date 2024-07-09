@@ -4,7 +4,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
-public interface RepositorioItemTablero extends Busqueda<ItemTablero,Integer>,Guardado<ItemTablero>  {
+public interface RepositorioItemTablero extends RepositoryCRUD<ItemTablero> {
 
     List<ItemTablero> findAll();
 }

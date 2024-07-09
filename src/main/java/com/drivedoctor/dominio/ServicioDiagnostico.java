@@ -7,10 +7,10 @@ import com.drivedoctor.dominio.excepcion.ElementoNoEncontrado;
 
 import java.util.List;
 
-public interface ServicioDiagnostico extends Busqueda<Diagnostico,Integer> {
+public interface ServicioDiagnostico {
 
     void guardarDiagnostico(Diagnostico diagnostico);
-
+    Diagnostico findById (Integer id) throws ElementoNoEncontrado;
     //OBTIENE LOS DIAGNOSTICOS POR EL IDs DE MAS SINTOMAS(3), si los sintomas tienen solo 2 items en comun
     List<Diagnostico> findBySintomasIds(List<Integer> isdSintoma);
 

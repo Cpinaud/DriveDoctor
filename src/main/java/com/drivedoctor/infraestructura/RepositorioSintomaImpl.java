@@ -31,9 +31,19 @@ public class RepositorioSintomaImpl implements RepositorioSintoma {
 
     @Override
     public void guardar(Sintoma sintoma) {
-
         sessionFactory.getCurrentSession().save(sintoma);
     }
+
+    @Override
+    public void modificar(Sintoma sintoma) {
+        sessionFactory.getCurrentSession().update(sintoma);
+    }
+
+    @Override
+    public void eliminar(Sintoma sintoma) {
+        sessionFactory.getCurrentSession().delete(sintoma);
+    }
+
 
     //OBTIENE LOS SINTOMAS ASOCIADOS A UN ITEM
     @Override
@@ -54,7 +64,6 @@ public class RepositorioSintomaImpl implements RepositorioSintoma {
         }
     }
 
-    //OBTIENE TODOS LOS SINTOMAS DE LA BD
     @Override
     public List<Sintoma> getAll() {
 
@@ -72,7 +81,6 @@ public class RepositorioSintomaImpl implements RepositorioSintoma {
     }
 
 
-    //OBTIENE LOS SINTOMAS DE VARIOS ITEMS
     @Override
     public List<Sintoma> obtenerPorItemsTablero(List<ItemTablero> items) {
         String sql = "FROM Sintoma WHERE itemTablero IN (:items)";

@@ -19,20 +19,20 @@
         <div class="row">
             <div class="col-md-6">
                 <h2 class="mb-4">Nuevo Síntoma</h2>
-                <form th:action="@{/crearSintoma}" method="post">
+                <form th:action="@{/crearSintoma}" method="post" th:object="${sintoma}">
                     <div class="form-group">
                         <label for="nombre">Nombre:</label>
-                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        <input type="text" class="form-control" id="nombre" name="nombre" th:field="*{nombre}" required>
                     </div>
                     <div class="form-group">
                         <label for="descripcion">Descripción:</label>
-                        <textarea class="form-control" id="descripcion" name="descripcion" rows="3"></textarea>
+                        <textarea class="form-control" id="descripcion" name="descripcion" rows="3" th:field="*{descripcion}"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="itemTablero">Tipo de Item del Tablero:</label>
                         <select class="form-control" id="itemTablero" name="itemTablero">
-                            <option th:each="opcion : ${opcionesItemTablero}" th:value="${opcion}" th:text="${opcion}"></option>
+                            <option th:each="opcion : ${opcionesItemTablero}" th:value="${opcion.idItemTablero}" th:text="${opcion.nombre}"></option>
                         </select>
                     </div>
                     <div style="margin-top: 10px">

@@ -63,7 +63,7 @@ public class ServicioMarcaTest {
         Marca marca = new Marca();
         marca.setId(1);
 
-        when(this.repositorioMarca.findById(idBuscada)).thenThrow(ElementoNoEncontrado.class);
+        when(repositorioMarca.findById(idBuscada)).thenReturn(null);
 
 
         assertThrows(ElementoNoEncontrado.class, () -> {

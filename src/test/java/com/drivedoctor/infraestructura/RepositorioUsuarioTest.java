@@ -65,25 +65,7 @@ public class RepositorioUsuarioTest {
     }
 
 
-    @Test
-    @Transactional
-    @Rollback
-    public void queNoSePuedaAgregarUnUsuarioExistente() throws UsuarioExistente {
-        // Preparación
-        Usuario usuario = new Usuario();
-        usuario.setPassword("test2");
-        usuario.setEmail("test@test2.com");
 
-        this.repositorioUsuario.guardar(usuario);
-
-        Usuario nuevoUsuario = new Usuario();
-        nuevoUsuario.setPassword("test2");
-        nuevoUsuario.setEmail("test@test2.com");
-
-        assertThrows(UsuarioExistente.class, () -> {
-            this.repositorioUsuario.guardar(nuevoUsuario);
-        });
-    }
 
     @Test
     @Transactional

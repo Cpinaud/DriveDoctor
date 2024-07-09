@@ -83,7 +83,11 @@ public class ServicioVehiculoImpl implements ServicioVehiculo {
 
     @Override
     public Vehiculo findById(Integer idVehiculo) throws ElementoNoEncontrado {
-        return repositorioVehiculo.findById(idVehiculo);
+        Vehiculo vehiculo = repositorioVehiculo.findById(idVehiculo);
+        if(vehiculo == null){
+            throw new ElementoNoEncontrado();
+        }
+        return vehiculo;
     }
 
     @Override

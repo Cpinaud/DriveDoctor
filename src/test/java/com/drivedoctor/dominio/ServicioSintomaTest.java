@@ -90,7 +90,7 @@ public class ServicioSintomaTest {
         Sintoma sintoma = new Sintoma(new ItemTablero());
         sintoma.setIdSintoma(1);
 
-        when(this.repositorioSintoma.findById(idBuscada)).thenThrow(ElementoNoEncontrado.class);
+        when(this.repositorioSintoma.findById(idBuscada)).thenReturn(null);
 
 
         assertThrows(ElementoNoEncontrado.class, () -> {

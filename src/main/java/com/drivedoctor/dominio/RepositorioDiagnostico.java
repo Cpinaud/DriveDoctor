@@ -4,7 +4,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
-public interface RepositorioDiagnostico extends Busqueda<Diagnostico,Integer>,Guardado<Diagnostico> {
+public interface RepositorioDiagnostico extends RepositoryCRUD<Diagnostico> {
 
     Diagnostico buscar(Integer diagnostico);
 

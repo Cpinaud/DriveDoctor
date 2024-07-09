@@ -3,7 +3,7 @@ import com.drivedoctor.dominio.excepcion.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-public interface ServicioVehiculo extends Busqueda<Vehiculo,Integer> {
+public interface ServicioVehiculo {
 
     void agregarVehiculo(Integer usuarioId,Vehiculo vehiculo) throws UsuarioInexistente, AnioInvalido, PatenteInvalida, PatenteExistente, ElementoNoEncontrado;
 
@@ -22,4 +22,6 @@ public interface ServicioVehiculo extends Busqueda<Vehiculo,Integer> {
     void validarVehiculoUser(Integer userId, Integer idVehiculo) throws VehiculoInvalido, ElementoNoEncontrado;
 
     List<Historial> getHistoriales(Integer idVehiculo) throws ElementoNoEncontrado;
+
+    Vehiculo findById (Integer id) throws ElementoNoEncontrado;
 }

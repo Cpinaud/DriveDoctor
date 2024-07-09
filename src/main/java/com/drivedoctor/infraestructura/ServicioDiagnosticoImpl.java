@@ -31,7 +31,6 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
         repositorioDiagnostico.guardar(diagnostico);
     }
 
-    //TRAE EL DIAGNOSTICO POR SU ID
     @Override
     public Diagnostico findById(Integer idDiagnostico) throws ElementoNoEncontrado {
         if (idDiagnostico == null) {
@@ -45,7 +44,6 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
         return diagnostico;
     }
 
-    //TRAE EL DIAGNOSTICO ASOCIADO A UN SINTOMA
     @Override
     public Diagnostico findBySintoma(Sintoma sintoma) throws ElementoNoEncontrado {
         if (sintoma != null) {

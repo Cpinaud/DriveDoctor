@@ -5,10 +5,11 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
-public interface RepositorioUsuario extends Busqueda<Usuario,Integer> {
+public interface RepositorioUsuario extends RepositoryCRUD<Usuario> {
 
     Usuario buscarUsuario(String email, String password);
-    void guardar(Usuario usuario) throws UsuarioExistente;
+   // void guardar(Usuario usuario) throws UsuarioExistente;
+
 
     Usuario buscar(String email);
     void modificar(Usuario usuario);

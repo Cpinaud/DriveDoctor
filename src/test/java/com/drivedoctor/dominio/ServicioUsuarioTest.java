@@ -109,10 +109,11 @@ public class ServicioUsuarioTest {
         Usuario usuario = mock(Usuario.class);
         usuario.setId(1);
         Integer usuarioId = usuario.getId();
-        when(repositorioUsuario.findById(usuarioId)).thenThrow(ElementoNoEncontrado.class);
+        when(repositorioUsuario.findById(anyInt())).thenReturn(null);
+
 
         assertThrows(ElementoNoEncontrado.class, () -> {
-            repositorioUsuario.findById(usuarioId);
+            servicioUsuario.findById(usuarioId);
         });
     }
 }

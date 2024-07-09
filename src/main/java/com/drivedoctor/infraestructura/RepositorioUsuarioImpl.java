@@ -37,15 +37,10 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
                 .uniqueResult();
     }
 
-    @Override
-    public void guardar(Usuario usuario) throws UsuarioExistente {
-           Usuario intentoBuscar =  this.buscarUsuario(usuario.getEmail(), usuario.getPassword());
-           if (intentoBuscar == null) {
-               sessionFactory.getCurrentSession().save(usuario);
-           }else{
-               throw new UsuarioExistente();
-           }
+    public void guardar(Usuario usuario) {
+            sessionFactory.getCurrentSession().save(usuario);
     }
+
 
     @Override
     public Usuario buscar(String email) {
@@ -57,6 +52,11 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
     @Override
     public void modificar(Usuario usuario) {
         sessionFactory.getCurrentSession().update(usuario);
+    }
+
+    @Override
+    public void eliminar(Usuario usuario) {
+        sessionFactory.getCurrentSession().delete(usuario);
     }
 
     @Override

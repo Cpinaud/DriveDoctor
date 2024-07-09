@@ -64,7 +64,7 @@ public class ServicioModeloTest {
         Modelo modelo = new Modelo();
         modelo.setId(1);
 
-        when(this.repositorioModelo.findById(idBuscada)).thenThrow(ElementoNoEncontrado.class);
+        when(this.repositorioModelo.findById(idBuscada)).thenReturn(null);
 
 
         assertThrows(ElementoNoEncontrado.class, () -> {

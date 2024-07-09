@@ -1,5 +1,6 @@
 package com.drivedoctor.infraestructura;
 
+import com.drivedoctor.dominio.Historial;
 import com.drivedoctor.dominio.RepositorioItemTablero;
 import com.drivedoctor.dominio.ItemTablero;
 import org.hibernate.Session;
@@ -38,6 +39,16 @@ public class RepositorioItemTableroImpl implements RepositorioItemTablero {
     public void guardar(ItemTablero itemTablero) {
 
         this.sessionFactory.getCurrentSession().save(itemTablero);
+    }
+
+    @Override
+    public void modificar(ItemTablero itemTablero) {
+        sessionFactory.getCurrentSession().update(itemTablero);
+    }
+
+    @Override
+    public void eliminar(ItemTablero itemTablero) {
+        sessionFactory.getCurrentSession().delete(itemTablero);
     }
 
 

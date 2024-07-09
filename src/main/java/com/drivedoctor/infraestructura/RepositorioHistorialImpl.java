@@ -1,5 +1,6 @@
 package com.drivedoctor.infraestructura;
 
+import com.drivedoctor.dominio.Diagnostico;
 import com.drivedoctor.dominio.Historial;
 import com.drivedoctor.dominio.ItemTablero;
 import com.drivedoctor.dominio.RepositorioHistorial;
@@ -16,7 +17,7 @@ public class RepositorioHistorialImpl implements RepositorioHistorial {
     public RepositorioHistorialImpl(SessionFactory sessionFactory){this.sessionFactory = sessionFactory;};
 
     @Override
-    public Historial findById(Integer id) throws ElementoNoEncontrado {
+    public Historial findById(Integer id)  {
         Session session = sessionFactory.getCurrentSession();
         return session.get(Historial.class, id);
     }
@@ -26,4 +27,15 @@ public class RepositorioHistorialImpl implements RepositorioHistorial {
 
         sessionFactory.getCurrentSession().save(historia);
     }
+
+    @Override
+    public void modificar(Historial historia) {
+        sessionFactory.getCurrentSession().update(historia);
+    }
+
+    @Override
+    public void eliminar(Historial historia) {
+        sessionFactory.getCurrentSession().delete(historia);
+    }
+
 }

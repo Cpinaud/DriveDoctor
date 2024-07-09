@@ -4,7 +4,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
-public interface RepositorioSintoma extends Busqueda<Sintoma,Integer>,Guardado<Sintoma> {
+public interface RepositorioSintoma extends RepositoryCRUD<Sintoma> {
 
     Sintoma buscar(ItemTablero itemTablero);
     List<Sintoma> obtenerPorItemTablero(ItemTablero itemTablero);

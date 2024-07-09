@@ -43,6 +43,22 @@ public class RepositorioModeloImpl implements RepositorioModelo {
         return (Modelo) query.getSingleResult();
     }
 
+    @Override
+    public void guardar(Modelo modelo) {
+
+        this.sessionFactory.getCurrentSession().save(modelo);
+    }
+
+    @Override
+    public void modificar(Modelo modelo) {
+        sessionFactory.getCurrentSession().update(modelo);
+    }
+
+    @Override
+    public void eliminar(Modelo modelo) {
+        sessionFactory.getCurrentSession().delete(modelo);
+    }
+
 
 
 

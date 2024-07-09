@@ -4,7 +4,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
-public interface RepositorioModelo extends Busqueda<Modelo,Integer> {
+public interface RepositorioModelo extends RepositoryCRUD<Modelo> {
 
     List<Modelo> getAll();
 

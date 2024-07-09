@@ -47,18 +47,17 @@ public class ServicioDiagnosticoTest {
 
     @Test
     public void queEnCasoDeQueNoSeEncuentreElDiagnosticoDevuelvaElementoNoEncontradoException() throws ElementoNoEncontrado {
-        Integer idDiagnostico = 1;
 
-        when(this.repositorioDiagnostico.findById(idDiagnostico)).thenThrow(ElementoNoEncontrado.class);
+        when(this.repositorioDiagnostico.findById(anyInt())).thenReturn(null);
 
 
         assertThrows(ElementoNoEncontrado.class, () -> {
-            this.servicioDiagnostico.findById(idDiagnostico);
+            this.servicioDiagnostico.findById(anyInt());
         });
 
 
 
-        verify(repositorioDiagnostico, times(1)).findById(idDiagnostico);
+        verify(repositorioDiagnostico, times(1)).findById(anyInt());
     }
 
     @Test
