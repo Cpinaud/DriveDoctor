@@ -81,30 +81,30 @@ public class ControladorSintoma {
     }
 
 
-    @RequestMapping(value = "/crearSintoma", method = RequestMethod.POST)
-    public ModelAndView crearSintoma(@ModelAttribute("sintoma") Sintoma sintoma, HttpServletRequest request, @RequestParam("itemTablero") Integer idItemTablero, @RequestParam("diagnostico") Integer idDiagnostico) {
+    @RequestMapping(path = "/crearSintoma", method = RequestMethod.POST)
+    public ModelAndView crearSintoma(@ModelAttribute("sintoma") Sintoma sintoma,
+                                     HttpServletRequest request,
+                                     @RequestParam("itemTablero") Integer idItemTablero,
+                                     @RequestParam("diagnosticoId") Integer idDiagnostico) throws ItemNoEncontrado {
         System.out.println("Entró en crearSintoma");
         System.out.println(idDiagnostico);
-        System.out.println(idDiagnostico);
 
-        try {
-        ItemTablero item = servicioItemTablero.findById(idItemTablero);
+
+            ItemTablero item = servicioItemTablero.findById(idItemTablero);
             if(item == null) {
-            throw new ItemNoEncontrado();
-        }
-        sintoma.setItemTablero(item);
-        Diagnostico diagnostico = servicioDiagnostico.findById(idDiagnostico);
-        if(diagnostico == null) {
-            throw new ItemNoEncontrado();
-        }
+                throw new ItemNoEncontrado();
+            }
+            sintoma.setItemTablero(item);
 
-        sintoma.setDiagnostico(diagnostico);
-
+            Diagnostico diagnostico = servicioDiagnostico.findById(idDiagnostico);
+            if(diagnostico == null) {
+                throw new ItemNoEncontrado();
+            }
+            sintoma.setDiagnostico(diagnostico);
 
             servicioSintoma.guardarSintoma(sintoma);
-        } catch (Exception e) {
-            return new ModelAndView("home");
-        }
+
+
 
         return new ModelAndView("redirect:/sintoma");
     }

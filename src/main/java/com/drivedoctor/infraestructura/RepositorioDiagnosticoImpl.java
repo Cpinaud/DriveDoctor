@@ -31,7 +31,7 @@ public class RepositorioDiagnosticoImpl implements RepositorioDiagnostico {
     @Override
     public Diagnostico findById(Integer idDiagnostico) {
 
-        return (Diagnostico) sessionFactory.getCurrentSession().createCriteria(Vehiculo.class)
+        return (Diagnostico) sessionFactory.getCurrentSession().createCriteria(Diagnostico.class)
                 .add(Restrictions.eq("IdDiagnostico", idDiagnostico))
                 .uniqueResult();
     }

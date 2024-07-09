@@ -31,21 +31,20 @@
 
                     <div class="form-group">
                         <label for="itemTablero">Tipo de Item del Tablero:</label>
-                        <select class="form-control" id="itemTablero" name="itemTablero">
+                        <select class="form-control" id="itemTablero" name="itemTablero" required>
                             <option th:each="opcion : ${itemsTablero}" th:value="${opcion.idItemTablero}" th:text="${opcion.nombre}"></option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="diagnostico">Diagnostico para el sintoma:</label>
-                        <select class="form-control" id="diagnostico" name="diagnostico">
-                            <option th:each="opcion : ${diagnosticos}" th:value="${opcion.IdDiagnostico}" th:text="${opcion.descripcion} + ${opcion.IdDiagnostico}"></option>
+                        <select class="form-control" id="diagnostico" name="diagnosticoId" required>
+                            <option th:each="opcion : ${diagnosticos}" th:value="${opcion.IdDiagnostico}" th:text="${opcion.descripcion}"></option>
                         </select>
                     </div>
                     <div style="margin-top: 10px">
                         <a th:href="@{/sintoma}" class="btn boton-secundario">Volver</a>
                         <button type="submit" class="btn boton-principal">Guardar</button>
                     </div>
-
                 </form>
             </div>
         </div>

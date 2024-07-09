@@ -65,7 +65,7 @@ public class ControladorSintomaTest {
 
     @Test
     public void queAlGuardarSeGuardeConUnItemDeTableroAsignadoYConUnDiagnostico() throws ItemNoEncontrado {
-        // Arrange
+
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpSession session = mock(HttpSession.class);
         when(request.getSession()).thenReturn(session);
