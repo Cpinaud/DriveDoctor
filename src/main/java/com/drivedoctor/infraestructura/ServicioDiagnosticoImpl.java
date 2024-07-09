@@ -85,9 +85,9 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
     }
     //OBTIENE LOS DIAGNOSTICOS POR EL IDs DE MAS SINTOMAS
     @Override
-    public List<Diagnostico> findBySintomasIds(List<Integer> idsSintomas) {
+    public List<Diagnostico> findAll() {
 
-        return repositorioDiagnostico.obtenerPorSintomasIds(idsSintomas);
+        return repositorioDiagnostico.findAll();
     }
 
 

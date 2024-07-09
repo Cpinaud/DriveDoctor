@@ -3,7 +3,6 @@ package com.drivedoctor.presentacion;
 import com.drivedoctor.dominio.*;
 import com.drivedoctor.dominio.excepcion.ItemNoEncontrado;
 import com.drivedoctor.dominio.excepcion.ItemsNoEncontrados;
-import lombok.SneakyThrows;
 import com.drivedoctor.dominio.excepcion.VehiculoInvalido;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,9 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class ControladorSintoma {
@@ -24,13 +21,15 @@ public class ControladorSintoma {
     private ServicioSintoma servicioSintoma;
     private ServicioItemTablero servicioItemTablero;
     private ServicioVehiculo servicioVehiculo;
+    private ServicioDiagnostico servicioDiagnostico;
 
 
     @Autowired
-    public ControladorSintoma(ServicioSintoma servicioSintoma, ServicioItemTablero servicioItemTablero,ServicioVehiculo servicioVehiculo) {
+    public ControladorSintoma(ServicioSintoma servicioSintoma, ServicioItemTablero servicioItemTablero,ServicioVehiculo servicioVehiculo, ServicioDiagnostico servicioDiagnostico) {
         this.servicioSintoma = servicioSintoma;
         this.servicioVehiculo = servicioVehiculo;
         this.servicioItemTablero = servicioItemTablero;
+        this.servicioDiagnostico = servicioDiagnostico;
 
     }
 
@@ -70,24 +69,42 @@ public class ControladorSintoma {
     }
 
     @RequestMapping("/nuevoSintoma")
-    public ModelAndView nuevoSintoma() throws ItemsNoEncontrados {
-        ModelAndView modelAndView = new ModelAndView("nuevo-sintoma");
-        List<ItemTablero> itemsTablero = servicioItemTablero.obtenerTodosLosItems();
-        List<String> opcionesItemTablero = itemsTablero.stream()
-                .map(ItemTablero::getNombre)
-                .collect(Collectors.toList());
-        modelAndView.addObject("opcionesItemTablero", opcionesItemTablero);
-        modelAndView.addObject("sintoma", new Sintoma());
-        return modelAndView;
+    public ModelAndView nuevoSintoma(ModelMap model, HttpServletRequest request) throws ItemsNoEncontrados {
+
+        model.put("sintoma", new Sintoma());
+        List<ItemTablero> itemsTablero = this.servicioItemTablero.obtenerTodosLosItems();
+        List<Diagnostico> diagnosticos = this.servicioDiagnostico.findAll();
+        model.put("itemsTablero", itemsTablero);
+        model.put("diagnosticos", diagnosticos);
+        return new ModelAndView("nuevo-sintoma", model);
+
     }
 
 
-    
     @RequestMapping(value = "/crearSintoma", method = RequestMethod.POST)
-    public ModelAndView crearSintoma(Sintoma sintomaMock){
-        ModelMap modelo = new ModelMap();
-        servicioSintoma.guardarSintoma(sintomaMock);
+    public ModelAndView crearSintoma(@ModelAttribute("sintoma") Sintoma sintoma, HttpServletRequest request, @RequestParam("itemTablero") Integer idItemTablero, @RequestParam("diagnostico") Integer idDiagnostico) {
+        System.out.println("Entró en crearSintoma");
+        System.out.println(idDiagnostico);
+        System.out.println(idDiagnostico);
 
+        try {
+        ItemTablero item = servicioItemTablero.findById(idItemTablero);
+            if(item == null) {
+            throw new ItemNoEncontrado();
+        }
+        sintoma.setItemTablero(item);
+        Diagnostico diagnostico = servicioDiagnostico.findById(idDiagnostico);
+        if(diagnostico == null) {
+            throw new ItemNoEncontrado();
+        }
+
+        sintoma.setDiagnostico(diagnostico);
+
+
+            servicioSintoma.guardarSintoma(sintoma);
+        } catch (Exception e) {
+            return new ModelAndView("home");
+        }
 
         return new ModelAndView("redirect:/sintoma");
     }
@@ -193,5 +210,6 @@ public class ControladorSintoma {
             throw new RuntimeException(e);
         }
     }
+
 
 }

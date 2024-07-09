@@ -19,28 +19,13 @@
         <div class="row">
             <div class="col-md-6">
                 <h2 class="mb-4">Nuevo Síntoma</h2>
-                <form th:action="@{/crearSintoma}" method="post" th:object="${sintoma}">
-                    <div class="form-group">
-                        <label for="nombre">Nombre:</label>
-                        <input type="text" class="form-control" id="nombre" name="nombre" th:field="*{nombre}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="descripcion">Descripción:</label>
-                        <textarea class="form-control" id="descripcion" name="descripcion" rows="3" th:field="*{descripcion}"></textarea>
-                    </div>
+                <form th:action="@{/crearDiagnostico}" method="post" th:object="${diagnostico}">
 
                     <div class="form-group">
-                        <label for="itemTablero">Tipo de Item del Tablero:</label>
-                        <select class="form-control" id="itemTablero" name="itemTablero">
-                            <option th:each="opcion : ${itemsTablero}" th:value="${opcion.idItemTablero}" th:text="${opcion.nombre}"></option>
-                        </select>
+                        <label for="descripcion">Descripción:</label>
+                        <textarea class="form-control" id="descripcion" name="descripcion" rows="3"></textarea>
                     </div>
-                    <div class="form-group">
-                        <label for="diagnostico">Diagnostico para el sintoma:</label>
-                        <select class="form-control" id="diagnostico" name="diagnostico">
-                            <option th:each="opcion : ${diagnosticos}" th:value="${opcion.IdDiagnostico}" th:text="${opcion.descripcion} + ${opcion.IdDiagnostico}"></option>
-                        </select>
-                    </div>
+
                     <div style="margin-top: 10px">
                         <a th:href="@{/sintoma}" class="btn boton-secundario">Volver</a>
                         <button type="submit" class="btn boton-principal">Guardar</button>
@@ -58,4 +43,3 @@
 <script type="text/javascript" th:src="@{/js/sidebar.js}"></script>
 </body>
 </html>
-

@@ -9,4 +9,5 @@ public interface ServicioItemTablero {
 
     List<ItemTablero> obtenerTodosLosItems() ;
     ItemTablero findById(Integer idItemTablero) throws ItemNoEncontrado;
+    void guardarItemTablero(ItemTablero itemTablero);
 }

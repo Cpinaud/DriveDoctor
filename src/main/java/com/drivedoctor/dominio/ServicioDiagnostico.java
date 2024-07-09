@@ -11,8 +11,8 @@ public interface ServicioDiagnostico {
     void guardarDiagnostico(Diagnostico diagnostico);
     Diagnostico findById(Integer idDiagnostico);
 
-    //OBTIENE LOS DIAGNOSTICOS POR EL IDs DE MAS SINTOMAS(3), si los sintomas tienen solo 2 items en comun
-    List<Diagnostico> findBySintomasIds(List<Integer> isdSintoma);
+
+    List<Diagnostico> findAll();
 
     double calcularRiesgoPorSintoma(List<Sintoma> sintomas);
 

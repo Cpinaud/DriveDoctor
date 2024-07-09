@@ -147,4 +147,4 @@ function initMap() {
         });
     }
 }
-window.onload;
+

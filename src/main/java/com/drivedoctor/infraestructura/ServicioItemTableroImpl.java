@@ -36,4 +36,9 @@ public class ServicioItemTableroImpl implements ServicioItemTablero {
         }
         return itemTablero;
     }
+
+    @Override
+    public void guardarItemTablero(ItemTablero itemTablero) {
+        repositorioItemTablero.guardar(itemTablero);
+    }
 }
