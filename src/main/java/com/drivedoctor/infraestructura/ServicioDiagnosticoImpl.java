@@ -90,8 +90,10 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
         return repositorioDiagnostico.findAll();
     }
 
-
-
+    @Override
+    public Sintoma findByName(String name) {
+        return repositorioSintoma.findByName(name);
+    }
 
 
     @Override

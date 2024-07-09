@@ -13,7 +13,7 @@ public interface ServicioDiagnostico {
 
 
     List<Diagnostico> findAll();
-
+    Sintoma findByName(String name);
     double calcularRiesgoPorSintoma(List<Sintoma> sintomas);
 
     List<Diagnostico> findDependingId (List<Integer> idsSintoma) throws AllItemsEqual, DemasiadosSintomas;

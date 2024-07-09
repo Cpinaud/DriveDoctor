@@ -66,7 +66,15 @@ public class RepositorioSintomaImpl implements RepositorioSintoma {
         return this.sintomas;
     }
 
-   //OBTIENE UN SINTOMA POR SU ID
+    @Override
+    public Sintoma findByName(String nombre) {
+        String sql = "From Sintoma s where s.nombre = :nombre";
+        Query<Sintoma> query = this.sessionFactory.getCurrentSession().createQuery(sql, Sintoma.class);
+        query.setParameter("nombre", nombre);
+        return query.getSingleResult();
+    }
+
+    //OBTIENE UN SINTOMA POR SU ID
     @Override
     public Sintoma findById(Integer idSintoma) {
         Session session = sessionFactory.getCurrentSession();

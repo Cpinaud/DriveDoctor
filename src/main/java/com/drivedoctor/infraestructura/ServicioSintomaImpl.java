@@ -4,6 +4,9 @@ import com.drivedoctor.dominio.ItemTablero;
 import com.drivedoctor.dominio.RepositorioSintoma;
 import com.drivedoctor.dominio.ServicioSintoma;
 import com.drivedoctor.dominio.Sintoma;
+import com.drivedoctor.dominio.excepcion.DiagnosticoNotFoundException;
+import com.drivedoctor.dominio.excepcion.ItemTableroInvalido;
+import com.drivedoctor.dominio.excepcion.SintomaExistente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +30,19 @@ public class ServicioSintomaImpl implements ServicioSintoma {
     }
 
     @Override
-    public void guardarSintoma(Sintoma sintoma) {
+    public void guardarSintoma(Sintoma sintoma) throws SintomaExistente {
+        Sintoma sintomaExistente = repositorioSintoma.findByName(sintoma.getNombre());
+        if(sintoma.getDiagnostico() == null) {
+            throw new DiagnosticoNotFoundException("El diagnostico no debe ser nulo");
+        }
+        if(sintoma.getItemTablero() == null) {
+            throw new ItemTableroInvalido("El item no debe ser nulo");
+        }
+        if(sintomaExistente != null) {
+            throw new SintomaExistente();
+        }
+
+
         repositorioSintoma.guardar(sintoma);
     }
 
