@@ -1,11 +1,7 @@
 package com.drivedoctor.integracion;
 
 import com.drivedoctor.config.GoogleMapsConfig;
-import com.drivedoctor.dominio.ItemTablero;
 import com.drivedoctor.dominio.ServicioItemTablero;
-import com.drivedoctor.dominio.ServicioSintoma;
-import com.drivedoctor.dominio.Sintoma;
-import com.drivedoctor.dominio.excepcion.ItemsNoEncontrados;
 import com.drivedoctor.integracion.config.HibernateTestConfig;
 import com.drivedoctor.integracion.config.SpringWebTestConfig;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,12 +12,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

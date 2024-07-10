@@ -5,6 +5,7 @@ import com.drivedoctor.dominio.ItemTablero;
 import com.drivedoctor.dominio.RepositorioItemTablero;
 import com.drivedoctor.dominio.ServicioItemTablero;
 import com.drivedoctor.dominio.excepcion.ElementoNoEncontrado;
+import com.drivedoctor.dominio.excepcion.ItemNoEncontrado;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,11 +30,19 @@ public class ServicioItemTableroImpl implements ServicioItemTablero {
     }
 
     @Override
-    public ItemTablero findById(Integer idItemTablero) throws ElementoNoEncontrado {
+    public ItemTablero findById(Integer idItemTablero) throws ItemNoEncontrado {
         ItemTablero itemTablero = repositorioItemTablero.findById(idItemTablero);
         if (itemTablero == null) {
-            throw new ElementoNoEncontrado();
+            throw new ItemNoEncontrado();
         }
         return itemTablero;
     }
+
+    @Override
+    public void guardarItemTablero(ItemTablero itemTablero) {
+        if (itemTablero == null) {
+            throw new IllegalArgumentException("El ITEM no puede ser nulo");
+        }
+        repositorioItemTablero.guardar(itemTablero);
+        }
 }

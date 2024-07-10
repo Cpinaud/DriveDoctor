@@ -3,8 +3,10 @@ package com.drivedoctor.infraestructura;
 import com.drivedoctor.dominio.Historial;
 import com.drivedoctor.dominio.RepositorioItemTablero;
 import com.drivedoctor.dominio.ItemTablero;
+import com.drivedoctor.dominio.Sintoma;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -31,8 +33,9 @@ public class RepositorioItemTableroImpl implements RepositorioItemTablero {
 
     @Override
     public ItemTablero findById(Integer idItemTablero) {
-       Session session = sessionFactory.getCurrentSession();
-        return session.get(ItemTablero.class, idItemTablero);
+        return (ItemTablero) sessionFactory.getCurrentSession().createCriteria(ItemTablero.class)
+                .add(Restrictions.eq("idItemTablero", idItemTablero))
+                .uniqueResult();
     }
 
     @Override

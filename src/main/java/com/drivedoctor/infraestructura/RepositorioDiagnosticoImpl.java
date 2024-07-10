@@ -2,7 +2,9 @@ package com.drivedoctor.infraestructura;
 
 import com.drivedoctor.dominio.Diagnostico;
 import com.drivedoctor.dominio.RepositorioDiagnostico;
+import com.drivedoctor.dominio.Vehiculo;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
@@ -28,6 +30,7 @@ public class RepositorioDiagnosticoImpl implements RepositorioDiagnostico {
     }
 
     @Override
+
     public void modificar(Diagnostico diagnostico) {
         sessionFactory.getCurrentSession().update(diagnostico);
     }
@@ -37,13 +40,19 @@ public class RepositorioDiagnosticoImpl implements RepositorioDiagnostico {
         sessionFactory.getCurrentSession().delete(diagnostico);
     }
 
-    @Override
+
     public Diagnostico findById(Integer idDiagnostico) {
-        return sessionFactory.getCurrentSession().get(Diagnostico.class, idDiagnostico);
+
+        return (Diagnostico) sessionFactory.getCurrentSession().createCriteria(Diagnostico.class)
+                .add(Restrictions.eq("IdDiagnostico", idDiagnostico))
+                .uniqueResult();
+
     }
     @Override
-    public List<Diagnostico> findByIds(List<Integer> idsDiagnostico) {
-        return null;
+    public List<Diagnostico> findAll() {
+        String hql = "From Diagnostico";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        return  query.getResultList();
     }
 
 

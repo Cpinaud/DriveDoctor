@@ -73,6 +73,16 @@ public class RepositorioSintomaImpl implements RepositorioSintoma {
         return this.sintomas;
     }
 
+
+    @Override
+    public Sintoma findByName(String nombre) {
+        return (Sintoma) sessionFactory.getCurrentSession().createCriteria(Sintoma.class)
+                .add(Restrictions.eq("nombre", nombre))
+                .uniqueResult();
+    }
+
+    //OBTIENE UN SINTOMA POR SU ID
+
     @Override
     public Sintoma findById(Integer idSintoma) {
         return (Sintoma) sessionFactory.getCurrentSession().createCriteria(Sintoma.class)

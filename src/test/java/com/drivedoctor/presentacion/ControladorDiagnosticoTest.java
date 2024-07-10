@@ -66,7 +66,7 @@ public class ControladorDiagnosticoTest {
     }
 
     @Test
-    public void mostrarVistaCuandoSeObtenganDosDiagnosticosAsociadosAdosSintomas() throws AllItemsEqual, ElementoNoEncontrado, DemasiadosItems, DemasiadosSintomas {
+    public void mostrarVistaCuandoSeObtenganDosDiagnosticosAsociadosAdosSintomas() throws AllItemsEqual, ElementoNoEncontrado, DemasiadosItems, DemasiadosSintomas, ItemNoEncontrado {
 
         Integer idVh=1;
         String idsSintomasStr = "1,2";
