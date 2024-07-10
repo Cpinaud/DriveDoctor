@@ -2,6 +2,7 @@ package com.drivedoctor.presentacion;
 
 import com.drivedoctor.dominio.*;
 import com.drivedoctor.dominio.excepcion.ItemNoEncontrado;
+import com.drivedoctor.dominio.excepcion.SintomaExistente;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -64,7 +65,7 @@ public class ControladorSintomaTest {
     }
 
     @Test
-    public void queAlGuardarSeGuardeConUnItemDeTableroAsignadoYConUnDiagnostico() throws ItemNoEncontrado {
+    public void queAlGuardarSeGuardeConUnItemDeTableroAsignadoYConUnDiagnostico() throws ItemNoEncontrado, SintomaExistente {
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpSession session = mock(HttpSession.class);

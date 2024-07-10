@@ -3,6 +3,7 @@ package com.drivedoctor.presentacion;
 import com.drivedoctor.dominio.*;
 import com.drivedoctor.dominio.excepcion.ItemNoEncontrado;
 import com.drivedoctor.dominio.excepcion.ItemsNoEncontrados;
+import com.drivedoctor.dominio.excepcion.SintomaExistente;
 import com.drivedoctor.dominio.excepcion.VehiculoInvalido;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -85,7 +86,7 @@ public class ControladorSintoma {
     public ModelAndView crearSintoma(@ModelAttribute("sintoma") Sintoma sintoma,
                                      HttpServletRequest request,
                                      @RequestParam("itemTablero") Integer idItemTablero,
-                                     @RequestParam("diagnosticoId") Integer idDiagnostico) throws ItemNoEncontrado {
+                                     @RequestParam("diagnosticoId") Integer idDiagnostico) throws ItemNoEncontrado, SintomaExistente {
         System.out.println("Entró en crearSintoma");
         System.out.println(idDiagnostico);
 

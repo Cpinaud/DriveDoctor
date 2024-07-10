@@ -33,10 +33,10 @@ public class ServicioSintomaImpl implements ServicioSintoma {
     public void guardarSintoma(Sintoma sintoma) throws SintomaExistente {
         Sintoma sintomaExistente = repositorioSintoma.findByName(sintoma.getNombre());
         if(sintoma.getDiagnostico() == null) {
-            throw new DiagnosticoNotFoundException("El diagnostico no debe ser nulo");
+            throw new DiagnosticoNotFoundException();
         }
         if(sintoma.getItemTablero() == null) {
-            throw new ItemTableroInvalido("El item no debe ser nulo");
+            throw new ItemTableroInvalido();
         }
         if(sintomaExistente != null) {
             throw new SintomaExistente();

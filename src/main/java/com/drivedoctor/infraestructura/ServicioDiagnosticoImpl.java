@@ -42,7 +42,7 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
         }
         Diagnostico diagnostico = repositorioDiagnostico.findById(idDiagnostico);
         if (diagnostico == null) {
-            throw new DiagnosticoNotFoundException("Diagnóstico no encontrado para el ID: " + idDiagnostico);
+            throw new DiagnosticoNotFoundException();
 
         }
         return diagnostico;
@@ -58,7 +58,7 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
                return repositorioDiagnostico.findById(diagnostico.getIdDiagnostico());
 
             } else {
-                throw new DiagnosticoNotFoundException("No se encontró ningún diagnóstico para el síntoma proporcionado");
+                throw new DiagnosticoNotFoundException();
             }
         }else {
             throw new IllegalArgumentException("El síntoma no puede ser nulo");

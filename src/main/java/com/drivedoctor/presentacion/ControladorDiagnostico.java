@@ -47,7 +47,7 @@ public class ControladorDiagnostico {
             List<Diagnostico> diagnostico = new ArrayList<>();
             diagnostico.add(servicioDiagnostico.findById(id));
             if(diagnostico.size() == 0){
-                throw new DiagnosticoNotFoundException("No se encuentra ningun diagnostico asociado a este id");
+                throw new DiagnosticoNotFoundException();
             }
             model.addAttribute("diagnostico", diagnostico);
             model.addAttribute("idVehiculo", idVehiculo);
