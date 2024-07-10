@@ -5,10 +5,7 @@ import com.drivedoctor.dominio.excepcion.*;
 import com.drivedoctor.infraestructura.ServicioMarcaImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -101,6 +98,22 @@ public class ControladorUsuario {
         }
 
         return new ModelAndView(viewName, model);
+    }
+
+    @GetMapping("/adminVehiculos")
+    public ModelAndView adminVehiculos(HttpServletRequest request){
+        String rolU = "ADMIN";
+        if (request == null || request.getSession() == null) {
+            return new ModelAndView("home");
+        }
+
+        Object rol = request.getSession().getAttribute("rol");
+        if (rol == null || !rol.equals(rolU)) {
+            return new ModelAndView("home");
+        }
+
+        return new ModelAndView("adminVehiculos");
+
     }
 }
 

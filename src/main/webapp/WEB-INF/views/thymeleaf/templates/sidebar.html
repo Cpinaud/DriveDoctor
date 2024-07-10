@@ -23,6 +23,11 @@
                 Administrar Diagnosticos
             </a>
         </li>
+        <li  class="nav-item">
+            <a th:if="${session.rol=='ADMIN'}" th:href="@{/adminVehiculos}"  class="nav-link text-white">
+                Administrar Vehiculos
+            </a>
+        </li>
         <li  class="nav-item" style="align-self: end">
             <a th:href="@{/logout}" id="logout"  class="nav-link text-white">
                 Cerrar Sesión
