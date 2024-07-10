@@ -360,6 +360,8 @@ width: 90%;
     transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transiciones suaves */
     background-color:rgba(26, 32, 44,0.9);
     color:#EEEEEE;
+    height: max-content;
+    width: 80%;
 }
 
 .diagnostico-container button{

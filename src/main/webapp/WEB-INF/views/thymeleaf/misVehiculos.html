@@ -54,7 +54,7 @@
                         <option th:each="marca : ${marcas}"
                                 th:value="${marca.id}" th:id="${marca.id}" th:text="${marca.nombre}"></option>
                     </select>
-                    <button id="buscar" class="btn boton-principal" type="Submit">Buscar</button>
+                    <button id="buscar" class="btn boton-principal mt-2" type="Submit">Buscar</button>
                 </form>
         </div>
         <div class="col-md-10">
@@ -79,10 +79,10 @@
                             <td>
                                 <a id="modificarMiVehiculo" th:href="@{/modificar-vehiculo/{id}(id=${vehiculo.id})}">Modificar</a> |
                                 <!--<a th:href="@{/eliminar-vehiculo/{id}(id=${vehiculo.id})}">Eliminar</a> |-->
-                                <a id="eleminarVehiculo" data-bs-toggle="modal" data-bs-target="#staticBackdrop" th:attr="data-id=${vehiculo.id},
+                                <a id="eleminarVehiculo" class="cursor-pointer" data-bs-toggle="modal" data-bs-target="#staticBackdrop" th:attr="data-id=${vehiculo.id},
                     data-marca=${vehiculo.marca.nombre},
                     data-modelo=${vehiculo.modelo.nombre},
-                    data-patente=${vehiculo.patente}">Eliminar</a> |
+                    data-patente=${vehiculo.patente}" href="#">Eliminar</a> |
                                 <a id="diagnosticar" th:href="@{/sintoma/{id}(id=${vehiculo.id})}">Diagnosticar</a> |
                                 <a th:href="@{/historial/{idVh}(idVh=${vehiculo.id})}">Historial</a>
                             </td>
