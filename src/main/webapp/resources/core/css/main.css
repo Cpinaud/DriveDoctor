@@ -311,9 +311,12 @@ width: 90%;
 }
 
 .item-historial{
-    background-color: rgba(0,0,0,0.4) !important;
+    background-color: #1A202C!important;
     padding:0.1rem !important;
     color:white !important;
+}
+.btnHistorial{
+    background-color: #1A202C!important;
 }
 
 .item-historial-subtitle{
