@@ -122,7 +122,7 @@ public class ControladorSintoma {
         modelAndView.addObject("idVehiculo",idVehiculo);
         return modelAndView;
     }
-    @RequestMapping(value = "/mostrarSintomaDependiendoItem", method = RequestMethod.POST )
+    @RequestMapping(value = "/mostrarSintomaDependiendoItem", method = {RequestMethod.GET, RequestMethod.POST} )
     public ModelAndView mostrarSintomaDependiendoItem(@RequestParam("idItemTablero") Integer idItemTablero,
                                                       @RequestParam("idVehiculo") Integer idVehiculo) throws ElementoNoEncontrado {
 
