@@ -20,5 +20,7 @@ Proyecto DriveDoctor - TallerWebI - UNLaM (Maven and Thymeleaf)
 *_Proyecto modificado en base a: [Spring MVC hello world example (Maven and Thymeleaf)](https://mkyong.com/spring-mvc/spring-mvc-hello-world-example/) _*
 
 Cintia_Pinaud
-Agustin Anichin
+Camila_Giselle_Siquila
 Ignacio_Franco
+Oriana_Lombardi
+Diego_Ramos

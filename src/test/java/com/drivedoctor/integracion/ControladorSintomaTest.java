@@ -1,7 +1,11 @@
 package com.drivedoctor.integracion;
 
 import com.drivedoctor.config.GoogleMapsConfig;
+import com.drivedoctor.dominio.ItemTablero;
 import com.drivedoctor.dominio.ServicioItemTablero;
+import com.drivedoctor.dominio.ServicioSintoma;
+import com.drivedoctor.dominio.Sintoma;
+import com.drivedoctor.dominio.excepcion.ItemsNoEncontrados;
 import com.drivedoctor.integracion.config.HibernateTestConfig;
 import com.drivedoctor.integracion.config.SpringWebTestConfig;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,8 +16,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -38,8 +46,7 @@ public class ControladorSintomaTest {
 
     @Test
     public void quePuedaNavegarALaVistaDeSintoma() throws Exception {
-        this.mockMvc.perform(get("/sintoma")
-                .sessionAttr("rol", "ADMIN"))
+        this.mockMvc.perform(get("/sintoma"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("sintoma"))
                 .andExpect(model().attributeExists("sintoma"));
@@ -55,7 +62,7 @@ public class ControladorSintomaTest {
 
     @Test
     public void queSePuedaNavegarALaVistaParaSaberUnSintomaTeniendoUnItemEnElTablero() throws Exception {
-        this.mockMvc.perform(get("/mostrarSintomaPorItem/"+anyInt()))
+        this.mockMvc.perform(get("/mostrarSintomaPorItem"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("item-tablero"))
                 .andExpect(model().attributeExists("opcionesItemTablero"));

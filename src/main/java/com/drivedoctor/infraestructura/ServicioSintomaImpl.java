@@ -1,9 +1,5 @@
 package com.drivedoctor.infraestructura;
 
-
-import com.drivedoctor.dominio.*;
-import com.drivedoctor.dominio.excepcion.ElementoNoEncontrado;
-
 import com.drivedoctor.dominio.ItemTablero;
 import com.drivedoctor.dominio.RepositorioSintoma;
 import com.drivedoctor.dominio.ServicioSintoma;
@@ -11,7 +7,6 @@ import com.drivedoctor.dominio.Sintoma;
 import com.drivedoctor.dominio.excepcion.DiagnosticoNotFoundException;
 import com.drivedoctor.dominio.excepcion.ItemTableroInvalido;
 import com.drivedoctor.dominio.excepcion.SintomaExistente;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +43,6 @@ public class ServicioSintomaImpl implements ServicioSintoma {
         }
 
 
-
         repositorioSintoma.guardar(sintoma);
     }
 
@@ -59,12 +53,8 @@ public class ServicioSintomaImpl implements ServicioSintoma {
     }
 
     @Override
-    public Sintoma findById(Integer idSintoma) throws ElementoNoEncontrado {
-        Sintoma sintoma= repositorioSintoma.findById(idSintoma);
-        if(sintoma == null){
-            throw new ElementoNoEncontrado();
-        }
-        return sintoma;
+    public Sintoma findById(Integer idSintoma) {
+        return repositorioSintoma.findById(idSintoma);
     }
 
     //TRAE DEL REPO TODOS LOS SINTOMAS QUE SE ASOCIAN AL ITEM

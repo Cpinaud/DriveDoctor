@@ -5,7 +5,10 @@ import com.drivedoctor.dominio.excepcion.*;
 import com.drivedoctor.infraestructura.ServicioMarcaImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -39,18 +42,11 @@ public class ControladorUsuario {
 
 
     @RequestMapping(path = "/verMisVehiculos",method = RequestMethod.GET)
-    public ModelAndView verMisVehiculos( HttpServletRequest request) throws ElementoNoEncontrado {
+    public ModelAndView verMisVehiculos( HttpServletRequest request) {
         String viewName = "misVehiculos";
         ModelMap model = new ModelMap();
-
         Integer usuarioId= (Integer) request.getSession().getAttribute("ID");
-        Usuario usuario = new Usuario();
-        try {
-            usuario = servicioUsuario.findById(usuarioId);
-        } catch (ElementoNoEncontrado e) {
-            model.put("mensaje", "El usuario no existe");
-            return new ModelAndView(viewName, model);
-        }
+        Usuario usuario = servicioUsuario.buscar(usuarioId);
         List<Marca> marcas = this.servicioMarca.obtenerMarcasAll();
         model.put("marcas", marcas);
         model.put("id",request.getSession().getAttribute("ID"));
@@ -71,18 +67,12 @@ public class ControladorUsuario {
     @RequestMapping(path = "/buscarPorMarca",method = RequestMethod.POST)
     public ModelAndView verMisVhPorMarca(HttpServletRequest request,
                                          @RequestParam("marca") Integer marcaid,
-                                         RedirectAttributes redirectAttributes) throws ElementoNoEncontrado {
+                                         RedirectAttributes redirectAttributes) throws MarcaNoEncontrada {
         String viewName = "misVehiculos";
         ModelMap model = new ModelMap();
         Integer usuarioId= (Integer) request.getSession().getAttribute("ID");
-        Usuario usuario = new Usuario();
-        try {
-            usuario = servicioUsuario.findById(usuarioId);
-        } catch (ElementoNoEncontrado e) {
-            model.put("mensaje", "El usuario no existe");
-            return new ModelAndView(viewName, model);
-        }
-        Marca marca = this.servicioMarca.findById(marcaid);
+        Usuario usuario = servicioUsuario.buscar(usuarioId);
+        Marca marca = this.servicioMarca.obtenerMarcaPorId(marcaid);
         List<Marca> marcas = this.servicioMarca.obtenerMarcasAll();
         model.put("marcas", marcas);
         model.put("id",request.getSession().getAttribute("ID"));
@@ -98,22 +88,6 @@ public class ControladorUsuario {
         }
 
         return new ModelAndView(viewName, model);
-    }
-
-    @GetMapping("/adminVehiculos")
-    public ModelAndView adminVehiculos(HttpServletRequest request){
-        String rolU = "ADMIN";
-        if (request == null || request.getSession() == null) {
-            return new ModelAndView("home");
-        }
-
-        Object rol = request.getSession().getAttribute("rol");
-        if (rol == null || !rol.equals(rolU)) {
-            return new ModelAndView("home");
-        }
-
-        return new ModelAndView("adminVehiculos");
-
     }
 }
 

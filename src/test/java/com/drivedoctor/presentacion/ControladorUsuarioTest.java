@@ -1,7 +1,10 @@
 package com.drivedoctor.presentacion;
 
 import com.drivedoctor.dominio.*;
-import com.drivedoctor.dominio.excepcion.*;
+import com.drivedoctor.dominio.excepcion.MarcaNoEncontrada;
+import com.drivedoctor.dominio.excepcion.PatenteExistente;
+import com.drivedoctor.dominio.excepcion.UserSinVhByMarca;
+import com.drivedoctor.dominio.excepcion.UsuarioSinVehiculos;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -33,7 +36,7 @@ public class ControladorUsuarioTest {
         this.controladorUsuario = new ControladorUsuario(this.servicioUsuario,this.servicioMarca);
     }
     @Test
-    public void queIndiqueNoTenerVehiculosCuandoSeConsultenLosVehiculosDeUnUsuarioQueNoTieneNinguno() throws UsuarioSinVehiculos, ElementoNoEncontrado {
+    public void queIndiqueNoTenerVehiculosCuandoSeConsultenLosVehiculosDeUnUsuarioQueNoTieneNinguno() throws UsuarioSinVehiculos{
         // preparacion
         HttpServletRequest request = this.mockeoSessionUser();
         when(controladorUsuario.verMisVehiculos(request)).thenThrow(UsuarioSinVehiculos.class);
@@ -48,7 +51,7 @@ public class ControladorUsuarioTest {
 
 
     @Test
-    public void queAlSolicitarLaPantallaDeMisVehiculosSeMuestreLaVistaMisVehiculos() throws ElementoNoEncontrado {
+    public void queAlSolicitarLaPantallaDeMisVehiculosSeMuestreLaVistaMisVehiculos(){
         // preparacion
         HttpServletRequest request = this.mockeoSessionUser();
 
@@ -61,7 +64,7 @@ public class ControladorUsuarioTest {
 
 
     @Test
-    public void queAlBuscarVehiculosRenaultDevuelvaVehiculosDeEsaMarcaSiElUserLosPosee() throws UserSinVhByMarca, ElementoNoEncontrado {
+    public void queAlBuscarVehiculosRenaultDevuelvaVehiculosDeEsaMarcaSiElUserLosPosee() throws UserSinVhByMarca, MarcaNoEncontrada {
         HttpServletRequest request = this.mockeoSessionUser();
         Integer userId = (Integer) request.getSession().getAttribute("ID");
         Usuario usuario = new Usuario();
@@ -74,8 +77,8 @@ public class ControladorUsuarioTest {
         Marca marca = new Marca("Renault");
         marca.setId(1);
         Integer marcaId = marca.getId();
-        when(servicioUsuario.findById(userId)).thenReturn(usuario);
-        when(servicioMarca.findById(marcaId)).thenReturn(marca);
+        when(servicioUsuario.buscar(userId)).thenReturn(usuario);
+        when(servicioMarca.obtenerMarcaPorId(marcaId)).thenReturn(marca);
         when(servicioUsuario.getVhPorMarca(usuario,marca)).thenReturn(vehiculosMock);
         RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
         ModelAndView mav = this.controladorUsuario.verMisVhPorMarca(request,marcaId,redirectAttributes);
@@ -87,7 +90,7 @@ public class ControladorUsuarioTest {
     }
 
     @Test
-    public void queAlBuscarVehiculosRenaultDevuelvaMensajeDeNoExistentesSiElUserNoLosPosee() throws UserSinVhByMarca, ElementoNoEncontrado {
+    public void queAlBuscarVehiculosRenaultDevuelvaMensajeDeNoExistentesSiElUserNoLosPosee() throws UserSinVhByMarca, MarcaNoEncontrada {
         HttpServletRequest request = this.mockeoSessionUser();
         Integer userId = (Integer) request.getSession().getAttribute("ID");
         Usuario usuario = new Usuario();
@@ -97,8 +100,8 @@ public class ControladorUsuarioTest {
         Marca marca = new Marca("Renault");
         marca.setId(1);
         Integer marcaId = marca.getId();
-        when(servicioUsuario.findById(userId)).thenReturn(usuario);
-        when(servicioMarca.findById(marcaId)).thenReturn(marca);
+        when(servicioUsuario.buscar(userId)).thenReturn(usuario);
+        when(servicioMarca.obtenerMarcaPorId(marcaId)).thenReturn(marca);
 
         when(servicioUsuario.getVhPorMarca(any(Usuario.class),any(Marca.class))).thenThrow(UserSinVhByMarca.class);
 
@@ -119,5 +122,48 @@ public class ControladorUsuarioTest {
         when(session.getAttribute("ID")).thenReturn(123);
         return request;
     }
+
+
+
+
+/*
+    @Test
+    public void queAlBuscarVehiculosDeMarcaRenaultDevuelvaLosVehiculosDeEsaMarca() {
+
+        //preparacion
+
+        String marca = "Renault";
+
+        //ejecucion
+        ModelAndView mav = this.controladorUsuario.verVehiculosPorMarca(marca);
+        List<Vehiculo> vehiculosPorMarca = (List<Vehiculo>) mav.getModel().get("vehiculos");
+
+        //verificacion
+        assertThat(vehiculosPorMarca.get(0).getMarca(), is(equalTo(marca)));
+        assertThat(vehiculosPorMarca.get(1).getMarca(), is(equalTo(marca)));
+        assertThat(vehiculosPorMarca, instanceOf(List.class));
+        assertThat(vehiculosPorMarca.size(), equalTo(2));
+
+    }
+
+    @Test
+    public void queAlBuscarVehiculosDeMarcaRenaultYModeloClioDevuelvaLosVehiculosDeEsaMarcaYModelo() {
+
+        //preparacion
+
+        String marca = "Renault";
+        String modelo = "Clio";
+
+        //ejecucion
+        ModelAndView mav = this.controladorUsuario.verVehiculoPorMarcaYModelo(marca,modelo);
+        List<Vehiculo> vehiculoPorMarcaYModelo = (List<Vehiculo>) mav.getModel().get("vehiculos");
+
+        //verificacion
+        assertThat(vehiculoPorMarcaYModelo.get(0).getMarca(), is(equalTo(marca)));
+        assertThat(vehiculoPorMarcaYModelo.get(0).getModelo(), is(equalTo(modelo)));
+
+    }*/
+
+
 
 }

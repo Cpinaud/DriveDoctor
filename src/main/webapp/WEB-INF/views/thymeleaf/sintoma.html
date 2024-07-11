@@ -16,7 +16,7 @@
     <div th:include="templates/sidebar.html"></div>
 
         <div class="container" style="margin-top:50px;">
-            <h2 id="diagnosticarVehiculo" th:if="${session.rol!='ADMIN'}" th:text="'Diagnosticar unidad ' + ${patente}"></h2>
+            <h2 th:if="${session.rol!='ADMIN'}" th:text="'Diagnosticar unidad ' + ${patente}"></h2>
             <h3 class="tituloE2E">Opciones</h3>
             <br>
             <a th:if="${session.rol=='ADMIN'}" th:href="@{/nuevoSintoma}" class="btn boton-principal mr-2">Nuevo Síntoma</a>

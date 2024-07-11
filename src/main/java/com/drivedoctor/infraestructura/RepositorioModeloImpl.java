@@ -36,30 +36,12 @@ public class RepositorioModeloImpl implements RepositorioModelo {
     }
 
     @Override
-    public Modelo findById(Integer id) {
+    public Modelo getById(Integer id) {
         String hql = "FROM Modelo WHERE id = :id";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("id", id);
         return (Modelo) query.getSingleResult();
     }
-
-    @Override
-    public void guardar(Modelo modelo) {
-
-        this.sessionFactory.getCurrentSession().save(modelo);
-    }
-
-    @Override
-    public void modificar(Modelo modelo) {
-        sessionFactory.getCurrentSession().update(modelo);
-    }
-
-    @Override
-    public void eliminar(Modelo modelo) {
-        sessionFactory.getCurrentSession().delete(modelo);
-    }
-
-
 
 
 }

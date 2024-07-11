@@ -3,7 +3,6 @@ package com.drivedoctor.infraestructura;
 import com.drivedoctor.dominio.*;
 import com.drivedoctor.dominio.excepcion.UsuarioExistente;
 import com.drivedoctor.infraestructura.config.HibernateTestInfraestructuraConfig;
-import org.hamcrest.Matchers;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -65,7 +64,25 @@ public class RepositorioUsuarioTest {
     }
 
 
+    @Test
+    @Transactional
+    @Rollback
+    public void queNoSePuedaAgregarUnUsuarioExistente() throws UsuarioExistente {
+        // Preparación
+        Usuario usuario = new Usuario();
+        usuario.setPassword("test2");
+        usuario.setEmail("test@test2.com");
 
+        this.repositorioUsuario.guardar(usuario);
+
+        Usuario nuevoUsuario = new Usuario();
+        nuevoUsuario.setPassword("test2");
+        nuevoUsuario.setEmail("test@test2.com");
+
+        assertThrows(UsuarioExistente.class, () -> {
+            this.repositorioUsuario.guardar(nuevoUsuario);
+        });
+    }
 
     @Test
     @Transactional
@@ -107,25 +124,23 @@ public class RepositorioUsuarioTest {
         assertThat(usuarioModificado.getPassword(), equalTo("nuevaPassword"));
     }
 
-   /* @Test
+    @Test
     @Transactional
     @Rollback
-    public void queSePuedaObtenerUnUsuarioPorId() {
+    public void queSePuedaBuscarUnUsuarioPorId() throws UsuarioExistente {
+        // Preparación
         Usuario usuario = new Usuario();
+        usuario.setPassword("test2");
+        usuario.setEmail("test@test2.com");
         usuario.setId(1);
-        Integer Idbuscada = 1;
-        Session session = sessionFactory.getCurrentSession();
-        session.save(usuario);
+        Integer idBuscado = 1;
 
+        this.repositorioUsuario.guardar(usuario);
+        Usuario obtenido = this.repositorioUsuario.buscarPorId(idBuscado);
 
-        Usuario buscado = this.sessionFactory.getCurrentSession()
-                .createQuery("FROM Usuario WHERE id = :idBuscado", Usuario.class)
-                .setParameter("idBuscado", Idbuscada)
-                .uniqueResult();
-
-        assertThat(buscado, notNullValue());
-        assertThat(buscado.getId(), Matchers.equalTo(Idbuscada));
-    }*/
+        assertThat(obtenido, notNullValue());
+        assertThat(obtenido, equalTo(usuario));
+    }
 
     @Test
     @Transactional

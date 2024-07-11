@@ -1,7 +1,7 @@
 package com.drivedoctor.infraestructura;
 
 import com.drivedoctor.dominio.*;
-import com.drivedoctor.dominio.excepcion.ElementoNoEncontrado;
+import com.drivedoctor.dominio.excepcion.ModeloNoEncontrado;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -26,21 +26,13 @@ public class ServicioModeloImpl implements ServicioModelo {
     }
 
     @Override
-    public Modelo findById(Integer modeloId) throws ElementoNoEncontrado {
-        Modelo modelo = this.repositorioModelo.findById(modeloId);
+    public Modelo getById(Integer modeloId) throws ModeloNoEncontrado {
+        Modelo modelo = this.repositorioModelo.getById(modeloId);
         if (modelo == null) {
-            throw new ElementoNoEncontrado();
+            throw new ModeloNoEncontrado();
         }
 
         return modelo;
-    }
-
-    @Override
-    public void guardarModelo(Modelo modelo) {
-        if (modelo == null) {
-            throw new IllegalArgumentException("El modelo no puede ser nulo");
-        }
-        repositorioModelo.guardar(modelo);
     }
 
 

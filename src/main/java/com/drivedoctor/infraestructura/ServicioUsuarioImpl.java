@@ -1,12 +1,14 @@
 package com.drivedoctor.infraestructura;
 import com.drivedoctor.dominio.*;
-import com.drivedoctor.dominio.excepcion.*;
+import com.drivedoctor.dominio.excepcion.UserSinVhByMarca;
+import com.drivedoctor.dominio.excepcion.UsuarioExistente;
+import com.drivedoctor.dominio.excepcion.UsuarioInexistente;
+import com.drivedoctor.dominio.excepcion.UsuarioSinVehiculos;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -29,6 +31,11 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
         return vehicDelUser;
     }
 
+    @Override
+    public Usuario buscar(Integer usuarioId) {
+
+        return repositorioUsuario.buscarPorId(usuarioId);
+    }
 
     @Override
     public List<Vehiculo> getVhPorMarca(Usuario usuario, Marca marca) throws UserSinVhByMarca {
@@ -39,14 +46,19 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
         return vehicDelUser;
     }
 
-    @Override
-    public Usuario findById(Integer id) throws ElementoNoEncontrado {
-        Usuario usuario= repositorioUsuario.findById(id);
-        if(usuario == null){
-            throw new ElementoNoEncontrado();
-        }
-        return usuario;
+    /*@Override
+    public List<Vehiculo> verMisVehiculos(Usuario usuario) {
+        return this.repositorioUsuario.verMisVehiculos(usuario);
+        //this.vehiculos;
     }
+
+    @Override
+    public void agregarVehiculo(Usuario usuario, Vehiculo vehiculo) {
+        usuario.getVehiculos().add(vehiculo);
+        repositorioUsuario.guardar(usuario);
+        repositorioUsuario.guardarV(vehiculo);
+
+    }*/
 
 
 }

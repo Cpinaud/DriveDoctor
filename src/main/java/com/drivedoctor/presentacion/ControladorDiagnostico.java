@@ -42,7 +42,7 @@ public class ControladorDiagnostico {
                                      @RequestParam("idVehiculo") Integer idVehiculo,
                                      @RequestParam("idsSintomas") Integer idsSintomas,
                                      HttpServletRequest request,
-                                     Model model) throws ElementoNoEncontrado {
+                                     Model model) throws VehiculoInvalido {
         try {
             List<Diagnostico> diagnostico = new ArrayList<>();
             diagnostico.add(servicioDiagnostico.findById(id));
@@ -54,11 +54,7 @@ public class ControladorDiagnostico {
             List<Sintoma> sintoma = new ArrayList<>();
             sintoma.add(servicioSintoma.findById(idsSintomas));
             model.addAttribute("sintoma", sintoma);
-        } catch (IllegalArgumentException e) {
-            return "error";
-        }
-        catch(ElementoNoEncontrado e){
-            model.addAttribute("mensaje", "No se encuentra ningun diagnostico asociado a este id");
+        } catch (DiagnosticoNotFoundException | IllegalArgumentException e) {
             return "error";
         }
         return "mostrarDiagnostico";
@@ -67,7 +63,7 @@ public class ControladorDiagnostico {
     @RequestMapping(value = "/diagnosticos", method = RequestMethod.POST )
     public String obtenerDiagnosticoPorSintomas(@RequestParam("idsSintomas") String idsSintomasStr,
                                                 @RequestParam("idVh") Integer idVehiculo,
-                                                Model model) throws ElementoNoEncontrado, ItemNoEncontrado {
+                                                Model model) throws ItemNoEncontrado {
         logger.info("Llamada a /diagnosticos con idsSintomas: {}", idsSintomasStr);
         Boolean flagItem = false;
         model.addAttribute("idVh", idVehiculo);
@@ -80,7 +76,24 @@ public class ControladorDiagnostico {
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
 
-        List<Sintoma> sintomas = servicioSintoma.obtenerSintomasPorSuId(idsSintomas);
+
+
+
+       /* String devolucion = servicioDiagnostico.findDependingId(idsSintomas);
+        String mapaDiagnostico = "Demasiados sintomas acerquese a un taller";
+
+        System.out.println(devolucion);
+        model.addAttribute("diagnosticos", devolucion);
+        model.addAttribute("idsSintomas", idsSintomas);
+
+        if(devolucion.equals(mapaDiagnostico)){
+            return "diagnosticoConMapa";
+        }*/
+
+
+        List<Sintoma> sintomas = idsSintomas.stream()
+                .map(id -> servicioSintoma.findById(id))
+                .collect(Collectors.toList());
 
         List<Diagnostico> devolucion = new ArrayList<>();
         try{
@@ -105,8 +118,6 @@ public class ControladorDiagnostico {
             //throw new DemasiadosSintomas("Demasiados sintomas acerquese a un taller");
             model.addAttribute("mensaje", "Demasiados sintomas acerquese a un taller.");
             return "diagnosticos";
-        } catch (DemasiadosItems e) {
-            model.addAttribute("mensaje", "Demasiados síntomas. Le recomendamos que se acerquese a un taller");
         }
         ////armar lista de sintomas dependiendo idsSintomas
         model.addAttribute("sintoma", sintomas);
@@ -116,8 +127,7 @@ public class ControladorDiagnostico {
     }
 
     @RequestMapping(value = "/mostrarPorcentajeDeDaniadoUnSintoma", method = RequestMethod.POST)
-    public String mostrarPorcentajeDeDañadoDeUnSintoma(@RequestParam("idsSintomas") List<Integer> idsSintomas,
-                                                       Model model){
+    public String mostrarPorcentajeDeDañadoDeUnSintoma(@RequestParam("idsSintomas") List<Integer> idsSintomas, Model model){
 
        System.out.println(idsSintomas);
         try {

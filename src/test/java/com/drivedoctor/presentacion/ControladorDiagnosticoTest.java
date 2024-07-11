@@ -1,7 +1,9 @@
 package com.drivedoctor.presentacion;
 
 import com.drivedoctor.dominio.*;
-import com.drivedoctor.dominio.excepcion.*;
+import com.drivedoctor.dominio.excepcion.AllItemsEqual;
+import com.drivedoctor.dominio.excepcion.ItemNoEncontrado;
+import com.drivedoctor.dominio.excepcion.VehiculoInvalido;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.Model;
@@ -37,7 +39,7 @@ public class ControladorDiagnosticoTest {
     }
 
     @Test
-    public void mostrarVistaCuandoSeObtengaUnDiagnosticoAsociadoAunSintoma() throws  ElementoNoEncontrado {
+    public void mostrarVistaCuandoSeObtengaUnDiagnosticoAsociadoAunSintoma() throws VehiculoInvalido {
         //preparacion
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpSession session = mock(HttpSession.class);
@@ -45,13 +47,11 @@ public class ControladorDiagnosticoTest {
         when(session.getAttribute("ID")).thenReturn(1);
 
         Integer diagnosticoId = 1;
-        Diagnostico diagnostico = new Diagnostico();
-        diagnostico.setIdDiagnostico(diagnosticoId);
-       List<Diagnostico> diagnosticoEsperado = new ArrayList<>();
-        diagnosticoEsperado.add(diagnostico);
+        Diagnostico diagnosticoEsperado = new Diagnostico();
+        diagnosticoEsperado.setIdDiagnostico(diagnosticoId);
 
         // Configuración del mock del servicio
-        when(servicioDiagnostico.findById(diagnosticoId)).thenReturn(diagnostico);
+        when(servicioDiagnostico.findById(diagnosticoId)).thenReturn(diagnosticoEsperado);
 
         Model model = mock(Model.class);
 
@@ -66,18 +66,21 @@ public class ControladorDiagnosticoTest {
     }
 
     @Test
-    public void mostrarVistaCuandoSeObtenganDosDiagnosticosAsociadosAdosSintomas() throws AllItemsEqual, ElementoNoEncontrado, DemasiadosItems, DemasiadosSintomas, ItemNoEncontrado {
-
+    public void mostrarVistaCuandoSeObtenganDosDiagnosticosAsociadosAdosSintomas() throws AllItemsEqual, ItemNoEncontrado {
+        int idSintoma1 = 1;
+        int idSintoma2 = 2;
         Integer idVh=1;
+        List<Integer> idsSintomas = List.of(idSintoma1, idSintoma2);
         String idsSintomasStr = "1,2";
         Diagnostico diagnostico1 = new Diagnostico();
         diagnostico1.setIdDiagnostico(1);
         Diagnostico diagnostico2 = new Diagnostico();
-        diagnostico2.setIdDiagnostico(2);
+        diagnostico1.setIdDiagnostico(2);
+        //String diagnosticosEsperados = "Diagnostico1, Diagnostico2";
         List<Diagnostico> diagnosticosEsperados = new ArrayList<>();
-        diagnosticosEsperados.add(diagnostico1);
         diagnosticosEsperados.add(diagnostico2);
-        when(servicioDiagnostico.findDependingId(anyList())).thenReturn(diagnosticosEsperados);
+        diagnosticosEsperados.add(diagnostico1);
+        when(servicioDiagnostico.findDependingId(idsSintomas)).thenReturn(diagnosticosEsperados);
 
         Model model = mock(Model.class);
 
@@ -86,22 +89,22 @@ public class ControladorDiagnosticoTest {
 
 
         // Verificación
-        assertEquals("diagnosticos", vista);
+
         verify(model).addAttribute("diagnosticos", diagnosticosEsperados);
-
-
+        verify(model).addAttribute("idsSintomas", idsSintomas);
+        verify(servicioDiagnostico).findDependingId(idsSintomas);
     }
 
     @Test
-    public void siNoSeObtieneUnDiagnosticoAsociadoAunSintomaLanzarElementoNoEncontrado() throws ElementoNoEncontrado {
+    public void siNoSeObtieneUnDiagnosticoAsociadoAunSintomaLanzarUnError() throws VehiculoInvalido {
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpSession session = mock(HttpSession.class);
         when(request.getSession()).thenReturn(session);
         when(session.getAttribute("ID")).thenReturn(1);
 
         Integer diagnosticoId = 1;
-        doThrow(ElementoNoEncontrado.class).when(servicioDiagnostico).findById(diagnosticoId);
 
+        when(servicioDiagnostico.findById(diagnosticoId)).thenReturn(null);
         Model model = mock(Model.class);
 
         Integer idVehiculo = 1;
@@ -109,7 +112,7 @@ public class ControladorDiagnosticoTest {
         String vista = controladorDiagnostico.obtenerDiagnostico(diagnosticoId, idVehiculo,idsSintomas,request,model);
 
 
-
+        assertEquals("error", vista, "La vista devuelta debe ser 'error'");
         verify(model).addAttribute("mensaje", "No se encuentra ningun diagnostico asociado a este id");
 
         verify(servicioDiagnostico).findById(diagnosticoId);

@@ -15,7 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {HibernateTestConfig.class})
 public class ServicioLoginTest {
 
 

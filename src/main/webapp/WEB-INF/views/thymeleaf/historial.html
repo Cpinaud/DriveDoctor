@@ -12,40 +12,28 @@
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
 <body style="display:flex;flex-direction: column;">
-<main>
+<div style="background-color: white;">
+    <a style="color:black" th:href="@{/home}" >Home</a>
+    <a style="color:black" th:if="${session.rol!='ADMIN'}" th:href="@{/verMisVehiculos}" >Mis Vehiculos </a>
 
-    <!-- Incluir el fragmento del sidebar -->
-    <div th:include="templates/sidebar.html"></div>
-
-    <div class="container w-75 mt-5 p-4 bg-light rounded">
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <h1 th:text="'Historial ' + ${vehiculo.patente} + ' ' + ${vehiculo.marca.nombre} + ' ' + ${vehiculo.modelo.nombre}"></h1>
-            <div class="btnHistorial d-flex gap-3 p-3 rounded justify-content-center">
-                <a class="btn btn-diagnostico" th:href="@{/home}">Home</a>
-                <a class="btn btn-porcentaje" th:if="${session.rol!='ADMIN'}" th:href="@{/verMisVehiculos}">Mis Vehiculos</a>
-            </div>
+</div>
+<div class="historial">
+<h1 th:text="'Historial ' + ${vehiculo.patente} + ' ' + ${vehiculo.marca.nombre} + ' ' + ${vehiculo.modelo.nombre}"></h1>
+<hr>
+    <div th:each="historial : ${historial}" class="item-historial">
+        <h5 th:text="'Fecha del diagnóstico:  ' +${historial.fecha}"></h5>
+        <p class="item-historial-subtitle">Sintomas seleccionados:</p>
+        <div th:each="sintoma : ${historial.sintomas}">
+            <p th:text="${sintoma.nombre} + '( '+${sintoma.itemTablero.nombre}+' )'"></p>
         </div>
-
-
-        <hr class="my-4">
-
-        <div class="historial-container" style="max-height: 500px; overflow-y: auto;">
-            <div th:each="historial : ${historial}" class="item-historial mb-4 p-3 rounded bg-white shadow-sm">
-                <h5 class="p-3" th:text="'Fecha del diagnóstico: ' + ${historial.fecha}"></h5>
-                <p class="item-historial-subtitle font-weight-bold mt-2 p-1">Síntomas seleccionados:</p>
-                <div th:each="sintoma : ${historial.sintomas}">
-                    <p class="p-2" th:text="${sintoma.nombre} + ' (' + ${sintoma.itemTablero.nombre} + ')'"></p>
-                </div>
-                <p class="item-historial-subtitle font-weight-bold mt-3 p-1">Diagnósticos recibidos:</p>
-                <div th:each="diagnostico : ${historial.diagnosticos}">
-                    <p class="p-2" th:text="${diagnostico.descripcion}"></p>
-                </div>
-                <hr class="my-3">
-            </div>
+        <p class="item-historial-subtitle">Diagnósticos recibidos:</p>
+        <div th:each="diagnostico : ${historial.diagnosticos}">
+            <p th:text="${diagnostico.descripcion}"></p>
         </div>
-
+        <br>
+        <hr style="color:white;">
+        <br>
     </div>
-
-</main>
+</div>
 </body>
 </html>

@@ -1,6 +1,6 @@
 package com.drivedoctor.presentacion;
 
-import com.drivedoctor.dominio.ServicioTaller;
+import com.drivedoctor.dominio.ServiceTaller;
 import com.drivedoctor.dominio.Taller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,17 +13,17 @@ import java.util.List;
 @RequestMapping("/api/talleres")
 public class ControladorTaller {
 
-    private final ServicioTaller servicioTaller;
+    private final ServiceTaller serviceTaller;
 
 
     @Autowired
-    public ControladorTaller(ServicioTaller servicioTaller){
-        this.servicioTaller = servicioTaller;
+    public ControladorTaller(ServiceTaller serviceTaller){
+        this.serviceTaller = serviceTaller;
 
     }
 
     @GetMapping
     public List<Taller> getAllTalleres(){
-        return servicioTaller.findAll();
+        return serviceTaller.findAll();
     }
 }

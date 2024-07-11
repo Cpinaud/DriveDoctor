@@ -26,6 +26,4 @@ public class RepositorioTallerImpl implements RepositorioTaller {
     public List<Taller> obtenerPorLocalidad(String localidad) {
         return List.of();
     }
-
-
 }

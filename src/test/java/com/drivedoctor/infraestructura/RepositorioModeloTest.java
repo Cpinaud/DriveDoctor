@@ -4,8 +4,6 @@ import com.drivedoctor.dominio.*;
 import com.drivedoctor.infraestructura.config.HibernateTestInfraestructuraConfig;
 import com.drivedoctor.integracion.config.HibernateTestConfig;
 import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +18,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 @ExtendWith(SpringExtension.class)
@@ -35,27 +32,6 @@ public class RepositorioModeloTest {
     @BeforeEach
     public void init(){
         this.repositorioModelo = new RepositorioModeloImpl(this.sessionFactory);
-    }
-
-    @Test
-    @Transactional
-    @Rollback
-    public void queSePuedaObtenerUnModeloPorId() {
-        Modelo modelo1 = new Modelo();
-        modelo1.setNombre("Etios");
-        modelo1.setId(1);
-        Integer Idbuscada = 1;
-        Session session = sessionFactory.getCurrentSession();
-        session.save(modelo1);
-
-
-        Modelo buscada = this.sessionFactory.getCurrentSession()
-                .createQuery("FROM Modelo WHERE id = :idBuscado", Modelo.class)
-                .setParameter("idBuscado", Idbuscada)
-                .uniqueResult();
-
-        assertThat(buscada, notNullValue());
-        assertThat(buscada.getId(), Matchers.equalTo(Idbuscada));
     }
 
     @Test

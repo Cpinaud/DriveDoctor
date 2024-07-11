@@ -1,8 +1,8 @@
 package com.drivedoctor.dominio;
-import javax.transaction.Transactional;
 import java.util.List;
-@Transactional
-public interface RepositorioVehiculo extends RepositoryCRUD<Vehiculo> {
+public interface RepositorioVehiculo {
+
+    void guardar(Vehiculo vehiculo);
 
     List<Vehiculo> getVehiculos();
 
@@ -10,7 +10,7 @@ public interface RepositorioVehiculo extends RepositoryCRUD<Vehiculo> {
 
     Vehiculo getByPatente(String patente);
 
-    /*Vehiculo getById(Integer idVehiculo);*/
+    Vehiculo getById(Integer idVehiculo);
 
     void modificar(Vehiculo vehiculo);
 

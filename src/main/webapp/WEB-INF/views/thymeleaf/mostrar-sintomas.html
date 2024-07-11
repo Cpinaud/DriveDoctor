@@ -25,12 +25,12 @@
     <!-- Incluir el fragmento del sidebar -->
     <div th:include="templates/sidebar.html"></div>
 
-    <div class="container mt-5">
-        <h2 class="mb-4">Síntomas Relacionados</h2>
-
-        <div class="table-container bg-dark w-75">
-            <table class="table table-striped">
-                <thead class="table-dark">
+    <div class="container" style="margin-top: 50px;">
+        <h2>Síntomas Relacionados</h2>
+        <br>
+        <div class="table-container">
+            <table class="table">
+                <thead>
                 <tr>
                     <th>Seleccionar</th>
                     <th>Nombre del Síntoma</th>
@@ -40,7 +40,7 @@
                 <!-- Iterar sobre los síntomas y mostrar cada uno -->
                 <tr th:each="sintoma : ${sintomas}">
                     <td><input type="checkbox" class="sintoma-checkbox" th:data-id="${sintoma.diagnostico.idDiagnostico}"></td>
-                    <td class="text-light" th:text="${sintoma.nombre}"></td>
+                    <td th:text="${sintoma.nombre}"></td>
                 </tr>
                 <input type="hidden" id="idVehiculo" name="idVehiculo" th:value="${idVh}" />
                 </tbody>
@@ -48,14 +48,16 @@
         </div>
 
         <div class="mt-3">
-            <p class="alert alert-warning w-75" th:text="${mensaje}"></p>
+            <p class="alert alert-warning" th:text="${mensaje}"></p>
         </div>
 
         <div class="mt-3">
             <span id="selected-count">0 síntomas seleccionados</span>
-            <div class="d-flex gap-3 bg-dark p-4 w-25 rounded">
-                <a th:if="${mensaje==null}" class="btn btn-diagnostico btn-sm mt-2" id="view-diagnosis" href="#" onclick="viewDiagnosis()">Ver Diagnóstico</a>
-                <a th:if="${mensaje==null}" class="btn btn-porcentaje btn-sm mt-2" id="view-porcentaje" href="#" onclick="viewPorcentaje()">Ver porcentaje</a>
+            <div>
+
+                <a th:if="${mensaje==null}" class="btn btn-primary btn-sm mt-2" id="view-diagnosis" href="#" onclick="viewDiagnosis()">Ver Diagnóstico</a>
+                <a th:if="${mensaje==null}" class="btn btn-primary btn-sm mt-2" id="view-porcentaje" href="#" onclick="viewPorcentaje()">Ver porcentaje</a>
+
             </div>
         </div>
     </div>

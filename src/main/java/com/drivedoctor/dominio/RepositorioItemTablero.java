@@ -1,10 +1,10 @@
 package com.drivedoctor.dominio;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
-@Transactional
-public interface RepositorioItemTablero extends RepositoryCRUD<ItemTablero> {
+public interface RepositorioItemTablero {
 
     List<ItemTablero> findAll();
+    ItemTablero findById(Integer idItemTablero);
+    void guardar(ItemTablero itemTablero);
 }

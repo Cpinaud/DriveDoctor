@@ -29,6 +29,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {HibernateTestConfig.class})
+
 public class ServicioVehiculoTest {
     private ServicioVehiculo servicioVehiculo;
     private RepositorioVehiculo repositorioVehiculo;
@@ -57,7 +60,7 @@ public class ServicioVehiculoTest {
 
 
     @Test
-    public void queAlCrearUnVehiculoSeAsocieAUnUsuarioExistente() throws UsuarioInexistente, AnioInvalido, PatenteInvalida, PatenteExistente, ElementoNoEncontrado, UsuarioExistente {
+    public void queAlCrearUnVehiculoSeAsocieAUnUsuarioExistente() throws UsuarioInexistente, AnioInvalido, PatenteInvalida, PatenteExistente {
         Integer usuarioId = 1;
         Usuario usuario = new Usuario();
         usuario.setId(usuarioId);
@@ -68,24 +71,21 @@ public class ServicioVehiculoTest {
         Modelo modelo = new Modelo();
         modelo.setId(3);
         modelo.setNombre("Focus");
-        List<Vehiculo> vehiculos= new ArrayList<>();
-
 
         Vehiculo vehiculo = new Vehiculo(marca, modelo, 2015, "AA203IK");
-        vehiculos.add(vehiculo);
+
         // Mock del repositorio de usuarios
-        when(repositorioUsuario.findById(usuarioId)).thenReturn(usuario);
-        when(repositorioUsuario.getMisVehiculos(usuario)).thenReturn(vehiculos);
+        when(repositorioUsuario.buscarPorId(usuarioId)).thenReturn(usuario);
 
         // Llamada al método del servicio
         servicioVehiculo.agregarVehiculo(usuarioId, vehiculo);
 
         // Verificación de que se haya guardado el vehículo
         verify(repositorioVehiculo).guardar(vehiculo);
-        List<Vehiculo> vehiculosObtenidos = repositorioUsuario.getMisVehiculos(usuario);
+
         // Verificaciones de la asociación
-        assertThat(vehiculosObtenidos.size(), equalTo(1));
-        assertThat(vehiculosObtenidos, hasItem(vehiculo));
+        assertThat(usuario.getVehiculos().size(), equalTo(1));
+        assertThat(usuario.getVehiculos(), hasItem(vehiculo));
         assertThat(vehiculo.getUsuario(), equalTo(usuario));
     }
 
@@ -150,7 +150,7 @@ public class ServicioVehiculoTest {
     }
 
     @Test
-    public void queSePuedaObtenerUnVehiculoPorSuId() throws ElementoNoEncontrado {
+    public void queSePuedanObtenerVehiculosPorId()  {
         Integer idVehiculo = 1;
         Marca marca = new Marca();
         marca.setId(2);
@@ -161,25 +161,12 @@ public class ServicioVehiculoTest {
         Vehiculo vehiculoEsperado = new Vehiculo(marca, modelo, 2015, "AA203IK");
         vehiculoEsperado.setId(idVehiculo);
 
-        when(repositorioVehiculo.findById(idVehiculo)).thenReturn(vehiculoEsperado);
-        Vehiculo vehiculoResultado = servicioVehiculo.findById(idVehiculo);
+        when(repositorioVehiculo.getById(idVehiculo)).thenReturn(vehiculoEsperado);
+        Vehiculo vehiculoResultado = servicioVehiculo.buscarById(idVehiculo);
 
-        verify(repositorioVehiculo, times(1)).findById(idVehiculo);
+        verify(repositorioVehiculo, times(1)).getById(idVehiculo);
         assertThat(vehiculoResultado, equalTo(vehiculoEsperado));
     }
-
-    @Test
-    public void queSeLanceLaExcepcionElementoNoEncontradoSiNoExisteUnVehiculoConElIdSolicitado() throws ElementoNoEncontrado {
-
-        when(repositorioVehiculo.findById(anyInt())).thenReturn(null);
-
-        assertThrows(ElementoNoEncontrado.class, () -> {
-            servicioVehiculo.findById(anyInt());
-        });
-
-        verify(repositorioVehiculo, times(1)).findById(anyInt());
-    }
-
 
     @Test
     public void queSePuedaObtenerVehiculosPorPatente() throws VehiculoInexistente {
@@ -214,7 +201,7 @@ public class ServicioVehiculoTest {
     }
 
     @Test
-    public void queSeValideUnVehiculoConRespectoAUnUsuario() throws ElementoNoEncontrado {
+    public void queSeValideUnVehiculoConRespectoAUnUsuario(){
         Integer idVehiculo = 1;
         Integer idVehiculoPorPatente = 1;
         Integer userId = 1;
@@ -223,17 +210,17 @@ public class ServicioVehiculoTest {
         Usuario usuarioMock = mock(Usuario.class);
         when(usuarioMock.getId()).thenReturn(userId);
         when(vehiculoMock.getUsuario()).thenReturn(usuarioMock);
-        when(repositorioVehiculo.findById(idVehiculo)).thenReturn(vehiculoMock);
+        when(repositorioVehiculo.getById(idVehiculo)).thenReturn(vehiculoMock);
 
         assertDoesNotThrow(() -> {
             servicioVehiculo.validarVehiculoUser(idVehiculo, idVehiculoPorPatente, userId);
         });
 
-        verify(repositorioVehiculo, times(1)).findById(idVehiculo);
+        verify(repositorioVehiculo, times(1)).getById(idVehiculo);
     }
 
     @Test
-    public void queLanceVehiculoInvalidoCuandoElIdDelUsuarioNoCoincide() throws ElementoNoEncontrado {
+    public void queLanceVehiculoInvalidoCuandoElIdDelUsuarioNoCoincide() {
         Integer idVehiculo = 1;
         Integer idVehiculoPorPatente = 1;
         Integer userId = 1;
@@ -242,13 +229,13 @@ public class ServicioVehiculoTest {
         Usuario usuarioMock = mock(Usuario.class);
         when(usuarioMock.getId()).thenReturn(2); // No coincide con userId
         when(vehiculoMock.getUsuario()).thenReturn(usuarioMock);
-        when(repositorioVehiculo.findById(idVehiculo)).thenReturn(vehiculoMock);
+        when(repositorioVehiculo.getById(idVehiculo)).thenReturn(vehiculoMock);
 
         assertThrows(VehiculoInvalido.class, () -> {
             servicioVehiculo.validarVehiculoUser(idVehiculo, idVehiculoPorPatente, userId);
         });
 
-        verify(repositorioVehiculo, times(1)).findById(idVehiculo);
+        verify(repositorioVehiculo, times(1)).getById(idVehiculo);
     }
 
     @Test
@@ -273,33 +260,33 @@ public class ServicioVehiculoTest {
 
 
     @Test
-    public void queAlModificarVehiculoDeberiaLanzarUsuarioInexistenteSiElUsuarioNoExiste() throws UsuarioInexistente {
+    public void queAlModificarVehiculoDeberiaLanzarUsuarioInexistente() {
         Integer usuarioId = 1;
-        when(repositorioUsuario.findById(anyInt())).thenReturn(null);
+        when(repositorioUsuario.buscarPorId(usuarioId)).thenReturn(null);
 
         assertThrows(UsuarioInexistente.class, () -> {
-            servicioVehiculo.modificarVehiculo(usuarioId, 4000, "AAA111", 2015);
+            servicioVehiculo.modificarVehiculo(usuarioId, 2, "AAA111", 2015);
         });
     }
 
     @Test
-    public void queAlModificarVehiucloDeberiaLanzarVehiculoInexistenteSiElVehiculoNoExiste() throws VehiculoInexistente {
+    public void queAlModificarVehiucloDeberiaLanzarVehiculoInexistente() {
         Integer usuarioId = 1;
         Integer idVehiculo = 2;
-        when(repositorioUsuario.findById(usuarioId)).thenReturn(new Usuario());
+        when(repositorioUsuario.buscarPorId(usuarioId)).thenReturn(new Usuario());
+        when(repositorioVehiculo.getById(idVehiculo)).thenReturn(null);
 
-        when(this.repositorioVehiculo.findById(idVehiculo)).thenReturn(null);
         assertThrows(VehiculoInexistente.class, () -> {
             servicioVehiculo.modificarVehiculo(usuarioId, idVehiculo, "AAA111", 2015);
         });
     }
 
     @Test
-    public void queAlModificarVehiculoDeberiaLanzarAnioInvalidoSiElMismoNoCumpleLaValidacionEstablecida() throws ElementoNoEncontrado,AnioInvalido {
+    public void queAlModificarVehiculoDeberiaLanzarAnioInvalido() {
         Integer usuarioId = 1;
         Integer idVehiculo = 2;
-        when(repositorioUsuario.findById(usuarioId)).thenReturn(new Usuario());
-        when(repositorioVehiculo.findById(idVehiculo)).thenReturn(new Vehiculo());
+        when(repositorioUsuario.buscarPorId(usuarioId)).thenReturn(new Usuario());
+        when(repositorioVehiculo.getById(idVehiculo)).thenReturn(new Vehiculo());
 
         assertThrows(AnioInvalido.class, () -> {
             servicioVehiculo.modificarVehiculo(usuarioId, idVehiculo, "AAA111", 1999);
@@ -307,11 +294,11 @@ public class ServicioVehiculoTest {
     }
 
     @Test
-    public void queAlModificarVehiculoDeberiaLanzarPatenteInvalidaSiNoCumpleConLaValidacionEstablecida() throws PatenteInvalida, ElementoNoEncontrado {
+    public void queAlModificarVehiculoDeberiaLanzarPatenteInvalida() {
         Integer usuarioId = 1;
         Integer idVehiculo = 2;
-        when(repositorioUsuario.findById(usuarioId)).thenReturn(new Usuario());
-        when(repositorioVehiculo.findById(idVehiculo)).thenReturn(new Vehiculo());
+        when(repositorioUsuario.buscarPorId(usuarioId)).thenReturn(new Usuario());
+        when(repositorioVehiculo.getById(idVehiculo)).thenReturn(new Vehiculo());
 
         assertThrows(PatenteInvalida.class, () -> {
             servicioVehiculo.modificarVehiculo(usuarioId, idVehiculo, "INVALIDA", 2015);
@@ -319,13 +306,13 @@ public class ServicioVehiculoTest {
     }
 
     @Test
-    public void queAlModificarVehiculoDeberiaLanzarPatenteExistenteSiYaExisteUnVehiculoConEsaPatente() throws PatenteExistente, ElementoNoEncontrado {
+    public void queAlModificarVehiculoDeberiaLanzarPatenteExistente() {
         Integer usuarioId = 1;
         Integer idVehiculo = 2;
         Vehiculo vehiculoExistente = new Vehiculo();
         vehiculoExistente.setId(3);
-        when(repositorioUsuario.findById(usuarioId)).thenReturn(new Usuario());
-        when(repositorioVehiculo.findById(idVehiculo)).thenReturn(new Vehiculo());
+        when(repositorioUsuario.buscarPorId(usuarioId)).thenReturn(new Usuario());
+        when(repositorioVehiculo.getById(idVehiculo)).thenReturn(new Vehiculo());
         when(repositorioVehiculo.getByPatente("AAA111")).thenReturn(vehiculoExistente);
 
         assertThrows(PatenteExistente.class, () -> {
@@ -334,7 +321,7 @@ public class ServicioVehiculoTest {
     }
 
     @Test
-    public void deberiaLanzarVehiculoSinCambios() throws ElementoNoEncontrado {
+    public void deberiaLanzarVehiculoSinCambios() {
         Integer usuarioId = 1;
         Integer idVehiculo = 2;
         Usuario usuario = new Usuario();
@@ -345,8 +332,8 @@ public class ServicioVehiculoTest {
         vehiculo.setId(idVehiculo);
         vehiculo.setUsuario(usuario);
 
-        when(repositorioUsuario.findById(usuarioId)).thenReturn(usuario);
-        when(repositorioVehiculo.findById(idVehiculo)).thenReturn(vehiculo);
+        when(repositorioUsuario.buscarPorId(usuarioId)).thenReturn(usuario);
+        when(repositorioVehiculo.getById(idVehiculo)).thenReturn(vehiculo);
         when(repositorioVehiculo.getByPatente("AAA111")).thenReturn(vehiculo);
 
         assertThrows(vehiculoSinCambios.class, () -> {
@@ -358,17 +345,17 @@ public class ServicioVehiculoTest {
 
     @Test
     public void deberiaModificarVehiculoExitosamente() throws UsuarioInexistente,
-            AnioInvalido, PatenteInvalida,
-            PatenteExistente, VehiculoInexistente,
-            vehiculoSinCambios, ElementoNoEncontrado {
+                                                        AnioInvalido, PatenteInvalida,
+                                                        PatenteExistente, VehiculoInexistente,
+                                                        vehiculoSinCambios {
         Integer usuarioId = 1;
         Integer idVehiculo = 2;
         Vehiculo vehiculo = new Vehiculo();
         vehiculo.setAnoFabricacion(2010);
         vehiculo.setPatente("BBB222");
 
-        when(repositorioUsuario.findById(usuarioId)).thenReturn(new Usuario());
-        when(repositorioVehiculo.findById(idVehiculo)).thenReturn(vehiculo);
+        when(repositorioUsuario.buscarPorId(usuarioId)).thenReturn(new Usuario());
+        when(repositorioVehiculo.getById(idVehiculo)).thenReturn(vehiculo);
         when(repositorioVehiculo.getByPatente("AAA111")).thenReturn(null);
 
         servicioVehiculo.modificarVehiculo(usuarioId, idVehiculo, "AAA111", 2015);

@@ -1,7 +1,7 @@
 package com.drivedoctor.dominio.excepcion;
 
-public class ItemNoEncontrado extends Throwable {
+public class ItemNoEncontrado extends Exception {
     public ItemNoEncontrado() {
-        super("ITEMS NO ES ENCONTRADOS");
+        super("ITEM NO ENCONTRADO");
     }
 }
