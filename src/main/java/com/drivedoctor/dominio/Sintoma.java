@@ -17,7 +17,7 @@ public class Sintoma {
     @JoinColumn(name = "item_tablero_id")
     private ItemTablero itemTablero;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_diagnostico")
     private Diagnostico diagnostico;
 
