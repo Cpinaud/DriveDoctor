@@ -1,6 +1,6 @@
 package com.drivedoctor.dominio;
 
-import com.drivedoctor.dominio.excepcion.ModeloNoEncontrado;
+import com.drivedoctor.dominio.excepcion.ElementoNoEncontrado;
 
 import java.util.List;
 
@@ -8,5 +8,8 @@ public interface ServicioModelo {
 
     List<Modelo> obtenerModeloPorMarca(Marca marca);
 
-    Modelo getById(Integer modeloId) throws ModeloNoEncontrado;
+    Modelo findById (Integer id) throws ElementoNoEncontrado;
+
+
+    void guardarModelo(Modelo modelo);
 }

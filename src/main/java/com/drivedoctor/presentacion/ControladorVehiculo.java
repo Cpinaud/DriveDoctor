@@ -29,7 +29,7 @@ public class ControladorVehiculo {
     public ModelAndView eliminarVehiculo(ModelMap model,HttpServletRequest request,
                                          @RequestParam("idVehiculo") Integer idVehiculo,
                                          @RequestParam("patente") String patente,
-                                         RedirectAttributes redirectAttributes) {
+                                         RedirectAttributes redirectAttributes) throws ElementoNoEncontrado {
 
 
         if (request.getSession().getAttribute("ID")==null){
@@ -49,15 +49,18 @@ public class ControladorVehiculo {
         } catch (VehiculoInvalido e){
             return new ModelAndView("redirect:/verMisVehiculos");
         }
-        Vehiculo vehiculo = servicioVehiculo.buscarById(idVehiculo);
+        Vehiculo vehiculo = servicioVehiculo.findById(idVehiculo);
         servicioVehiculo.eliminarVehiculo(vehiculo);
 
         return new ModelAndView("redirect:/verMisVehiculos");
     }
 
     @GetMapping("/modificar-vehiculo/{id}")
-    public ModelAndView modificarVehiculo(ModelMap model,HttpServletRequest request,@PathVariable("id") Integer idVehiculo) {
-        Vehiculo vehiculo = servicioVehiculo.buscarById(idVehiculo);
+    public ModelAndView modificarVehiculo(ModelMap model,HttpServletRequest request,@PathVariable("id") Integer idVehiculo) throws ElementoNoEncontrado {
+        if (request == null || request.getSession() == null) {
+            return new ModelAndView("home");
+        }
+        Vehiculo vehiculo = servicioVehiculo.findById(idVehiculo);
         model.put("vehiculo", vehiculo);
         if (request.getSession().getAttribute("ID")==null){
             return new ModelAndView("redirect:/login");
@@ -73,7 +76,9 @@ public class ControladorVehiculo {
                                        @RequestParam("id") Integer idVehiculo,
                                         RedirectAttributes redirectAttributes) {
 
-
+        if (request == null || request.getSession() == null) {
+            return new ModelAndView("home");
+        }
         ModelMap model = new ModelMap();
         Integer usuarioId= (Integer) request.getSession().getAttribute("ID");
 
@@ -107,7 +112,10 @@ public class ControladorVehiculo {
 
     @RequestMapping(path = "/nuevo-vehiculo", method = RequestMethod.GET)
     public ModelAndView nuevoVehiculo(ModelMap model,HttpServletRequest request) {
-        //ModelMap model = new ModelMap();
+        if (request == null || request.getSession() == null) {
+            return new ModelAndView("home");
+        }
+
         model.put("vehiculo", new Vehiculo());
         List<Marca> marcas = this.servicioMarca.obtenerMarcasAll();
         model.put("marcas", marcas);
@@ -119,14 +127,24 @@ public class ControladorVehiculo {
     public ModelAndView agregarVehiculo(@ModelAttribute("vehiculo") Vehiculo vehiculo,
                                         HttpServletRequest request,
                                         @RequestParam("modeloId") Integer modeloId,
-                                        RedirectAttributes redirectAttributes) throws ModeloNoEncontrado {
+                                        RedirectAttributes redirectAttributes) throws ElementoNoEncontrado {
 
-        Modelo modelo = servicioModelo.getById(modeloId);
+        if (request == null || request.getSession() == null) {
+            return new ModelAndView("home");
+        }
+        ModelMap model = new ModelMap();
+
+        try{
+        Modelo modelo = servicioModelo.findById(modeloId);
         vehiculo.setModelo(modelo);
         Marca marca = modelo.getMarca();
-
         vehiculo.setMarca(marca);
-        ModelMap model = new ModelMap();
+
+        }catch (ElementoNoEncontrado e){
+            redirectAttributes.addFlashAttribute("error", "La marca no existe");
+            return new ModelAndView("redirect:/nuevo-vehiculo", model);
+        }
+
 
         Integer usuarioId= (Integer) request.getSession().getAttribute("ID");
 
@@ -154,6 +172,9 @@ public class ControladorVehiculo {
 
    @RequestMapping(path = "/verVehiculos",method = RequestMethod.GET)
        public ModelAndView verVehiculos(HttpServletRequest request) throws UserSinPermiso {
+       if (request == null || request.getSession() == null) {
+           return new ModelAndView("home");
+       }
         String viewName = "misVehiculos";
         ModelMap model = new ModelMap();
         model.put("vehiculos",this.servicioVehiculo.verVehiculos(request));
@@ -162,18 +183,6 @@ public class ControladorVehiculo {
         model.put("marcas", marcas);
         return new ModelAndView(viewName, model);
     }
-
-    /*@RequestMapping(path = "/buscarPorMarca",method = RequestMethod.POST)
-    public ModelAndView buscarPorMarca(Marca marca) {
-        String viewName = "misVehiculos";
-        ModelMap model = new ModelMap();
-        List<Marca> marcas = this.servicioMarca.obtenerMarcasAll();
-        model.put("marcas", marcas);
-        model.put("vehiculos", this.servicioVehiculo.getPorMarca(marca));
-        return new ModelAndView(viewName, model);
-    }*/
-
-
 
 
 }

@@ -1,9 +1,6 @@
 package com.drivedoctor.infraestructura;
 
-import com.drivedoctor.dominio.Marca;
-import com.drivedoctor.dominio.Modelo;
-import com.drivedoctor.dominio.RepositorioMarca;
-import com.drivedoctor.dominio.Usuario;
+import com.drivedoctor.dominio.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +26,27 @@ public class RepositorioMarcaImpl implements RepositorioMarca {
     }
 
     @Override
-    public Marca getById(Integer id) {
+    public Marca findById(Integer id) {
         return (Marca) sessionFactory.getCurrentSession().createCriteria(Marca.class)
                 .add(Restrictions.eq("id", id))
                 .uniqueResult();
 
+    }
 
+    @Override
+    public void guardar(Marca marca) {
+
+        this.sessionFactory.getCurrentSession().save(marca);
+    }
+
+    @Override
+    public void modificar(Marca marca) {
+        sessionFactory.getCurrentSession().update(marca);
+    }
+
+    @Override
+    public void eliminar(Marca marca) {
+        sessionFactory.getCurrentSession().delete(marca);
     }
 
 

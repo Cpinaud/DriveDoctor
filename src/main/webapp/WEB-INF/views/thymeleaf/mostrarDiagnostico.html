@@ -6,7 +6,9 @@
     <title>Mostrar Diagnóstico</title>
     <!-- Boostrap core css -->
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Arsenal+SC:ital,wght@0,400;0,700;1,400;1,700&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <!-- custom style -->
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
@@ -15,17 +17,16 @@
     <!-- Incluir el fragmento del sidebar -->
     <div th:include="templates/sidebar.html"></div>
     <div class="container" style="margin-top:50px;">
-        <h2>Diagnóstico</h2>
+        <h1 class="titulo-cs kanit-bold">Recomendaciones</h1>
         <br>
         <!--<div th:if="${sintoma != null}">
             <p>Nombre del síntoma: <span th:text="${sintoma.nombre}"></span></p>
             <p>Descripción del síntoma: <span th:text="${sintoma.descripcion}"></span></p>
         </div>-->
 
-        <div th:if="${diagnostico != null}">
-                <h2>Recomendaciones: </h2>
+        <div th:if="${diagnostico != null}" class="diagnostico-container kanit-regular">
             <div th:each="diagnostico : ${diagnostico}">
-                <p><span th:text="${diagnostico.descripcion}"></span></p>
+                <h5><span th:text="${diagnostico.descripcion}" class="kanit-regular"></span></h5>
             </div>
             <form action="#" th:action="@{/guardarDiagnostico}" method="POST" >
                 <input type="hidden" id="idVehiculo" name="idVehiculo" th:value="${idVehiculo}" >
@@ -42,6 +43,12 @@
         <div th:if="${diagnostico == null}">
             <p>No se encontró ningún diagnóstico asociado a este síntoma.</p>
         </div>
+        <div class="subTitulo">
+        <a th:href="@{/mostrarSintomaDependiendoItem(idVehiculo=${idVehiculo}, idItemTablero=${sintoma.get(0).itemTablero.idItemTablero})}" class="titulo-cs kanit-bold-italic" >Volver a posibles síntomas</a>
+            <a href="/drivedoctor/showMap" class="titulo-cs kanit-bold-italic" >Prefiero buscar un taller cercano</a>
+        </div>
+
+
     </div>
 
 </main>

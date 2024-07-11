@@ -1,7 +1,7 @@
 package com.drivedoctor.infraestructura;
 
 import com.drivedoctor.dominio.RepositorioTaller;
-import com.drivedoctor.dominio.ServiceTaller;
+import com.drivedoctor.dominio.ServicioTaller;
 import com.drivedoctor.dominio.Taller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,12 +11,12 @@ import java.util.List;
 
 @Service
 @Transactional
-public class ServiceTallerImpl implements ServiceTaller {
+public class ServicioTallerImpl implements ServicioTaller {
 
     public RepositorioTaller repositorioTaller;
 
     @Autowired
-    public ServiceTallerImpl(RepositorioTaller repositorioTaller){
+    public ServicioTallerImpl(RepositorioTaller repositorioTaller){
         this.repositorioTaller = repositorioTaller;
     }
 

@@ -1,9 +1,9 @@
 package com.drivedoctor.presentacion;
 
 import com.drivedoctor.dominio.*;
+import com.drivedoctor.dominio.excepcion.ElementoNoEncontrado;
 import com.drivedoctor.dominio.excepcion.ItemNoEncontrado;
-import com.drivedoctor.dominio.excepcion.ItemsNoEncontrados;
-import lombok.SneakyThrows;
+import com.drivedoctor.dominio.excepcion.SintomaExistente;
 import com.drivedoctor.dominio.excepcion.VehiculoInvalido;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,9 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class ControladorSintoma {
@@ -24,13 +22,15 @@ public class ControladorSintoma {
     private ServicioSintoma servicioSintoma;
     private ServicioItemTablero servicioItemTablero;
     private ServicioVehiculo servicioVehiculo;
+    private ServicioDiagnostico servicioDiagnostico;
 
 
     @Autowired
-    public ControladorSintoma(ServicioSintoma servicioSintoma, ServicioItemTablero servicioItemTablero,ServicioVehiculo servicioVehiculo) {
+    public ControladorSintoma(ServicioSintoma servicioSintoma, ServicioItemTablero servicioItemTablero,ServicioVehiculo servicioVehiculo, ServicioDiagnostico servicioDiagnostico) {
         this.servicioSintoma = servicioSintoma;
         this.servicioVehiculo = servicioVehiculo;
         this.servicioItemTablero = servicioItemTablero;
+        this.servicioDiagnostico = servicioDiagnostico;
 
     }
 
@@ -38,7 +38,7 @@ public class ControladorSintoma {
 
 
     @GetMapping("/sintoma/{id}")
-    public ModelAndView irASintoma(@PathVariable("id") Integer idVehiculo, HttpServletRequest request, RedirectAttributes redirectAttributes){
+    public ModelAndView irASintoma(@PathVariable("id") Integer idVehiculo, HttpServletRequest request, RedirectAttributes redirectAttributes) throws ElementoNoEncontrado {
 
         Integer userId = (Integer) request.getSession().getAttribute("ID");
         try{
@@ -51,7 +51,7 @@ public class ControladorSintoma {
         ModelMap modelo = new ModelMap();
         modelo.put("sintoma", new Sintoma());
 
-        modelo.put("patente", servicioVehiculo.buscarById(idVehiculo).getPatente());
+        modelo.put("patente", servicioVehiculo.findById(idVehiculo).getPatente());
         modelo.put("idVh", idVehiculo);
         return new ModelAndView("sintoma", modelo);
 
@@ -70,23 +70,42 @@ public class ControladorSintoma {
     }
 
     @RequestMapping("/nuevoSintoma")
-    public ModelAndView nuevoSintoma() throws ItemsNoEncontrados {
-        ModelAndView modelAndView = new ModelAndView("nuevo-sintoma");
-        List<ItemTablero> itemsTablero = servicioItemTablero.obtenerTodosLosItems();
-        List<String> opcionesItemTablero = itemsTablero.stream()
-                .map(ItemTablero::getNombre)
-                .collect(Collectors.toList());
-        modelAndView.addObject("opcionesItemTablero", opcionesItemTablero);
-        modelAndView.addObject("sintoma", new Sintoma());
-        return modelAndView;
+    public ModelAndView nuevoSintoma(ModelMap model, HttpServletRequest request) throws ItemNoEncontrado {
+
+        model.put("sintoma", new Sintoma());
+        List<ItemTablero> itemsTablero = this.servicioItemTablero.obtenerTodosLosItems();
+        List<Diagnostico> diagnosticos = this.servicioDiagnostico.findAll();
+        model.put("itemsTablero", itemsTablero);
+        model.put("diagnosticos", diagnosticos);
+        return new ModelAndView("nuevo-sintoma", model);
+
     }
 
 
-    
-    @RequestMapping(value = "/crearSintoma", method = RequestMethod.POST)
-    public ModelAndView crearSintoma(Sintoma sintomaMock){
-        ModelMap modelo = new ModelMap();
-        servicioSintoma.guardarSintoma(sintomaMock);
+    @RequestMapping(path = "/crearSintoma", method = RequestMethod.POST)
+    public ModelAndView crearSintoma(@ModelAttribute("sintoma") Sintoma sintoma,
+                                     HttpServletRequest request,
+                                     @RequestParam("itemTablero") Integer idItemTablero,
+                                     @RequestParam("diagnosticoId") Integer idDiagnostico) throws ItemNoEncontrado, ElementoNoEncontrado, SintomaExistente {
+        System.out.println("Entró en crearSintoma");
+        System.out.println(idDiagnostico);
+
+
+            ItemTablero item = servicioItemTablero.findById(idItemTablero);
+            if(item == null) {
+                throw new ItemNoEncontrado();
+            }
+            sintoma.setItemTablero(item);
+
+            Diagnostico diagnostico = servicioDiagnostico.findById(idDiagnostico);
+            if(diagnostico == null) {
+                throw new ItemNoEncontrado();
+            }
+            sintoma.setDiagnostico(diagnostico);
+
+            servicioSintoma.guardarSintoma(sintoma);
+
+
 
 
         return new ModelAndView("redirect:/sintoma");
@@ -121,9 +140,9 @@ public class ControladorSintoma {
         modelAndView.addObject("idVehiculo",idVehiculo);
         return modelAndView;
     }
-    @RequestMapping(value = "/mostrarSintomaDependiendoItem", method = RequestMethod.POST )
+    @RequestMapping(value = "/mostrarSintomaDependiendoItem", method = {RequestMethod.GET, RequestMethod.POST} )
     public ModelAndView mostrarSintomaDependiendoItem(@RequestParam("idItemTablero") Integer idItemTablero,
-                                                      @RequestParam("idVehiculo") Integer idVehiculo) throws ItemNoEncontrado {
+                                                      @RequestParam("idVehiculo") Integer idVehiculo) throws ElementoNoEncontrado, ItemNoEncontrado {
 
         ModelMap modelo = new ModelMap();
         ItemTablero itemTablero = servicioItemTablero.findById(idItemTablero);
@@ -139,7 +158,7 @@ public class ControladorSintoma {
     public ModelAndView mostrarSintomasDependiendoItems(@RequestParam("itemsTablero[]") Integer[] itemsTablero,
                                                         HttpServletRequest request,
                                                         @RequestParam("idVehiculo") Integer idVehiculo,
-                                                        RedirectAttributes redirectAttributes) throws ItemNoEncontrado {
+                                                        RedirectAttributes redirectAttributes) throws ElementoNoEncontrado, ItemNoEncontrado {
          ModelMap modelo = new ModelMap();
         Integer userId = (Integer) request.getSession().getAttribute("ID");
          try{
@@ -151,10 +170,6 @@ public class ControladorSintoma {
          }
 
 
-
-/*        List<ItemTablero> items = Arrays.stream(itemsTablero)
-                .map(servicioItemTablero::findById)
-                .collect(Collectors.toList());*/
          List<ItemTablero> items = new ArrayList<>();
          for (Integer itemId : itemsTablero) {
              ItemTablero item = servicioItemTablero.findById(itemId);
@@ -193,5 +208,6 @@ public class ControladorSintoma {
             throw new RuntimeException(e);
         }
     }
+
 
 }

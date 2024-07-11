@@ -6,6 +6,10 @@
     <title>Porcentaje de Daño</title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Arsenal+SC:ital,wght@0,400;0,700;1,400;1,700&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
     <!-- Custom style -->
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
 </head>
@@ -15,8 +19,8 @@
 <main class="container" style="margin-top: 50px;">
 <div>
 
-    <h2>Porcentaje de Daño</h2>
-    <div>
+    <h2 class="kanit-bold-italic">Porcentaje de Daño</h2>
+    <div class="kanit-regular diagnostico-container">
         <p>El porcentaje de daño es: <span th:text="${porcentajeDaniado}"></span>%</p>
     </div>
 </div>

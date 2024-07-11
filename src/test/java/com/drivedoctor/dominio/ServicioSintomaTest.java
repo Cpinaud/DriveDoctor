@@ -1,5 +1,9 @@
 package com.drivedoctor.dominio;
 
+import com.drivedoctor.dominio.excepcion.DiagnosticoNotFoundException;
+import com.drivedoctor.dominio.excepcion.ElementoNoEncontrado;
+import com.drivedoctor.dominio.excepcion.ItemTableroInvalido;
+import com.drivedoctor.dominio.excepcion.SintomaExistente;
 import com.drivedoctor.infraestructura.ServicioSintomaImpl;
 import com.drivedoctor.integracion.config.HibernateTestConfig;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,10 +19,10 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {HibernateTestConfig.class})
+
 public class ServicioSintomaTest {
 
     private ServicioSintoma servicioSintoma;
@@ -71,7 +75,7 @@ public class ServicioSintomaTest {
     }
 
     @Test
-    public void queSePuedaObtenerUnSintomaPorId(){
+    public void queSePuedaObtenerUnSintomaPorId() throws ElementoNoEncontrado {
         Integer idBuscada = 1;
         Sintoma sintoma = new Sintoma(new ItemTablero());
         sintoma.setIdSintoma(1);
@@ -80,6 +84,21 @@ public class ServicioSintomaTest {
         this.servicioSintoma.findById(idBuscada);
 
         assertThat(sintoma.getIdSintoma(),equalTo(idBuscada));
+        verify(this.repositorioSintoma,times(1)).findById(idBuscada);
+    }
+
+    @Test
+    public void queDevuelvaLaExcepcionElementoNoEncontradoSiSeBuscaUnSintomaPorIdYNoSeEncuentra() throws ElementoNoEncontrado {
+        Integer idBuscada = 1;
+        Sintoma sintoma = new Sintoma(new ItemTablero());
+        sintoma.setIdSintoma(1);
+
+        when(this.repositorioSintoma.findById(idBuscada)).thenReturn(null);
+
+
+        assertThrows(ElementoNoEncontrado.class, () -> {
+            this.servicioSintoma.findById(idBuscada);
+        });
         verify(this.repositorioSintoma,times(1)).findById(idBuscada);
     }
 
@@ -129,4 +148,65 @@ public class ServicioSintomaTest {
         assertThat(sintomasObtenidos.size(),equalTo(3));
         verify(this.repositorioSintoma,times(1)).obtenerLosSintomasPorSusIds(listaDeIds);
     }
+    @Test
+    public void testGuardarSintomaLanzaLaExcepcionSintomaExistente() {
+        Sintoma sintoma = new Sintoma();
+        sintoma.setNombre("Fiebre");
+        sintoma.setDiagnostico(new Diagnostico());
+        sintoma.setItemTablero(new ItemTablero());
+
+        when(repositorioSintoma.findByName("Fiebre")).thenReturn(sintoma);
+
+        assertThrows(SintomaExistente.class, () -> {
+            servicioSintoma.guardarSintoma(sintoma);
+        });
+
+        verify(repositorioSintoma, never()).guardar(any(Sintoma.class));
+    }
+    @Test
+    public void testGuardarSintomaLanzaLaExcepcionDiagnosticoNotFoundException() {
+        Sintoma sintoma = new Sintoma();
+        sintoma.setNombre("Dolor de cabeza");
+        sintoma.setDiagnostico(null);
+        sintoma.setItemTablero(new ItemTablero());
+
+        when(repositorioSintoma.findByName("Dolor de cabeza")).thenReturn(null);
+
+        assertThrows(DiagnosticoNotFoundException.class, () -> {
+            servicioSintoma.guardarSintoma(sintoma);
+        });
+
+        verify(repositorioSintoma, never()).guardar(any(Sintoma.class));
+    }
+    @Test
+    public void testGuardarSintomaLanzaLaExcepcionItemTableroInvalido() {
+        Sintoma sintoma = new Sintoma();
+        sintoma.setNombre("Tos");
+        sintoma.setDiagnostico(new Diagnostico());
+        sintoma.setItemTablero(null);
+
+        when(repositorioSintoma.findByName("Tos")).thenReturn(null);
+
+        assertThrows(ItemTableroInvalido.class, () -> {
+            servicioSintoma.guardarSintoma(sintoma);
+        });
+
+        verify(repositorioSintoma, never()).guardar(any(Sintoma.class));
+    }
+
+    @Test
+    public void testGuardarSintomaCorrectamente() throws SintomaExistente {
+        Sintoma sintoma = new Sintoma();
+        sintoma.setNombre("Cansancio");
+        sintoma.setDiagnostico(new Diagnostico());
+        sintoma.setItemTablero(new ItemTablero());
+
+        when(repositorioSintoma.findByName("Cansancio")).thenReturn(null);
+
+        servicioSintoma.guardarSintoma(sintoma);
+
+        verify(repositorioSintoma, times(1)).guardar(sintoma);
+    }
+
+
 }

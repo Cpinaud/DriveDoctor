@@ -11,6 +11,10 @@
 
     <!-- custom style -->
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Arsenal+SC:ital,wght@0,400;0,700;1,400;1,700&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
 
 </head>
 
@@ -19,16 +23,18 @@
 
     <div class = "container d-flex justify-content-center login">
         <div id="loginbox" style="margin-top:80px; width:30%;" class="mainbox col-md-6 col-sm-8">
-            <form action="#" th:action="@{/validar-login}" method="POST" th:object="${datosLogin}">
-                <h3 class="form-signin-heading">Login</h3>
+            <form action="#" th:action="@{/validar-login}" method="POST" th:object="${datosLogin}" class="loginForm">
+                <img src="/drivedoctor/static/DD1.png ">
+                <h1 class="form-signin-heading kanit-bold-italic">DRIVE DOCTOR</h1>
+                <h2 class="form-signin-heading kanit-bold-italic">Login</h2>
                 <hr class="color graph"><br>
 
-                <label>Email: </label>
-                <input th:field="*{email}" id="email" type="email" class="form-control" required/>
-                <label>Password: </label>
-                <input th:field="*{password}" type="password" id="password" class="form-control" required/>
+                <label class="kanit-regular">Correo electrónico </label>
+                <input th:field="*{email}" name="email" id="email" type="email" class="form-control" required/>
+                <label class="kanit-regular">Contraseña </label>
+                <input th:field="*{password}" name="password" type="password" id="password" class="form-control" required/>
 
-                <button id="btn-login" class="btn boton-secundario form-control" Type="Submit" style="margin-top: 10px">Login</button>
+                <button id="btn-login" class="btn boton-secundario form-control kanit-regular" Type="Submit" style="margin-top: 10px">Login</button>
 
                 <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}">
                 </p>

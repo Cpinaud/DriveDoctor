@@ -17,7 +17,7 @@ public class Sintoma {
     @JoinColumn(name = "item_tablero_id")
     private ItemTablero itemTablero;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_diagnostico")
     private Diagnostico diagnostico;
 
@@ -79,6 +79,10 @@ public class Sintoma {
 
     public void setDiagnostico(Diagnostico diagnostico) {
         this.diagnostico = diagnostico;
+    }
+
+    public void setId(Integer i) {
+        this.idSintoma=i;
     }
 }
 

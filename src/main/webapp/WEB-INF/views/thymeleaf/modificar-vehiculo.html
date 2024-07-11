@@ -8,6 +8,9 @@
 
     <!-- Boostrap core css -->
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Arsenal+SC:ital,wght@0,400;0,700;1,400;1,700&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
     <!-- custom style -->
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
@@ -21,10 +24,10 @@
     <div th:include="templates/sidebar.html"></div>
 
     <div class="container" style="margin-top:50px;">
-        <div class="col-md-6">
+        <div class="col-md-6 kanit-regular">
 
             <form action="#" th:action="@{/editarVehiculo}" method="POST" th:object="${vehiculo}">
-                <h2>Modificar Vehículo</h2>
+                <h2 class="kanit-bold-italic">Modificar Vehículo</h2>
                 <br>
                 <input type="hidden" id="id" name="id" th:value="${vehiculo.id}" />
                 <div class="inpt-dsbl">
@@ -44,8 +47,8 @@
                 <input type="text" th:field="*{patente}" class="form-control" id="patente" required/>
 
                 <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}"></p>
-                <button id="btn-registrarme" class="btn boton-principal" Type="Submit">Modificar Vehiculo</button>
-                <button class="btn boton-principal" ><a class="cancel-modif" href="/drivedoctor/verMisVehiculos">Cancelar</a></button>
+                <button id="vehiculoModificado" class="btn boton-principal" Type="Submit">Modificar Vehiculo</button>
+                <button class="btn boton-principal" ><a id="cancelar" class="cancel-modif" href="/drivedoctor/verMisVehiculos">Cancelar</a></button>
             </form>
         </div>
     </div>

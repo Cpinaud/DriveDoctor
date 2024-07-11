@@ -11,6 +11,7 @@ public class VistaSintoma  extends VistaWeb {
 
 
     public String obtenerTextoDeElemento(String elemento) {
+        System.out.println(page.content());
         return this.obtenerTextoDelElemento(elemento);
     }
     public void darClickEnUnElemento(String elemento) {

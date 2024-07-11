@@ -37,16 +37,9 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
                 .uniqueResult();
     }
 
-    @Override
-    public void guardar(Usuario usuario) throws UsuarioExistente {
-           Usuario intentoBuscar =  this.buscarUsuario(usuario.getEmail(), usuario.getPassword());
-           if (intentoBuscar == null) {
-               sessionFactory.getCurrentSession().save(usuario);
-           }else{
-               throw new UsuarioExistente();
-           }
+    public void guardar(Usuario usuario) {
+            sessionFactory.getCurrentSession().save(usuario);
     }
-
 
 
     @Override
@@ -62,10 +55,8 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
     }
 
     @Override
-    public Usuario buscarPorId(Integer usuarioId) {
-        return (Usuario) sessionFactory.getCurrentSession().createCriteria(Usuario.class)
-                .add(Restrictions.eq("id", usuarioId))
-                .uniqueResult();
+    public void eliminar(Usuario usuario) {
+        sessionFactory.getCurrentSession().delete(usuario);
     }
 
     @Override
@@ -85,21 +76,13 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
         return criteria.list();
     }
 
-    /*@Override
-    public List<Vehiculo> verMisVehiculos(Usuario usuario) {
-        return usuario.getVehiculos();
-
+    @Override
+    public Usuario findById(Integer usuarioId) {
+        return (Usuario) sessionFactory.getCurrentSession().createCriteria(Usuario.class)
+                .add(Restrictions.eq("id", usuarioId))
+                .uniqueResult();
     }
 
-    @Override
-    public void agregarVehiculo(Usuario usuario, Vehiculo vehiculo) {
-        // Asociar el vehículo al usuario
-        usuario.agregarVehiculo(vehiculo);
-
-        // Guardar los cambios en la base de datos
-        sessionFactory.getCurrentSession().save(usuario);
-        sessionFactory.getCurrentSession().save(vehiculo);
-    }*/
 
 
 }

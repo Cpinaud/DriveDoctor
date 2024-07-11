@@ -6,11 +6,12 @@
   <title>DriveDoctor</title>
   <!-- Bootstrap core css -->
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Arsenal+SC:ital,wght@0,400;0,700;1,400;1,700&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
   <!-- Custom style -->
   <link rel="stylesheet" th:href="@{/css/main.css}"/>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
-  </style>
 </head>
 <body>
 <main >
@@ -18,8 +19,8 @@
   <div th:include="templates/sidebar.html"></div>
   <div class="home-page" >
     <img src="/drivedoctor/static/DD1.png ">
-    <h1>DRIVE DOCTOR</h1>
-    <h3>Tu aliado de confianza para el cuidado del vehiculo</h3>
+    <h1 class="kanit-bold-italic">DRIVE DOCTOR</h1>
+    <h3 class="kanit-regular">Tu aliado de confianza para el cuidado del vehiculo</h3>
   </div>
 
 </main>

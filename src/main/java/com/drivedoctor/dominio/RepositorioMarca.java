@@ -1,10 +1,8 @@
 package com.drivedoctor.dominio;
+import javax.transaction.Transactional;
 import java.util.List;
-public interface RepositorioMarca {
+@Transactional
+public interface RepositorioMarca extends RepositoryCRUD<Marca> {
     List<Marca> getAll();
-
-    Marca getById(Integer idMarca);
-
-
 
 }

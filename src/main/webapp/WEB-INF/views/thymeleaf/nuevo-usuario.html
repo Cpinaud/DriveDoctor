@@ -8,6 +8,9 @@
 
   <!-- Boostrap core css -->
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Arsenal+SC:ital,wght@0,400;0,700;1,400;1,700&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
   <!-- custom style -->
   <link rel="stylesheet" th:href="@{/css/main.css}"/>
@@ -17,10 +20,10 @@
 <body>
 <main>
 
-  <div class = "container d-flex justify-content-center">
+  <div class = "container d-flex justify-content-center kanit-regular">
     <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-sm-8">
       <form action="#" th:action="@{/registrarme}" method="POST" th:object="${usuario}">
-        <h3 class="form-signin-heading">SingIn</h3>
+        <h3 class="form-signin-heading kanit-bold-italic">SingIn</h3>
         <hr class="colorgraph"><br>
         <label>Name: </label>
         <input th:field="*{nombre}" id="nombre" class="form-control" required/>

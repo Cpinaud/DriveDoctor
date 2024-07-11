@@ -1,6 +1,7 @@
 package com.drivedoctor.infraestructura;
 
 import com.drivedoctor.dominio.*;
+import com.drivedoctor.dominio.excepcion.ElementoNoEncontrado;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,8 +34,8 @@ public class ServicioHistorialImpl implements ServicioHistorial {
 
     @Override
     public void agregarHistoria(Integer idVehiculo, List<Integer> idSintoma,
-                                List<Integer>  idDiagnostico) {
-        Vehiculo vehiculo = repositorioVehiculo.getById(idVehiculo);
+                                List<Integer>  idDiagnostico) throws ElementoNoEncontrado {
+        Vehiculo vehiculo = repositorioVehiculo.findById(idVehiculo);
         Historial historia = new Historial();
         historia.setVehiculo(vehiculo);
         List<Diagnostico> diagnosticos =  new ArrayList<>();
@@ -50,7 +51,7 @@ public class ServicioHistorialImpl implements ServicioHistorial {
         historia.setSintomas(sintomas);
         historia.setFecha(new Date());
 
-        repositorioHistorial.guardarHistoria(historia);
+        repositorioHistorial.guardar(historia);
 
     }
 }

@@ -1,9 +1,6 @@
 package com.drivedoctor.infraestructura;
 
-import com.drivedoctor.dominio.Diagnostico;
 import com.drivedoctor.dominio.ItemTablero;
-import com.drivedoctor.dominio.RepositorioDiagnostico;
-import com.drivedoctor.dominio.Sintoma;
 import com.drivedoctor.infraestructura.config.HibernateTestInfraestructuraConfig;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,12 +27,12 @@ public class RepositorioItemTableroTest {
 
     @Autowired
     private SessionFactory sessionFactory;
-    private RepositorioItemTablero repositorioItemTablero;
+    private RepositorioItemTableroImpl repositorioItemTablero;
     private ItemTablero itemTableroMock;
 
     @BeforeEach
     public void init() {
-        this.repositorioItemTablero = new RepositorioItemTablero(this.sessionFactory);
+        this.repositorioItemTablero = new RepositorioItemTableroImpl(this.sessionFactory);
         itemTableroMock = mock(ItemTablero.class);
     }
 

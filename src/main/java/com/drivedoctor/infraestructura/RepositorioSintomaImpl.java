@@ -1,9 +1,6 @@
 package com.drivedoctor.infraestructura;
 
-import com.drivedoctor.dominio.Diagnostico;
-import com.drivedoctor.dominio.ItemTablero;
-import com.drivedoctor.dominio.RepositorioSintoma;
-import com.drivedoctor.dominio.Sintoma;
+import com.drivedoctor.dominio.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -12,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import org.hibernate.query.Query;
 
+import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,10 +19,10 @@ import java.util.List;
 @Repository("repositorioSintoma")
 public class RepositorioSintomaImpl implements RepositorioSintoma {
 
-        private SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
     private List<Sintoma> sintomas;
 
-        public RepositorioSintomaImpl(SessionFactory sessionFactory){this.sessionFactory = sessionFactory;
+    public RepositorioSintomaImpl(SessionFactory sessionFactory){this.sessionFactory = sessionFactory;
             this.sintomas = new ArrayList<>();}
 
     @Override
@@ -34,8 +32,19 @@ public class RepositorioSintomaImpl implements RepositorioSintoma {
 
     @Override
     public void guardar(Sintoma sintoma) {
-            sessionFactory.getCurrentSession().save(sintoma);
+        sessionFactory.getCurrentSession().save(sintoma);
     }
+
+    @Override
+    public void modificar(Sintoma sintoma) {
+        sessionFactory.getCurrentSession().update(sintoma);
+    }
+
+    @Override
+    public void eliminar(Sintoma sintoma) {
+        sessionFactory.getCurrentSession().delete(sintoma);
+    }
+
 
     //OBTIENE LOS SINTOMAS ASOCIADOS A UN ITEM
     @Override
@@ -56,7 +65,6 @@ public class RepositorioSintomaImpl implements RepositorioSintoma {
         }
     }
 
-    //OBTIENE TODOS LOS SINTOMAS DE LA BD
     @Override
     public List<Sintoma> getAll() {
 
@@ -66,26 +74,36 @@ public class RepositorioSintomaImpl implements RepositorioSintoma {
         return this.sintomas;
     }
 
-   //OBTIENE UN SINTOMA POR SU ID
+
+    @Override
+    public Sintoma findByName(String nombre) {
+
+        try {
+            String sql = "From Sintoma s where s.nombre = :nombre";
+            Query<Sintoma> query = this.sessionFactory.getCurrentSession().createQuery(sql, Sintoma.class);
+            query.setParameter("nombre", nombre);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    //OBTIENE UN SINTOMA POR SU ID
+
     @Override
     public Sintoma findById(Integer idSintoma) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.get(Sintoma.class, idSintoma);
+        return (Sintoma) sessionFactory.getCurrentSession().createCriteria(Sintoma.class)
+                .add(Restrictions.eq("id", idSintoma))
+                .uniqueResult();
     }
 
 
-    //OBTIENE LOS SINTOMAS DE VARIOS ITEMS
     @Override
     public List<Sintoma> obtenerPorItemsTablero(List<ItemTablero> items) {
         String sql = "FROM Sintoma WHERE itemTablero IN (:items)";
         Query<Sintoma> query = this.sessionFactory.getCurrentSession().createQuery(sql, Sintoma.class);
         query.setParameter("items", items);
         return query.getResultList();
-    }
-
-    @Override
-    public List<Sintoma> obtenerPorIds(List<Integer> idSintomas) {
-        return null;
     }
 
     @Override

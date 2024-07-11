@@ -1,9 +1,7 @@
 package com.drivedoctor.infraestructura;
 
-import com.drivedoctor.dominio.Marca;
-import com.drivedoctor.dominio.Modelo;
-import com.drivedoctor.dominio.RepositorioVehiculo;
-import com.drivedoctor.dominio.Vehiculo;
+import com.drivedoctor.dominio.*;
+import com.drivedoctor.dominio.excepcion.ElementoNoEncontrado;
 import com.drivedoctor.infraestructura.config.HibernateTestInfraestructuraConfig;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -74,7 +72,10 @@ public class RepositorioVehiculoTest {
         vehiculo.setId(1);
         this.sessionFactory.getCurrentSession().save(vehiculo);
 
-        Vehiculo vehiculoObtenido = this.repositorioVehiculo.getById(1);
+        Vehiculo vehiculoObtenido =this.sessionFactory.getCurrentSession()
+                .createQuery("FROM Vehiculo WHERE id = :idBuscado", Vehiculo.class)
+                .setParameter("idBuscado", 1)
+                .uniqueResult();
 
         assertThat(vehiculo, equalTo(vehiculoObtenido));
     }

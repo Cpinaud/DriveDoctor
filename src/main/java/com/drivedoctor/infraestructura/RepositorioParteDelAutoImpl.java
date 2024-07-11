@@ -18,6 +18,7 @@ public class RepositorioParteDelAutoImpl implements RepositorioParteDelAuto {
         sessionFactory.getCurrentSession().save(parteDelAuto);
     }
 
+
     @Override
     public ParteDelAuto obtenerParte(Integer idParteDelAuto)
     {
