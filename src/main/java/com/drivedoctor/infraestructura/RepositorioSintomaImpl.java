@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import org.hibernate.query.Query;
 
+import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -76,9 +77,15 @@ public class RepositorioSintomaImpl implements RepositorioSintoma {
 
     @Override
     public Sintoma findByName(String nombre) {
-        return (Sintoma) sessionFactory.getCurrentSession().createCriteria(Sintoma.class)
-                .add(Restrictions.eq("nombre", nombre))
-                .uniqueResult();
+
+        try {
+            String sql = "From Sintoma s where s.nombre = :nombre";
+            Query<Sintoma> query = this.sessionFactory.getCurrentSession().createQuery(sql, Sintoma.class);
+            query.setParameter("nombre", nombre);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     //OBTIENE UN SINTOMA POR SU ID
