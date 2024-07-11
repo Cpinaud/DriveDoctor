@@ -27,6 +27,9 @@ public class ControladorUsuario {
     @RequestMapping(path = "/buscarPorMarca", method = RequestMethod.GET)
     public ModelAndView redirectMisVh(HttpServletRequest request)
     {
+        if (request == null || request.getSession() == null) {
+        return new ModelAndView("home");
+    }
         ModelMap model = new ModelMap();
         List<Marca> marcas = this.servicioMarca.obtenerMarcasAll();
         model.put("marcas", marcas);
@@ -40,6 +43,11 @@ public class ControladorUsuario {
 
     @RequestMapping(path = "/verMisVehiculos",method = RequestMethod.GET)
     public ModelAndView verMisVehiculos( HttpServletRequest request) throws ElementoNoEncontrado {
+
+        if (request == null || request.getSession() == null) {
+            return new ModelAndView("home");
+        }
+
         String viewName = "misVehiculos";
         ModelMap model = new ModelMap();
 
@@ -72,6 +80,10 @@ public class ControladorUsuario {
     public ModelAndView verMisVhPorMarca(HttpServletRequest request,
                                          @RequestParam("marca") Integer marcaid,
                                          RedirectAttributes redirectAttributes) throws ElementoNoEncontrado {
+        if (request == null || request.getSession() == null) {
+            return new ModelAndView("home");
+        }
+
         String viewName = "misVehiculos";
         ModelMap model = new ModelMap();
         Integer usuarioId= (Integer) request.getSession().getAttribute("ID");

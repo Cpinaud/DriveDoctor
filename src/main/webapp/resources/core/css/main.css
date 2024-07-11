@@ -139,7 +139,7 @@ body {
 
 .home-page{
 
-    background-color: rgba(26, 32, 44,0.9);
+    background-color: rgba(26, 32, 44,0.8);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -195,19 +195,25 @@ img {
     width: 30%;
     height: 35%;
     color: #FFFFFF;
-    background: #232323;
     text-shadow: 0 0 5px #FFF, 0 0 10px #FFF, 0 0 15px #FFF, 0 0 20px #49ff18, 0 0 30px #49FF18, 0 0 40px #49FF18, 0 0 55px #49FF18, 0 0 75px #49ff18;
 }
+.mainbox{
+    width: 60% !important;
+    height: 80% !important;
+    align-content: center;
+}
 
-#logoSl{
-    width: 20%;
-    height: 20%;
-
+.form-signin-heading{
+    text-align: center !important;
 }
 
 .login a{
     text-decoration: none;
     color:white !important;
+}
+
+.login{
+    font-size: 1.5rem;
 }
 
 #links {
@@ -273,8 +279,11 @@ img {
     background-color: var(--color-fondo);
 }
 
-.form-signin-heading{
-    justify-content: center;
+.loginForm{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
 }
 .inpt-dsbl{
     display:flex;
@@ -322,7 +331,12 @@ width: 90%;
 .item-historial-subtitle{
     text-decoration:underline;
 }
-
+.container-mapa{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    justify-content: space-around;
+}
 .cardButton{
     display:flex;
     justify-content: space-around;
