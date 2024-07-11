@@ -33,5 +33,12 @@ public class ServicioMarcaImpl implements ServicioMarca {
         return marcaBuscada;
     }
 
+    @Override
+    public void guardarMarca(Marca marca) {
+        if (marca == null) {
+            throw new IllegalArgumentException("La Marca no puede ser nula");
+        }
+        repositorioMarca.guardar(marca);
+    }
 
 }

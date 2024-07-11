@@ -8,6 +8,8 @@ public interface ServicioMarca {
     List<Marca> obtenerMarcasAll();
     Marca findById (Integer id) throws ElementoNoEncontrado;
 
+    void guardarMarca (Marca marca);
+
 
 
 

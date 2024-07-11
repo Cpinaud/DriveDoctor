@@ -35,5 +35,13 @@ public class ServicioModeloImpl implements ServicioModelo {
         return modelo;
     }
 
+    @Override
+    public void guardarModelo(Modelo modelo) {
+        if (modelo == null) {
+            throw new IllegalArgumentException("El modelo no puede ser nulo");
+        }
+        repositorioModelo.guardar(modelo);
+    }
+
 
 }

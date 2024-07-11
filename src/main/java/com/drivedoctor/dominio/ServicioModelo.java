@@ -11,4 +11,5 @@ public interface ServicioModelo {
     Modelo findById (Integer id) throws ElementoNoEncontrado;
 
 
+    void guardarModelo(Modelo modelo);
 }
