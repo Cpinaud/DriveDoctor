@@ -32,11 +32,15 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
     }
 
     @Override
-    public Diagnostico findById(Integer idDiagnostico){
+    public Diagnostico findById(Integer idDiagnostico) throws ElementoNoEncontrado{
         if (idDiagnostico == null) {
             throw new IllegalArgumentException("El ID del diagnóstico no puede ser nulo");
         }
-        Diagnostico diagnostico = repositorioDiagnostico.findById(idDiagnostico);
+            Diagnostico diagnostico = repositorioDiagnostico.findById(idDiagnostico);
+        if (diagnostico == null) {
+            throw new ElementoNoEncontrado();
+        }
+
 
         return diagnostico;
     }
@@ -154,6 +158,7 @@ public class ServicioDiagnosticoImpl implements ServicioDiagnostico {
         // Asegura que el riesgo total no sea mayor que 100.0
         return Math.min(riesgoTotal, 100.0);
     }
+
 
     @Override
     public List<Diagnostico> findDependingId(List<Integer> idsSintoma)

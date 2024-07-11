@@ -17,6 +17,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class ControladorSintomaTest {
 
@@ -51,15 +54,21 @@ public class ControladorSintomaTest {
         when(session.getAttribute("ID")).thenReturn(1);
 
         ItemTablero itemTableroMock = mock(ItemTablero.class);
+        Diagnostico diagnosticoMock = mock(Diagnostico.class);
+        Sintoma sintomaMock = new Sintoma(); // Crear un objeto Sintoma válido
+
+        // Configurar los servicios mock para devolver los objetos simulados correctos
         when(servicioItemTableroMock.findById(anyInt())).thenReturn(itemTableroMock);
-        ModelAndView modelAndView = controladorSintoma.crearSintoma(sintomaMock,request,anyInt(),anyInt());
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/sintoma"));
+        when(servicioDiagnosticoMock.findById(anyInt())).thenReturn(diagnosticoMock);
+        doNothing().when(servicioSintoma).guardarSintoma(any(Sintoma.class));
 
+        // Llamar al método del controlador
+        ModelAndView modelAndView = controladorSintoma.crearSintoma(sintomaMock, request, 1, 1);
 
-     /* ModelAndView modelAndView = controladorSintoma.crearSintoma(sintomaMock);
+        // Verificar la vista redirigida
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/sintoma"));
-*/
     }
+
 
     @Test
     public void queSePuedaObtenerTodosLosSintomasDependiendoQueItemElijo() throws Exception, ItemNoEncontrado {
@@ -106,6 +115,8 @@ public class ControladorSintomaTest {
                 s.getItemTablero().equals(itemTablero) && s.getDiagnostico().equals(diagnostico)
         ));
     }
+
+
 
 }
 
