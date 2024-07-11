@@ -1,16 +1,11 @@
 package com.drivedoctor.dominio;
 
+import com.drivedoctor.dominio.excepcion.ElementoNoEncontrado;
 import com.drivedoctor.dominio.excepcion.ItemNoEncontrado;
-import com.drivedoctor.dominio.excepcion.ItemsNoEncontrados;
-import com.drivedoctor.infraestructura.RepositorioItemTablero;
+import com.drivedoctor.infraestructura.RepositorioItemTableroImpl;
 import com.drivedoctor.infraestructura.ServicioItemTableroImpl;
-import com.drivedoctor.integracion.config.HibernateTestConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,22 +14,21 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {HibernateTestConfig.class})
+
 
 public class ServicioItemTableroTest {
 
         private ServicioItemTablero servicioItemTablero;
-        private com.drivedoctor.infraestructura.RepositorioItemTablero repositorioItemTablero;
+        private RepositorioItemTableroImpl repositorioItemTablero;
 
     @BeforeEach
     public void init() {
-        this.repositorioItemTablero = mock(RepositorioItemTablero.class);
+        this.repositorioItemTablero = mock(RepositorioItemTableroImpl.class);
         this.servicioItemTablero= new ServicioItemTableroImpl(repositorioItemTablero);
     }
 
     @Test
-    public void queSePuedanObtenerTodosLosItems() throws ItemsNoEncontrados {
+    public void queSePuedanObtenerTodosLosItems() throws ItemNoEncontrado {
         List<ItemTablero> items = new ArrayList<>();
         items.add(new ItemTablero());
         items.add(new ItemTablero());
@@ -49,7 +43,7 @@ public class ServicioItemTableroTest {
     }
 
     @Test
-    public void queSePuedaObetenerUnItemTableroPorId() throws ItemNoEncontrado {
+    public void queSePuedaObetenerUnItemTableroPorId() throws ElementoNoEncontrado, ItemNoEncontrado {
         Integer id = 1;
         ItemTablero itemTablero = new ItemTablero();
        itemTablero.setIdItemTablero(1);

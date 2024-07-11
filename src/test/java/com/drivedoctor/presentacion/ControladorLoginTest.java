@@ -13,7 +13,6 @@ import javax.servlet.http.HttpSession;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.util.AssertionErrors.assertNotNull;
 import static org.springframework.test.util.AssertionErrors.assertNull;
 
 public class ControladorLoginTest {
@@ -65,7 +64,7 @@ public class ControladorLoginTest {
 		
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/home"));
-		verify(sessionMock, times(1)).setAttribute("ROL", usuarioEncontradoMock.getRol());
+		verify(sessionMock, times(1)).setAttribute("rol", usuarioEncontradoMock.getRol());
 		verify(sessionMock, times(1)).setAttribute("name", usuarioEncontradoMock.getNombre());
 	}
 

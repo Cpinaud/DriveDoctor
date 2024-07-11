@@ -1,6 +1,7 @@
 package com.drivedoctor.infraestructura;
 
 import com.drivedoctor.dominio.*;
+import com.drivedoctor.dominio.excepcion.ElementoNoEncontrado;
 import com.drivedoctor.infraestructura.config.HibernateTestInfraestructuraConfig;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -41,8 +42,7 @@ public class RepositorioDiagnosticoTest {
     @Test
     @Transactional
     @Rollback
-    public void queSeObtengaElDiagnosticoCreado()
-    {
+    public void queSeObtengaElDiagnosticoCreado() throws ElementoNoEncontrado {
         Diagnostico diagnostico = crearYguardarDiagnostico("Prueba");
         Diagnostico diagnosticoObtenido = repositorioDiagnostico.findById(diagnostico.getIdDiagnostico());
 

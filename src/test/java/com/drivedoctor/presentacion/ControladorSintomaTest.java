@@ -1,6 +1,7 @@
 package com.drivedoctor.presentacion;
 
 import com.drivedoctor.dominio.*;
+import com.drivedoctor.dominio.excepcion.ElementoNoEncontrado;
 import com.drivedoctor.dominio.excepcion.ItemNoEncontrado;
 import com.drivedoctor.dominio.excepcion.SintomaExistente;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +23,7 @@ public class ControladorSintomaTest {
     private ControladorSintoma controladorSintoma;
     private ServicioSintoma servicioSintoma;
     private Sintoma sintomaMock;
+    private ItemTablero itemTableroMock;
     private ServicioItemTablero servicioItemTableroMock;
     private ServicioVehiculo servicioVehiculoMock;
     private ServicioDiagnostico servicioDiagnosticoMock;
@@ -35,12 +37,23 @@ public class ControladorSintomaTest {
         this.servicioDiagnosticoMock = mock(ServicioDiagnostico.class);
         this.controladorSintoma = new ControladorSintoma(this.servicioSintoma, this.servicioItemTableroMock, this.servicioVehiculoMock, this.servicioDiagnosticoMock);
         sintomaMock = mock(Sintoma.class);
+        itemTableroMock = mock(ItemTablero.class);
 
     }
 
     @Test
-    public void queAlCompletarTodoElFormularioSeGuardeYMeLleveALaVistaSintoma() {
+    public void queAlCompletarTodoElFormularioSeGuardeYMeLleveALaVistaSintoma() throws ItemNoEncontrado, SintomaExistente, ElementoNoEncontrado {
+        // Suponiendo que este es el ID del ítem que deseas probar
 
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpSession session = mock(HttpSession.class);
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("ID")).thenReturn(1);
+
+        ItemTablero itemTableroMock = mock(ItemTablero.class);
+        when(servicioItemTableroMock.findById(anyInt())).thenReturn(itemTableroMock);
+        ModelAndView modelAndView = controladorSintoma.crearSintoma(sintomaMock,request,anyInt(),anyInt());
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/sintoma"));
 
 
      /* ModelAndView modelAndView = controladorSintoma.crearSintoma(sintomaMock);
@@ -49,7 +62,7 @@ public class ControladorSintomaTest {
     }
 
     @Test
-    public void queSePuedaObtenerTodosLosSintomasDependiendoQueItemElijo() throws Exception {
+    public void queSePuedaObtenerTodosLosSintomasDependiendoQueItemElijo() throws Exception, ItemNoEncontrado {
         Integer idItemTablero = 1; // Suponiendo que este es el ID del ítem que deseas probar
         ItemTablero item = mock(ItemTablero.class);
         when(servicioItemTableroMock.findById(idItemTablero)).thenReturn(item);

@@ -1,13 +1,16 @@
 package com.drivedoctor.dominio;
 
-import com.drivedoctor.dominio.excepcion.MarcaNoEncontrada;
+import com.drivedoctor.dominio.excepcion.ElementoNoEncontrado;
 
 import java.util.List;
 
 public interface ServicioMarca {
     List<Marca> obtenerMarcasAll();
+    Marca findById (Integer id) throws ElementoNoEncontrado;
 
-    Marca obtenerMarcaPorId(Integer idMarca) throws MarcaNoEncontrada;
+    void guardarMarca (Marca marca);
+
+
 
 
 }

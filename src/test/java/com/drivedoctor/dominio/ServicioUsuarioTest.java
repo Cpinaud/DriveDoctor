@@ -1,5 +1,6 @@
 package com.drivedoctor.dominio;
 
+import com.drivedoctor.dominio.excepcion.ElementoNoEncontrado;
 import com.drivedoctor.dominio.excepcion.UserSinVhByMarca;
 import com.drivedoctor.dominio.excepcion.UsuarioInexistente;
 import com.drivedoctor.dominio.excepcion.UsuarioSinVehiculos;
@@ -18,11 +19,11 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {HibernateTestConfig.class})
+
 public class ServicioUsuarioTest {
 
     private ServicioUsuario servicioUsuario;
@@ -35,11 +36,11 @@ public class ServicioUsuarioTest {
     }
 
     @Test
-    public void queSePuedanObtenerTodosLosVehiculosDeUnUsuarioCuandoElUsuarioTengaVehiculos() throws UsuarioSinVehiculos, UsuarioInexistente {
+    public void queSePuedanObtenerTodosLosVehiculosDeUnUsuarioCuandoElUsuarioTengaVehiculos() throws UsuarioSinVehiculos, UsuarioInexistente, ElementoNoEncontrado {
         Usuario usuario = mock(Usuario.class);
         usuario.setId(1);
         Integer usuarioId = usuario.getId();
-        when(repositorioUsuario.buscarPorId(usuarioId)).thenReturn(usuario);
+        when(repositorioUsuario.findById(usuarioId)).thenReturn(usuario);
         Marca marca = mock(Marca.class);
         Modelo modelo = mock(Modelo.class);
 
@@ -55,11 +56,11 @@ public class ServicioUsuarioTest {
     }
 
     @Test
-    public void queLanzeExcepcionSiElUserNoPoseeVehiculosDeLaMarcaBuscada() throws UserSinVhByMarca {
+    public void queLanzeExcepcionSiElUserNoPoseeVehiculosDeLaMarcaBuscada() throws UserSinVhByMarca, ElementoNoEncontrado {
         Usuario usuario = mock(Usuario.class);
         usuario.setId(1);
         Integer usuarioId = usuario.getId();
-        when(repositorioUsuario.buscarPorId(usuarioId)).thenReturn(usuario);
+        when(repositorioUsuario.findById(usuarioId)).thenReturn(usuario);
         Marca marca = new Marca("Renault");
         when(this.repositorioUsuario.buscarVhPorMarca(usuario,marca)).thenReturn(new ArrayList<>());
 
@@ -70,11 +71,11 @@ public class ServicioUsuarioTest {
     }
 
     @Test
-    public void queDevuelvaVehiculosDeLaMarcaBuscadaSiElUserLosPosee(){
+    public void queDevuelvaVehiculosDeLaMarcaBuscadaSiElUserLosPosee() throws ElementoNoEncontrado {
         Usuario usuario = mock(Usuario.class);
         usuario.setId(1);
         Integer usuarioId = usuario.getId();
-        when(repositorioUsuario.buscarPorId(usuarioId)).thenReturn(usuario);
+        when(repositorioUsuario.findById(usuarioId)).thenReturn(usuario);
         Marca marca = new Marca("Renault");
         Modelo modelo = mock(Modelo.class);
 
@@ -87,5 +88,32 @@ public class ServicioUsuarioTest {
         when(this.repositorioUsuario.buscarVhPorMarca(usuario,marca)).thenReturn(vehiculosRenault);
 
         assertThat(vehiculosRenault.size(),equalTo(3));
+    }
+
+    @Test
+    public void queSePuedaBuscarUnUsuarioPorId() throws ElementoNoEncontrado {
+        Usuario usuario = mock(Usuario.class);
+        usuario.setId(1);
+        Integer usuarioId = usuario.getId();
+        when(repositorioUsuario.findById(usuarioId)).thenReturn(usuario);
+
+        Usuario encontrado = repositorioUsuario.findById(usuarioId);
+
+        assertThat(encontrado, notNullValue());
+        assertThat(encontrado, equalTo(usuario));
+
+    }
+
+    @Test
+    public void queDevuelvaLaExcepcionElementoNoEncontradoSiSeBuscaUnUsuarioPorIdYNoSeEncuentra() throws ElementoNoEncontrado {
+        Usuario usuario = mock(Usuario.class);
+        usuario.setId(1);
+        Integer usuarioId = usuario.getId();
+        when(repositorioUsuario.findById(anyInt())).thenReturn(null);
+
+
+        assertThrows(ElementoNoEncontrado.class, () -> {
+            servicioUsuario.findById(usuarioId);
+        });
     }
 }

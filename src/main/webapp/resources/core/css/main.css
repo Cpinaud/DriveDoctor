@@ -2,10 +2,10 @@
 
 :root {
     --color-fondo: #1F2128;
-    --color-principal1: #255e3c;
-    --color-principal: #304136;
+    --color-principal1: #1A202C;
+    --color-principal: #1A202C;
     --color-secundario: rgb(217, 170, 31);
-    --color-oscuro-2: #242731;
+    --color-oscuro-2: #1A202C;
     --color-blanco: #FFFFFF;
     --color-negro: #000000;
 }
@@ -27,9 +27,119 @@ body {
 
 
 }
+.kanit-thin {
+    font-family: "Kanit", sans-serif;
+    font-weight: 100;
+    font-style: normal;
+}
+
+.kanit-extralight {
+    font-family: "Kanit", sans-serif;
+    font-weight: 200;
+    font-style: normal;
+}
+
+.kanit-light {
+    font-family: "Kanit", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+
+.kanit-regular {
+    font-family: "Kanit", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.kanit-medium {
+    font-family: "Kanit", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.kanit-semibold {
+    font-family: "Kanit", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+}
+
+.kanit-bold {
+    font-family: "Kanit", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.kanit-extrabold {
+    font-family: "Kanit", sans-serif;
+    font-weight: 800;
+    font-style: normal;
+}
+
+.kanit-black {
+    font-family: "Kanit", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+}
+
+.kanit-thin-italic {
+    font-family: "Kanit", sans-serif;
+    font-weight: 100;
+    font-style: italic;
+}
+
+.kanit-extralight-italic {
+    font-family: "Kanit", sans-serif;
+    font-weight: 200;
+    font-style: italic;
+}
+
+.kanit-light-italic {
+    font-family: "Kanit", sans-serif;
+    font-weight: 300;
+    font-style: italic;
+}
+
+.kanit-regular-italic {
+    font-family: "Kanit", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+}
+
+.kanit-medium-italic {
+    font-family: "Kanit", sans-serif;
+    font-weight: 500;
+    font-style: italic;
+}
+
+.kanit-semibold-italic {
+    font-family: "Kanit", sans-serif;
+    font-weight: 600;
+    font-style: italic;
+}
+
+.kanit-bold-italic {
+    font-family: "Kanit", sans-serif;
+    font-weight: 700;
+    font-style: italic;
+}
+
+.kanit-extrabold-italic {
+    font-family: "Kanit", sans-serif;
+    font-weight: 800;
+    font-style: italic;
+}
+
+.kanit-black-italic {
+    font-family: "Kanit", sans-serif;
+    font-weight: 900;
+    font-style: italic;
+}
+
+
 
 .home-page{
-    background-color: rgba(0, 0, 0, 0.4);
+
+    background-color: rgba(26, 32, 44,0.9);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -84,6 +194,15 @@ tbody a{
 img {
     width: 30%;
     height: 35%;
+    color: #FFFFFF;
+    background: #232323;
+    text-shadow: 0 0 5px #FFF, 0 0 10px #FFF, 0 0 15px #FFF, 0 0 20px #49ff18, 0 0 30px #49FF18, 0 0 40px #49FF18, 0 0 55px #49FF18, 0 0 75px #49ff18;
+}
+
+#logoSl{
+    width: 20%;
+    height: 20%;
+
 }
 
 .login a{
@@ -192,11 +311,117 @@ width: 90%;
 }
 
 .item-historial{
-    background-color: rgba(0,0,0,0.4) !important;
+    background-color: #1A202C!important;
     padding:0.1rem !important;
     color:white !important;
+}
+.btnHistorial{
+    background-color: #1A202C!important;
 }
 
 .item-historial-subtitle{
     text-decoration:underline;
 }
+
+.cardButton{
+    display:flex;
+    justify-content: space-around;
+}
+
+
+.card-title{
+    text-align: center;
+    color:#EEEEEE;
+}
+
+.card-body{
+    height: 8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin:0.5rem;
+}
+
+.tarjeta {
+    margin:1rem;
+    border-radius: 10px; /* Borde redondeado */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1); /* Sombra para profundidad */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transiciones suaves */
+    background-color:rgba(26, 32, 44,0.9);
+
+}
+
+.tarjeta:hover {
+    transform: translateY(-10px); /* Efecto de elevarse al pasar el ratón */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 12px 40px rgba(0, 0, 0, 0.2); /* Mayor sombra al pasar el ratón */
+}
+
+.diagnostico-container{
+    padding:1rem;
+    border-radius: 10px; /* Borde redondeado */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1); /* Sombra para profundidad */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transiciones suaves */
+    background-color:rgba(26, 32, 44,0.9);
+    color:#EEEEEE;
+    height: max-content;
+    width: 80%;
+}
+
+.diagnostico-container button{
+    background-color:#EEEEEE !important;
+    color:rgba(26, 32, 44,0.9) !important;
+    font-weight: bold;
+}
+
+.diagnostico-container button:hover{
+    background-color:rgba(26, 32, 44,0.9) !important;
+    color:#EEEEEE !important;
+}
+
+
+
+.btn-diagnostico{
+    background-color:#38A169;
+    font-weight: bold;
+}
+
+.btn-porcentaje{
+    background-color:#DD6B20;
+    font-weight: bold;
+}
+
+.btn-diagnostico:hover{
+    color:white;
+}
+
+.btn-porcentaje:hover{
+    color:white;
+}
+
+.titulo-cs{
+    color:rgba(26, 32, 44,0.9);
+}
+
+.cards-container{
+    max-height: 90%; /* Altura máxima de la ventana */
+    overflow-y: auto; /* Scroll vertical */
+    padding-right: 15px; /* Espacio para el scrollbar */
+
+}
+
+.subTitulo{
+    display:flex;
+    flex-direction:row;
+    justify-content: space-around;
+}
+
+.subTitulo a:hover{
+   color:white;
+    text-shadow:
+            -1px -1px 0 #000, /* Sombra arriba izquierda */
+            1px -1px 0 #000, /* Sombra arriba derecha */
+            -1px 1px 0 #000, /* Sombra abajo izquierda */
+            1px 1px 0 #000; /* Sombra abajo derecha */
+
+}
+

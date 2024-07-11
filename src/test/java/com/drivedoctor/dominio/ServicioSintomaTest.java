@@ -21,8 +21,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {HibernateTestConfig.class})
+
 public class ServicioSintomaTest {
 
     private ServicioSintoma servicioSintoma;
@@ -75,7 +74,7 @@ public class ServicioSintomaTest {
     }
 
     @Test
-    public void queSePuedaObtenerUnSintomaPorId(){
+    public void queSePuedaObtenerUnSintomaPorId() throws ElementoNoEncontrado {
         Integer idBuscada = 1;
         Sintoma sintoma = new Sintoma(new ItemTablero());
         sintoma.setIdSintoma(1);
@@ -84,6 +83,21 @@ public class ServicioSintomaTest {
         this.servicioSintoma.findById(idBuscada);
 
         assertThat(sintoma.getIdSintoma(),equalTo(idBuscada));
+        verify(this.repositorioSintoma,times(1)).findById(idBuscada);
+    }
+
+    @Test
+    public void queDevuelvaLaExcepcionElementoNoEncontradoSiSeBuscaUnSintomaPorIdYNoSeEncuentra() throws ElementoNoEncontrado {
+        Integer idBuscada = 1;
+        Sintoma sintoma = new Sintoma(new ItemTablero());
+        sintoma.setIdSintoma(1);
+
+        when(this.repositorioSintoma.findById(idBuscada)).thenReturn(null);
+
+
+        assertThrows(ElementoNoEncontrado.class, () -> {
+            this.servicioSintoma.findById(idBuscada);
+        });
         verify(this.repositorioSintoma,times(1)).findById(idBuscada);
     }
 

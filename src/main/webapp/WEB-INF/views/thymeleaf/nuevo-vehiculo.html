@@ -28,7 +28,7 @@
                 <br>
                 <label for="marca">Marca: </label>
                 <select  id="marca" class="form-control" onchange="cargarModelos()" required>
-                    <option th:each="marca : ${marcas}" th:value="${marca.id}" th:text="${marca.nombre}"></option>
+                    <option th:each="marca : ${marcas}" th:value="${marca.id}" th:id="${marca.id}" th:text="${marca.nombre}"></option>
                 </select>
 
                 <label for="modeloId">Modelo: </label>
@@ -41,7 +41,7 @@
                 <label for="patente">Patente: </label>
                 <input type="text" th:field="*{patente}" class="form-control" id="patente" required/>
                 <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}"></p>
-                <button id="btn-registrarme" class="btn boton-principal" Type="Submit">Agregar Vehiculo</button>
+                <button id="nuevoVehiculo" class="btn boton-principal mt-2" Type="Submit">Agregar Vehiculo</button>
             </form>
         </div>
     </div>
